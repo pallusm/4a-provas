@@ -5,610 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1A3A6B">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>4°A — Eduardo Gomes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --school:   #1A3A6B;
-            --school-d: #142F58;
-            --bg:       #F0F2F7;
-            --surface:  #FFFFFF;
-            --border:   #E2E6EF;
-            --text:     #111827;
-            --muted:    #6B7280;
-            --accent:   #F59E0B;
-            --danger:   #DC2626;
-            --warn:     #D97706;
-            --safe:     #16A34A;
-            --radius:   14px;
-            --touch:    48px;
+            --school:  #1A3A6B;
+            --bg:      #FAFAFA;
+            --surface: #FFFFFF;
+            --border:  #E4E4E7;
+            --text:    #09090B;
+            --muted:   #71717A;
+            --subtle:  #F4F4F5;
+            --accent:  #F59E0B;
+            --red:     #EF4444;
+            --red-bg:  #FEF2F2;
+            --red-bd:  #FECACA;
+            --radius:  8px;
+            --touch:   44px;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
         html { font-size: 16px; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
+        /* Header */
+        header { background: var(--school); padding: 14px 16px 0; padding-top: calc(14px + env(safe-area-inset-top)); position: sticky; top: 0; z-index: 50; }
+        .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        .school-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+        .header-title { font-size: 18px; font-weight: 700; color: white; letter-spacing: -0.02em; }
+        .share-btn { display: flex; align-items: center; gap: 6px; background: #25D366; color: white; border: none; padding: 0 14px; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; height: 36px; white-space: nowrap; flex-shrink: 0; }
+        .share-btn:active { opacity: 0.85; }
 
-        /* ── Header ──────────────────────────────────────────────────────── */
-        header {
-            background: var(--school);
-            color: white;
-            padding: 16px 16px 0;
-            padding-top: calc(16px + env(safe-area-inset-top));
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            box-shadow: 0 2px 16px rgba(26,58,107,0.35);
-        }
+        /* Tabs */
+        .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn { background: none; color: rgba(255,255,255,0.5); border: none; border-bottom: 2px solid transparent; padding: 10px 16px; margin-bottom: -1px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; white-space: nowrap; }
+        .tab-btn.active { color: white; border-bottom-color: var(--accent); }
+        .pill { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 20px; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+        .tab-btn.active .pill { background: var(--accent); color: white; }
 
-        .header-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .school-label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 3px;
-        }
-
-        .header-title {
-            font-size: 20px;
-            font-weight: 800;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-        }
-
-        .header-actions {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .update-badge {
-            font-family: 'DM Mono', monospace;
-            font-size: 10px;
-            color: rgba(255,255,255,0.4);
-        }
-
-        .share-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            min-height: var(--touch);
-            transition: opacity 0.15s;
-            -webkit-appearance: none;
-        }
-
-        .share-btn:active { opacity: 0.8; }
-
-        /* ── Tabs ────────────────────────────────────────────────────────── */
-        .tabs {
-            display: flex;
-            gap: 2px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        .tabs::-webkit-scrollbar { display: none; }
-
-        .tab-btn {
-            background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.55);
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px 8px 0 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            min-height: 42px;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active { background: var(--bg); color: var(--text); }
-
-        .pill {
-            background: var(--accent);
-            color: white;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 20px;
-            min-width: 22px;
-            text-align: center;
-        }
-
-        .tab-btn:not(.active) .pill { background: rgba(255,255,255,0.25); }
-
-        /* ── Summary bar ─────────────────────────────────────────────────── */
-        .summary-bar {
-            background: var(--school-d);
-            padding: 10px 16px;
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
+        /* Summary */
+        .summary-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 16px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
         .summary-bar::-webkit-scrollbar { display: none; }
+        .sum-chip { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--muted); background: var(--subtle); white-space: nowrap; flex-shrink: 0; }
+        .sum-chip b { color: var(--text); font-weight: 600; }
+        .sum-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-        .sum-chip {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 5px 12px;
-            white-space: nowrap;
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.85);
-            flex-shrink: 0;
-        }
+        /* Controls */
+        .controls { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 16px; display: flex; gap: 8px; align-items: center; }
+        .view-toggle { display: flex; background: var(--subtle); border-radius: var(--radius); padding: 2px; gap: 1px; flex-shrink: 0; }
+        .view-btn { background: none; border: none; padding: 5px 12px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--muted); height: 30px; transition: all 0.15s; }
+        .view-btn.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px var(--border); }
 
-        .sum-dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
+        /* Filters — SEMPRE VISÍVEIS */
+        .filters-wrap { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+        .filters-wrap::-webkit-scrollbar { display: none; }
+        .f-chip { display: inline-flex; align-items: center; gap: 4px; padding: 0 12px; border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); white-space: nowrap; flex-shrink: 0; height: 30px; transition: border-color 0.15s, color 0.15s, background 0.15s; -webkit-appearance: none; }
+        .f-chip .cdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; opacity: 0.4; transition: opacity 0.15s; }
+        .f-chip.on .cdot { opacity: 1; }
+        .f-chip.on { font-weight: 700; }
 
-        /* ── Controls ────────────────────────────────────────────────────── */
-        .controls {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 10px 16px;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        .controls::-webkit-scrollbar { display: none; }
-
-        .view-toggle {
-            display: flex;
-            background: var(--bg);
-            border-radius: 10px;
-            padding: 3px;
-            gap: 2px;
-            flex-shrink: 0;
-        }
-
-        .view-btn {
-            background: none;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--muted);
-            min-height: var(--touch);
-            transition: all 0.15s;
-            white-space: nowrap;
-        }
-
-        .view-btn.active {
-            background: var(--surface);
-            color: var(--text);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        }
-
-        .filters {
-            display: flex;
-            gap: 6px;
-            flex-wrap: nowrap;
-        }
-
-        .filter-btn {
-            border: 2px solid var(--border);
-            background: var(--surface);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            color: var(--muted);
-            min-height: var(--touch);
-            white-space: nowrap;
-            transition: all 0.15s;
-            -webkit-appearance: none;
-        }
-
-        /* ── Tab content ─────────────────────────────────────────────────── */
+        /* Content */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .container { max-width: 640px; margin: 0 auto; padding: 16px; padding-bottom: calc(32px + env(safe-area-inset-bottom)); }
 
-        .container {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 16px;
-            padding-bottom: calc(24px + env(safe-area-inset-bottom));
-        }
+        /* Section label */
+        .sec-label { display: flex; align-items: center; justify-content: space-between; margin: 20px 0 8px; }
+        .sec-label:first-child { margin-top: 4px; }
+        .sec-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+        .sec-count { font-size: 11px; font-weight: 500; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
-        /* ── Section headers ─────────────────────────────────────────────── */
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 20px 0 10px;
-        }
-
-        .section-title {
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--muted);
-        }
-
-        .section-count {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--muted);
-        }
-
-        /* ── Alert carousel ──────────────────────────────────────────────── */
-        .alert-wrapper { position: relative; }
-
+        /* Alert carousel */
         .alert-carousel { overflow: hidden; border-radius: var(--radius); }
-
-        .alert-track {
-            display: flex;
-            transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
-        }
-
-        .alert-card {
-            background: linear-gradient(135deg,#FEF2F2 0%,#FFF5F5 100%);
-            border: 2px solid #FCA5A5;
-            border-radius: var(--radius);
-            padding: 14px 16px;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-            flex: 0 0 100%;
-            width: 100%;
-        }
-
-        .alert-icon { font-size: 20px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+        .alert-track { display: flex; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .alert-card { flex: 0 0 100%; background: var(--red-bg); border: 1px solid var(--red-bd); border-radius: var(--radius); padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+        .alert-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
         .alert-body { flex: 1; min-width: 0; }
+        .alert-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); margin-bottom: 2px; }
+        .alert-disc { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+        .alert-txt { font-size: 13px; color: #52525B; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .alert-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--red); margin-top: 5px; }
+        .alert-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+        .alert-dots { display: flex; gap: 4px; align-items: center; }
+        .a-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red-bd); cursor: pointer; transition: all 0.2s; }
+        .a-dot.on { width: 16px; border-radius: 3px; background: var(--red); }
+        .alert-ctrls { display: flex; gap: 4px; align-items: center; }
+        .a-nav { background: none; border: 1px solid var(--red-bd); color: var(--red); width: 28px; height: 28px; border-radius: var(--radius); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .a-nav:disabled { opacity: 0.3; cursor: default; }
+        .a-close { background: none; border: 1px solid var(--red-bd); color: var(--red); padding: 0 10px; height: 28px; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-        .alert-label {
-            font-size: 10px; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 0.1em;
-            color: var(--danger); margin-bottom: 3px;
-        }
+        /* Cards */
+        .cards-grid { display: grid; gap: 6px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; border-left: 3px solid var(--disc-color, var(--border)); }
+        @media (hover: hover) { .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); } }
+        .card.prova { background: linear-gradient(to right, #FFF5F5, var(--surface)); }
+        .card.hist { opacity: 0.6; }
+        .card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+        .card-left { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+        .disc-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+        .tipo-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: var(--red-bg); color: var(--red); }
+        .urg-tag { font-size: 11px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+        .card-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+        .card-text { font-size: 13px; line-height: 1.65; color: #3F3F46; }
 
-        .alert-disc { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        /* History */
+        .hist-toggle { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; margin-top: 20px; transition: background 0.15s; -webkit-appearance: none; }
+        .hist-toggle:active { background: var(--subtle); }
+        .hist-arrow { font-size: 12px; transition: transform 0.2s; }
+        .hist-arrow.open { transform: rotate(180deg); }
+        .hist-body { display: none; margin-top: 6px; }
+        .hist-body.open { display: block; }
 
-        .alert-text {
-            font-size: 13px; color: #374151; line-height: 1.6;
-            display: -webkit-box; -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical; overflow: hidden;
-        }
-
-        .alert-date {
-            font-family: 'DM Mono', monospace; font-size: 11px;
-            color: var(--danger); font-weight: 600; margin-top: 6px;
-        }
-
-        .alert-footer {
-            display: flex; align-items: center;
-            justify-content: space-between; margin-top: 10px;
-        }
-
-        .alert-dots { display: flex; gap: 5px; align-items: center; }
-
-        .alert-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: #FCA5A5; cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .alert-dot.active { width: 18px; border-radius: 3px; background: var(--danger); }
-
-        .alert-btns { display: flex; gap: 6px; align-items: center; }
-
-        .alert-nav-btn {
-            background: none; border: 1.5px solid #FCA5A5; color: var(--danger);
-            width: 32px; height: 32px; border-radius: 50%; font-size: 16px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: all 0.15s; -webkit-appearance: none;
-        }
-
-        .alert-nav-btn:active { background: #FEF2F2; }
-        .alert-nav-btn:disabled { opacity: 0.3; cursor: default; }
-
-        .alert-close-btn {
-            background: var(--danger); color: white; border: none;
-            padding: 6px 14px; border-radius: 20px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 12px; font-weight: 700; cursor: pointer;
-            transition: opacity 0.15s; -webkit-appearance: none;
-        }
-
-        .alert-close-btn:active { opacity: 0.8; }
-
-        /* ── Cards ───────────────────────────────────────────────────────── */
-        .cards-grid { display: grid; gap: 8px; }
-
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--disc-color, #CBD5E0);
-            transition: transform 0.15s, box-shadow 0.15s;
-        }
-
-        @media (hover: hover) {
-            .card:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            }
-        }
-
-        .card.prova { background: linear-gradient(135deg, #FFF5F5 0%, white 60%); }
-        .card.history { opacity: 0.75; }
-
-        .card-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            gap: 8px;
-        }
-
-        .card-tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-
-        .disc-tag {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .tipo-tag {
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 20px;
-            background: #FEF2F2;
-            color: var(--danger);
-        }
-
-        .urg-tag {
-            font-size: 12px;
-            font-weight: 700;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .card-date {
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            color: var(--muted);
-            margin-bottom: 8px;
-        }
-
-        .card-text {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #374151;
-        }
-
-        /* ── Histórico toggle ────────────────────────────────────────────── */
-        .history-toggle {
-            width: 100%;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--muted);
-            cursor: pointer;
-            min-height: var(--touch);
-            margin-top: 20px;
-            transition: all 0.15s;
-            -webkit-appearance: none;
-        }
-
-        .history-toggle:active { background: var(--bg); }
-
-        .history-arrow { font-size: 16px; transition: transform 0.2s; }
-        .history-arrow.open { transform: rotate(180deg); }
-
-        .history-section { display: none; margin-top: 8px; }
-        .history-section.open { display: block; }
-
-        /* ── Calendário ──────────────────────────────────────────────────── */
+        /* Calendar */
         .cal-view { display: none; }
-        .cal-view.active-view { display: block; }
-
-        .cal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-
-        .cal-nav {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            width: var(--touch);
-            height: var(--touch);
-            border-radius: 10px;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--muted);
-            transition: all 0.15s;
-            -webkit-appearance: none;
-        }
-
-        .cal-nav:active { background: var(--school); color: white; }
-
-        .cal-month { font-size: 17px; font-weight: 800; }
-
-        .cal-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-        }
-
-        .cal-dow {
-            text-align: center;
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--muted);
-            padding: 4px 0 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .cal-day {
-            aspect-ratio: 1;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            transition: all 0.15s;
-            min-height: 44px;
-        }
-
-        .cal-day.empty { background: transparent; border-color: transparent; }
+        .cal-view.on { display: block; }
+        .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .cal-nav { background: var(--surface); border: 1px solid var(--border); width: var(--touch); height: var(--touch); border-radius: var(--radius); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+        .cal-nav:active { background: var(--subtle); }
+        .cal-month { font-size: 15px; font-weight: 700; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+        .cal-dow { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); padding: 3px 0 8px; text-transform: uppercase; }
+        .cal-day { aspect-ratio: 1; min-height: 44px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .cal-day.empty { background: none; border-color: transparent; }
         .cal-day.today { border-color: var(--school); border-width: 2px; }
-        .cal-day.has-items { cursor: pointer; }
-        .cal-day.has-items:active { background: var(--bg); }
+        .cal-day.clickable { cursor: pointer; }
+        .cal-day.clickable:active { background: var(--subtle); }
+        .cal-num { font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1; }
+        .cal-day.today .cal-num { color: var(--school); font-weight: 700; }
+        .cal-dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; }
+        .cal-dot { width: 5px; height: 5px; border-radius: 50%; }
 
-        .cal-num {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--muted);
-            line-height: 1;
-        }
-
-        .cal-day.today .cal-num { color: var(--school); }
-
-        .cal-dots {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2px;
-            justify-content: center;
-        }
-
-        .cal-dot {
-            width: 5px; height: 5px;
-            border-radius: 50%;
-        }
-
-        /* ── Drawer ──────────────────────────────────────────────────────── */
-        .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 200;
-            align-items: flex-end;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-
+        /* Drawer */
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
         .overlay.open { display: flex; }
+        .drawer { background: var(--surface); border-radius: 12px 12px 0 0; padding: 12px 16px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); width: 100%; max-width: 640px; max-height: 85vh; overflow-y: auto; animation: slideUp 0.25s cubic-bezier(0.32,0.72,0,1); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .drawer-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
+        .drawer-date { font-size: 12px; font-weight: 700; color: var(--school); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
 
-        .drawer {
-            background: var(--surface);
-            border-radius: 20px 20px 0 0;
-            padding: 12px 20px;
-            padding-bottom: calc(24px + env(safe-area-inset-bottom));
-            width: 100%;
-            max-width: 680px;
-            max-height: 85vh;
-            overflow-y: auto;
-            animation: slideUp 0.25s cubic-bezier(0.32,0.72,0,1);
-        }
+        /* Empty */
+        .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+        .empty-icon { font-size: 36px; margin-bottom: 10px; }
+        .empty p { font-size: 14px; }
 
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to   { transform: translateY(0); }
-        }
+        /* Footer */
+        footer { text-align: center; padding: 24px 20px; font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
-        .drawer-handle {
-            width: 40px; height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin: 0 auto 16px;
-        }
-
-        .drawer-date {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--school);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 14px;
-        }
-
-        /* ── Empty ───────────────────────────────────────────────────────── */
-        .empty {
-            text-align: center;
-            padding: 48px 20px;
-            color: var(--muted);
-        }
-
-        .empty-icon { font-size: 44px; margin-bottom: 12px; }
-        .empty p { font-size: 15px; line-height: 1.6; }
-
-        /* ── Footer ──────────────────────────────────────────────────────── */
-        footer {
-            text-align: center;
-            padding: 24px 20px;
-            padding-bottom: calc(24px + env(safe-area-inset-bottom));
-            font-size: 12px;
-            color: var(--muted);
-            font-family: 'DM Mono', monospace;
-        }
+        @media (max-width: 400px) { .cal-day { min-height: 40px; } .header-title { font-size: 16px; } }
     </style>
 </head>
 <body>
@@ -619,21 +161,14 @@
             <div class="school-label">Colégio Eduardo Gomes · Fund. Manhã</div>
             <div class="header-title">4°A — Agenda Escolar</div>
         </div>
-        <div class="header-actions">
-            <div class="update-badge" id="update-time"></div>
-            <button class="share-btn" onclick="compartilhar()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3 0-.6 0-.9.1l-2.1-1.5c.1-.3.1-.7.1-1s0-.7-.1-1l2.1-1.5c.3.1.6.1.9.1 1.5 0 2.8-1.3 2.8-2.8S19 4 17.5 4 14.7 5.3 14.7 6.8c0 .3 0 .7.1 1l-2.1 1.5c-.5-.4-1.2-.7-1.9-.7s-1.4.3-1.9.7L6.8 7.8c.1-.3.1-.7.1-1C6.9 5.3 5.6 4 4.1 4S1.3 5.3 1.3 6.8 2.6 9.6 4.1 9.6c.3 0 .6 0 .9-.1l2.1 1.5c-.1.3-.1.7-.1 1s0 .7.1 1L4.9 14.5c-.3-.1-.6-.1-.9-.1-1.5 0-2.8 1.3-2.8 2.8S3.5 20 5 20s2.8-1.3 2.8-2.8c0-.3 0-.7-.1-1l2.1-1.5c.5.4 1.2.7 1.9.7s1.4-.3 1.9-.7l2.1 1.5c-.1.3-.1.7-.1 1 0 1.5 1.3 2.8 2.8 2.8s2.8-1.3 2.8-2.8-1.2-2.8-2.7-2.8z"/></svg>
-                Compartilhar
-            </button>
-        </div>
+        <button class="share-btn" onclick="compartilhar()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3 0-.6 0-.9.1l-2.1-1.5c.1-.3.1-.7.1-1s0-.7-.1-1l2.1-1.5c.3.1.6.1.9.1 1.5 0 2.8-1.3 2.8-2.8S19 4 17.5 4 14.7 5.3 14.7 6.8c0 .3 0 .7.1 1l-2.1 1.5c-.5-.4-1.2-.7-1.9-.7s-1.4.3-1.9.7L6.8 7.8c.1-.3.1-.7.1-1C6.9 5.3 5.6 4 4.1 4S1.3 5.3 1.3 6.8 2.6 9.6 4.1 9.6c.3 0 .6 0 .9-.1l2.1 1.5c-.1.3-.1.7-.1 1s0 .7.1 1L4.9 14.5c-.3-.1-.6-.1-.9-.1-1.5 0-2.8 1.3-2.8 2.8S3.5 20 5 20s2.8-1.3 2.8-2.8c0-.3 0-.7-.1-1l2.1-1.5c.5.4 1.2.7 1.9.7s1.4-.3 1.9-.7l2.1 1.5c-.1.3-.1.7-.1 1 0 1.5 1.3 2.8 2.8 2.8s2.8-1.3 2.8-2.8-1.2-2.8-2.7-2.8z"/></svg>
+            Compartilhar
+        </button>
     </div>
-    <div class="tabs" id="tabs">
-        <button class="tab-btn active" onclick="trocarAba('proximas',this)">
-            📅 Próximas <span class="pill" id="pill-prox">0</span>
-        </button>
-        <button class="tab-btn" onclick="trocarAba('historico',this)">
-            📚 Histórico <span class="pill" id="pill-hist">0</span>
-        </button>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="trocarAba('proximas',this)">📅 Próximas <span class="pill" id="pill-prox">0</span></button>
+        <button class="tab-btn" onclick="trocarAba('historico',this)">📚 Histórico <span class="pill" id="pill-hist">0</span></button>
     </div>
 </header>
 
@@ -644,59 +179,37 @@
         <button class="view-btn active" id="btn-lista" onclick="trocarView('lista')">Lista</button>
         <button class="view-btn" id="btn-cal" onclick="trocarView('cal')">Calendário</button>
     </div>
-    <div class="filters" id="filtros"></div>
+    <div class="filters-wrap" id="filtros"></div>
 </div>
 
-<!-- Aba Próximas -->
 <div id="tab-proximas" class="tab-content active">
     <div class="container">
-        <div id="alertas-section"></div>
-
-        <div class="section-header">
-            <span class="section-title">📋 Lições de Casa</span>
-            <span class="section-count" id="count-lic"></span>
-        </div>
-        <div class="cards-grid" id="cards-licoes"></div>
-        <div class="cal-view" id="cal-licoes"></div>
-
-        <div class="section-header" style="margin-top:24px">
-            <span class="section-title">📝 Provas & Avaliações</span>
-            <span class="section-count" id="count-prov"></span>
-        </div>
-        <div class="cards-grid" id="cards-provas"></div>
-        <div class="cal-view" id="cal-provas"></div>
+        <div id="alertas-sec"></div>
+        <div class="sec-label"><span class="sec-title">📋 Lições de Casa</span><span class="sec-count" id="cnt-lic">—</span></div>
+        <div class="cards-grid" id="cards-lic"></div>
+        <div class="cal-view" id="cal-lic"></div>
+        <div class="sec-label" style="margin-top:20px"><span class="sec-title">📝 Provas & Avaliações</span><span class="sec-count" id="cnt-prov">—</span></div>
+        <div class="cards-grid" id="cards-prov"></div>
+        <div class="cal-view" id="cal-prov"></div>
     </div>
 </div>
 
-<!-- Aba Histórico -->
 <div id="tab-historico" class="tab-content">
     <div class="container">
-        <button class="history-toggle" onclick="toggleHistorico('hist-lic')">
-            <span>📚 Lições anteriores</span>
-            <span class="history-arrow" id="arrow-hist-lic">▼</span>
-        </button>
-        <div class="history-section" id="hist-lic">
-            <div class="cards-grid" id="hist-cards-licoes"></div>
-        </div>
-
-        <button class="history-toggle" onclick="toggleHistorico('hist-prov')">
-            <span>📝 Provas anteriores</span>
-            <span class="history-arrow" id="arrow-hist-prov">▼</span>
-        </button>
-        <div class="history-section" id="hist-prov">
-            <div class="cards-grid" id="hist-cards-provas"></div>
-        </div>
+        <button class="hist-toggle" onclick="toggleH('hl')"><span>📚 Lições anteriores</span><span class="hist-arrow" id="arr-hl">▼</span></button>
+        <div class="hist-body" id="hl"><div class="cards-grid" id="h-lic"></div></div>
+        <button class="hist-toggle" onclick="toggleH('hp')"><span>📝 Provas anteriores</span><span class="hist-arrow" id="arr-hp">▼</span></button>
+        <div class="hist-body" id="hp"><div class="cards-grid" id="h-prov"></div></div>
     </div>
 </div>
 
-<footer>pallusm.github.io/4a-provas · Atualizado automaticamente</footer>
+<footer id="ftxt">pallusm.github.io/4a-provas</footer>
 
-<!-- Drawer -->
-<div class="overlay" id="overlay" onclick="fecharDrawer(event)">
+<div class="overlay" id="overlay" onclick="closeDrawer(event)">
     <div class="drawer">
         <div class="drawer-handle"></div>
-        <div class="drawer-date" id="drawer-date"></div>
-        <div id="drawer-content"></div>
+        <div class="drawer-date" id="drw-date"></div>
+        <div id="drw-content"></div>
     </div>
 </div>
 
@@ -704,351 +217,290 @@
 const DATA_LICOES  = [{"disciplina": "Matemática", "tarefa": "Para: 18/05 Realizar os exercícios 1, 4 e 5, páginas 46 a 49, linhas paralelas e perpendiculares.", "prazo": "2026-05-18"}, {"disciplina": "Língua Portuguesa", "tarefa": "Ler a história: “Trancado entre múmias” - páginas 85 a 89 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Matemática", "tarefa": "Para: 19/05 Realizar os exercícios 1 e 2, página 58, multiplicação e divisão por 10, 100 e 1.000.", "prazo": "2026-05-19"}, {"disciplina": "História", "tarefa": "Tarefa de casa - p. 169- ex. 1 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}, {"disciplina": "Matemática", "tarefa": "Para: 29/01 Conforme explicado em aula, finalizar o desenho da capa do caderno de Matemática. Temas: País dos números. O que fazer? Criar um desenho com elementos da Matemática, imaginando como seria o seu país dos números. Atenção! Não utilize canetinha, como combinado em aula.", "prazo": "2026-01-29"}, {"disciplina": "Matemática", "tarefa": "Para: 04/02 Realizar os exercícios da página 17, análise de gráfico.", "prazo": "2026-02-04"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 28 e 29 - ex. 1-a, b, c. Para: 04-02", "prazo": "2026-02-04"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 29 e 30 - ex. 2-a,b Para: 05-02", "prazo": "2026-02-05"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 33 - ex. 6 Para: 06-02", "prazo": "2026-02-06"}, {"disciplina": "Projeto de Vida", "tarefa": "Conforme explicado em sala, na próxima aula, faremos uma entrevista com as Orientadoras Andrea e Carol. Na folha monobloco fornecida pela professora, coloque o seu nome, ano, título “Entrevista com a O.E”. Elabore duas perguntas a serem realizadas no dia da entrevista com as orientadoras. Para ajudar, pense em tudo que engloba o ambiente escolar como: regras de convivência, nas amizades construídas, hora do lanche, hora da entrada e saída, biblioteca, esportes e sala de aula. Para: 09/02", "prazo": "2026-02-09"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo da língua - página 30 - ex. 3. Para: 10-02", "prazo": "2026-02-10"}, {"disciplina": "Matemática", "tarefa": "Para: 10/02 Realizar a folha avulsa com exercícios da tabuada.", "prazo": "2026-02-10"}, {"disciplina": "História", "tarefa": "p. 119 a 121 (ex. 1 ao 4). Para: 10-02", "prazo": "2026-02-10"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 31 e 32 - ex. 4 e 5 Para: 12-02", "prazo": "2026-02-12"}, {"disciplina": "Matemática", "tarefa": "Para: 12/02 Realizar os exercícios sobre leitura e interpretação de gráfico, página 18.", "prazo": "2026-02-12"}, {"disciplina": "Geografia", "tarefa": "A zona rural do município - p. 172 e 173- ex. 1, 2 e 3. Para: 12-02", "prazo": "2026-02-12"}, {"disciplina": "Ciências", "tarefa": "Para: 13/02 Observar com mais atenção os pontos de referência da sua casa até a escola e o nascer do Sol.", "prazo": "2026-02-13"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – As capitais – p. 188 a 191 – ex. 2. Para: 19-02", "prazo": "2026-02-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 49 - ex. 1 Para: 20-02", "prazo": "2026-02-20"}, {"disciplina": "Ciências", "tarefa": "Para: 20/02 Realizar os exercícios 1, 3, 4, 5 e 6, páginas 133 a 135, sobre localização e orientação.", "prazo": "2026-02-20"}, {"disciplina": "Matemática", "tarefa": "Para: 23/02 Finalizar o exercícios 5, página 24, cálculo mental de adição.", "prazo": "2026-02-23"}, {"disciplina": "História", "tarefa": "Primeiras comunidades humanas – p. 141 e 142 - ex. 1 Para: 24-02", "prazo": "2026-02-24"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 50 - exs. 2 letra A e ex. 3 Para: 25-02", "prazo": "2026-02-25"}, {"disciplina": "Língua Portuguesa", "tarefa": "Para: 26/02 - Estudo da língua - página 51 - exs. 4 e 5", "prazo": "2026-02-26"}, {"disciplina": "Ciências", "tarefa": "Para: 27/02 Realizar os exercícios 1, 2 e 3, páginas 145 e 146, sobre o relógio de sol.", "prazo": "2026-02-27"}, {"disciplina": "Matemática", "tarefa": "Para: 03/03 Realização dos algoritmos em folha avulsa. Lembrete: Dia 04/03 Atividade Avaliativa de Cálculo, não falte!", "prazo": "2026-03-03"}, {"disciplina": "História", "tarefa": "Preparar a leitura para a próxima aula- p. 144 e 145 Para: 03-03", "prazo": "2026-03-03"}, {"disciplina": "Língua Portuguesa", "tarefa": "2) Estudo do texto - páginas 79 e 80 - exs. 3 e 4 Para: 04-03", "prazo": "2026-03-04"}, {"disciplina": "Matemática", "tarefa": "Para: 04/03 Atividade Avaliativa de Matemática, não falte! Algoritmos de adição, subtração e multiplicação.", "prazo": "2026-03-04"}, {"disciplina": "Geografia", "tarefa": "Para: 05/03 - As siglas dos estados – p. 199 – ex. 2 Atenção! Dia 05/03 não falte! Teremos uma atividade avaliativa. Estudar - ATIVIDADE AVALIATIVA Módulo 1 – O lugar onde vivemos – Recordando os municípios p. 163; A zona rural do município p. 165 a 170; O município e seus vizinhos p. 171 e 174. Módulo 2 – O mapa do Brasil – A cartografia p. 176; Um município muito importante: a capital p. 177; Estados e capitais p. 178 a 180; Brasília, a capital do Brasil p. 182. Módulo 3 – As siglas dos estados – Para que servem as siglas p. 194. Estudar a tabela de siglas, estados e capitais.", "prazo": "2026-03-05"}, {"disciplina": "Língua Portuguesa", "tarefa": "Para: 06/03 - Iniciaremos a apostila de Ortografia. Os alunos deverão colorir a capa com capricho e realizar a atividade 1. Esse momento de colorir é muito importante, pois contribui para o desenvolvimento da coordenação motora fina, do controle do traçado e da organização no espaço da folha. Além disso, peço que a apostila seja mantida limpa e bem cuidada, pois será utilizada ao longo de todo o ano.", "prazo": "2026-03-06"}, {"disciplina": "Língua Portuguesa", "tarefa": "Apostila de ortografia- atividade 2. Para: 09-03", "prazo": "2026-03-09"}, {"disciplina": "Matemática", "tarefa": "Para: 10/03 Realizar os algoritmos em folha avulsa.", "prazo": "2026-03-10"}, {"disciplina": "História", "tarefa": "Atividade avaliativa 10-03 Questões descritivas e de múltipla escolha Detetives do passado- p.108 e 109 Explorar documentos- p. 112 e 113 História e cronologia- p. 114 e 115 As primeiras comunidades humanas- p. 122 Os primeiros humanos- p. 123 A vida na Pré-História- p.128 e 129", "prazo": "2026-03-10"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Apostila de Ortografia - Atividade 3 Para: 13-03", "prazo": "2026-03-13"}, {"disciplina": "Ciências", "tarefa": "Para: 13/03 Realizar os exercícios sobre magnetismo, págias 160 a 164.", "prazo": "2026-03-13"}, {"disciplina": "Ciências", "tarefa": "Para: 16/03 Atividade Avaliativa de Ciências! Estudar: Módulo 1: Orientação e localização, pp. 124, 125, 126, 127 Módulo 2: Orientar-se pelo Sol, pp. 137; 142 e 143. Módulo 3: O ímã, o magnetismo e a bússola, pp. 149, 150, 153, 155, 156 e 157", "prazo": "2026-03-16"}, {"disciplina": "Língua Portuguesa", "tarefa": "Atividade avaliativa de interpretação de texto - 17-03 Texto jornalístico: páginas 53 a 59; Revisão disponível no Classroom.", "prazo": "2026-03-17"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – Correção da atividade avaliativa (os alunos receberão uma folha onde deverão realizar a correção dos exercícios que erraram na prova). Para: 19-03", "prazo": "2026-03-19"}, {"disciplina": "Matemática", "tarefa": "Para: 19/03 Entrega da pesquisa sobre a vida e obra de Lygia Clark. Orientações: Em sala, a professora explicou como utilizar as ferramentas de busca e os termos necessários para a pesquisa. Além disso, orientou que o trabalho deve ser escrito com caneta azul (escura) ou preta e sem rasuras.", "prazo": "2026-03-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "Apostila de Ortografia- tarefa 4. Para: 23-03", "prazo": "2026-03-23"}, {"disciplina": "Matemática", "tarefa": "Para: 23/03 Não falte, trabalho avaliativo prático em sala.", "prazo": "2026-03-23"}, {"disciplina": "História", "tarefa": "Não falte, dia 24-03 trabalho avaliativo", "prazo": "2026-03-24"}, {"disciplina": "Matemática", "tarefa": "Para: 25/03 Atividade Avaliativa de Matemática, não falte! Estudar: • Construir e analisar gráficos, págs. 9 a 16. • Sistema de numeração decimal, págs. 36 a 42. • Situações-problema envolvendo adição e subtração • Algoritmo de adição, subtração e multiplicação.", "prazo": "2026-03-25"}, {"disciplina": "Língua Portuguesa", "tarefa": "Páginas 102 e 103 - exs. 1 e 2 Para: 26-03", "prazo": "2026-03-26"}, {"disciplina": "Matemática", "tarefa": "Para: 26/03 Finalizar a pintura das figuras planificadas.", "prazo": "2026-03-26"}, {"disciplina": "Geografia", "tarefa": "Não falte, trabalho avaliativo ( 26-03)", "prazo": "2026-03-26"}, {"disciplina": "Matemática", "tarefa": "Para: 27/03 Estudar as tabuadas (5, 6, 7, 8 e 9).", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "tarefa": "Dia 27-03, iniciaremos a Roda de leitura.", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo da língua - página 103 - ex. 03 Para: 31-03", "prazo": "2026-03-31"}, {"disciplina": "Matemática", "tarefa": "Para: 06/04 Realizar os algoritmos de multiplicação no caderno. Arquivo no Classroom.", "prazo": "2026-04-06"}, {"disciplina": "História", "tarefa": "Realizar as páginas 158 a 160. Para: 07-04 ( realizamos em sala)", "prazo": "2026-04-07"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estude para o Simulado- Revisão no classroom. Para: 09-04 - Roda de leitura: Realize a leitura do seu livro. O aluno deverá pensar em uma forma de apresentar a história para os colegas. As orientações completas para essa atividade estão disponíveis no Google Classroom.", "prazo": "2026-04-09"}, {"disciplina": "Matemática", "tarefa": "Para: 13/04 Segue atividade avaliativa de Matemática para assinar e devolver. Obs. Iniciar os estudos para a Avaliação Tirmestral de Matemática.", "prazo": "2026-04-13"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 32 e 33 - exs. 1,2,3 Para: 17-04", "prazo": "2026-04-17"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Apostila de Ortografia - tarefa 6 2) Estudo da língua - página 34 - exs. 4 e 5 Para: 23-04", "prazo": "2026-04-23"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Estudo da língua - páginas 60 e 61 - exs. 4 e 5 - Para: 05-05 2) (próxima semana) Pesquisa página 54 - Orientações disponíveis no Google Classroom. Neste dia, não falte, pois faremos um trabalho. Para: 11-05 Atenção: Estou enviando hoje a folha da Narizinho Arrebitado que postei dia 27-04 e esqueci de enviar para os alunos. Ela deverá ser entregue dia 11-05, para relembrar a história eles podem rever no classroom na data de 17-03", "prazo": "2026-04-27"}, {"disciplina": "Matemática", "tarefa": "Para: 28/04 Realizar os exercícios 2 e 3, página 19, apostila 2, sobre números naturais.", "prazo": "2026-04-28"}, {"disciplina": "História", "tarefa": "Tarefa de casa- Leitura- Um morro com muita história para contar- p. 123 e 124. Para: 28-04", "prazo": "2026-04-28"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Apostila de Ortografia - Tarefa 7 2) Estudo do texto - páginas 58 e 59 - exs. 1 e 2 Para: 30-04", "prazo": "2026-04-30"}, {"disciplina": "Ciências", "tarefa": "Para: 30/04 1) Realizar os exercícios do \"Em casa\", páginas 129 e 130. 2) Assistir ao vídeo do Manual do Mundo: Como guardar o cheiro das plantas (Classroom).", "prazo": "2026-04-30"}, {"disciplina": "Língua Portuguesa", "tarefa": "(Para: 04-05) Rever a história “Narizinho Arrebitado”, disponibilizada no Google Classroom, e realizar a atividade referente à história em folha avulsa.", "prazo": "2026-05-04"}, {"disciplina": "Projeto de Vida", "tarefa": "Exercício 2 – Página 18 do nosso livro. Para: 04/05", "prazo": "2026-05-04"}, {"disciplina": "Matemática", "tarefa": "Para: 05/05 Realizar os exercícios 2 e 3, página 29, subtração por compensação.", "prazo": "2026-05-05"}, {"disciplina": "História", "tarefa": "Como atividade para casa, os alunos deverão preparar a leitura das páginas 138 a 143 e elaborar 2 perguntas sobre o texto lido Para: 05-05", "prazo": "2026-05-05"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 80 e 81 - exs. 1 e 2 Para: 07-05", "prazo": "2026-05-07"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – A bandeira do Brasil – p. 193 – ex. 1 p. 194 e 195 2 e colorir a bandeira do Brasil da página 175 Para: 07-05", "prazo": "2026-05-07"}, {"disciplina": "Ciências", "tarefa": "Para: 08/05 Realizar o \"Em casa\", páginas 140 e 141, sobre as substâncias produzidas por plantas.", "prazo": "2026-05-08"}, {"disciplina": "Matemática", "tarefa": "Para: 11/05 Realizar os algoritmos de subtração em folha avulsa. Arquivo no Classroom.", "prazo": "2026-05-11"}, {"disciplina": "Matemática", "tarefa": "Para: 12/05 Realizar folha avulsa de sistema de numeração decimal.", "prazo": "2026-05-12"}, {"disciplina": "História", "tarefa": "Realização das atividades 1 e 2 das páginas 150 e 151, que servirão para consolidar o entendimento sobre as primeiras formas de comércio e a busca por metais ou especiarias. Para: 12-05", "prazo": "2026-05-12"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo da língua - páginas 81 e 82 - exs. 3 e 4 Para: 14-05 Não falte, amanhã teremos nossa Olimpíada de Literatura.", "prazo": "2026-05-14"}, {"disciplina": "Ciências", "tarefa": "Para: 14/05 Realizar os exercícios 1, 2, 3 e 4, páginas 152 a 154, fotossíntese.", "prazo": "2026-05-14"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – Divisa do estado de Pará - p. 194 e 195 - ex. 3 e 4 Para: 14-05", "prazo": "2026-05-14"}];
 const DATA_PROVAS  = [{"disciplina": "Língua Portuguesa", "conteudo": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}, {"disciplina": "Matemática", "conteudo": "Para: 03/03 Realização dos algoritmos em folha avulsa. Lembrete: Dia 04/03 Atividade Avaliativa de Cálculo, não falte!", "prazo": "2026-03-03"}, {"disciplina": "Língua Portuguesa", "conteudo": "1) Estudo do texto - páginas 78 e 79 - exs. 1 e 2 Para: 04-03 2) No dia 06/03, não falte! Teremos atividade avaliativa de História em Quadrinhos. Reveja na apostila (págs. 46 e 47) as principais características do gênero e os tipos de balões.", "prazo": "2026-03-04"}, {"disciplina": "Matemática", "conteudo": "Para: 04/03 Atividade Avaliativa de Matemática, não falte! Algoritmos de adição, subtração e multiplicação.", "prazo": "2026-03-04"}, {"disciplina": "Geografia", "conteudo": "Para: 05/03 - As siglas dos estados – p. 199 – ex. 2 Atenção! Dia 05/03 não falte! Teremos uma atividade avaliativa. Estudar - ATIVIDADE AVALIATIVA Módulo 1 – O lugar onde vivemos – Recordando os municípios p. 163; A zona rural do município p. 165 a 170; O município e seus vizinhos p. 171 e 174. Módulo 2 – O mapa do Brasil – A cartografia p. 176; Um município muito importante: a capital p. 177; Estados e capitais p. 178 a 180; Brasília, a capital do Brasil p. 182. Módulo 3 – As siglas dos estados – Para que servem as siglas p. 194. Estudar a tabela de siglas, estados e capitais.", "prazo": "2026-03-05"}, {"disciplina": "Língua Portuguesa", "conteudo": "Apostila de ortografia- atividade 2. Para: 09-03", "prazo": "2026-03-09"}, {"disciplina": "História", "conteudo": "Atividade avaliativa 10-03 Questões descritivas e de múltipla escolha Detetives do passado- p.108 e 109 Explorar documentos- p. 112 e 113 História e cronologia- p. 114 e 115 As primeiras comunidades humanas- p. 122 Os primeiros humanos- p. 123 A vida na Pré-História- p.128 e 129", "prazo": "2026-03-10"}, {"disciplina": "Ciências", "conteudo": "Para: 16/03 Atividade Avaliativa de Ciências! Estudar: Módulo 1: Orientação e localização, pp. 124, 125, 126, 127 Módulo 2: Orientar-se pelo Sol, pp. 137; 142 e 143. Módulo 3: O ímã, o magnetismo e a bússola, pp. 149, 150, 153, 155, 156 e 157", "prazo": "2026-03-16"}, {"disciplina": "Língua Portuguesa", "conteudo": "Atividade avaliativa de interpretação de texto - 17-03 Texto jornalístico: páginas 53 a 59; Revisão disponível no Classroom.", "prazo": "2026-03-17"}, {"disciplina": "Geografia", "conteudo": "Tarefa de casa – Correção da atividade avaliativa (os alunos receberão uma folha onde deverão realizar a correção dos exercícios que erraram na prova). Para: 19-03", "prazo": "2026-03-19"}, {"disciplina": "Matemática", "conteudo": "Para: 23/03 Não falte, trabalho avaliativo prático em sala.", "prazo": "2026-03-23"}, {"disciplina": "Língua Portuguesa", "conteudo": "Atenção: No dia 23/03, não falte! Teremos uma Atividade Avaliativa de Estudo da Língua e Ortografia. Estudar: As classes de palavras: substantivo, artigo e adjetivo: páginas 18 a 23 / 42 / 44 e 67; Concordância nominal: páginas 69 e 70; Ortografia G ou J: página 71. Ortografia do “S”: apostila de ortografia. Atenção! No Classroom, temos várias revisões e jogos que os ajudarão nos estudos.", "prazo": "2026-03-23"}, {"disciplina": "História", "conteudo": "Não falte, dia 24-03 trabalho avaliativo", "prazo": "2026-03-24"}, {"disciplina": "Matemática", "conteudo": "Para: 25/03 Atividade Avaliativa de Matemática, não falte! Estudar: • Construir e analisar gráficos, págs. 9 a 16. • Sistema de numeração decimal, págs. 36 a 42. • Situações-problema envolvendo adição e subtração • Algoritmo de adição, subtração e multiplicação.", "prazo": "2026-03-25"}, {"disciplina": "Matemática", "conteudo": "Para: 26/03 Finalizar a pintura das figuras planificadas.", "prazo": "2026-03-26"}, {"disciplina": "Geografia", "conteudo": "Não falte, trabalho avaliativo ( 26-03)", "prazo": "2026-03-26"}, {"disciplina": "Matemática", "conteudo": "Para: 27/03 Estudar as tabuadas (5, 6, 7, 8 e 9).", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "conteudo": "Dia 27-03, iniciaremos a Roda de leitura.", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "conteudo": "Estude para o Simulado- Revisão no classroom. Para: 09-04 - Roda de leitura: Realize a leitura do seu livro. O aluno deverá pensar em uma forma de apresentar a história para os colegas. As orientações completas para essa atividade estão disponíveis no Google Classroom.", "prazo": "2026-04-09"}, {"disciplina": "Matemática", "conteudo": "Para: 13/04 Segue atividade avaliativa de Matemática para assinar e devolver. Obs. Iniciar os estudos para a Avaliação Tirmestral de Matemática.", "prazo": "2026-04-13"}, {"disciplina": "Língua Portuguesa", "conteudo": "1) Estudo da língua - páginas 60 e 61 - exs. 4 e 5 - Para: 05-05 2) (próxima semana) Pesquisa página 54 - Orientações disponíveis no Google Classroom. Neste dia, não falte, pois faremos um trabalho. Para: 11-05 Atenção: Estou enviando hoje a folha da Narizinho Arrebitado que postei dia 27-04 e esqueci de enviar para os alunos. Ela deverá ser entregue dia 11-05, para relembrar a história eles podem rever no classroom na data de 17-03", "prazo": "2026-04-27"}, {"disciplina": "Língua Portuguesa", "conteudo": "Estudo da língua - páginas 81 e 82 - exs. 3 e 4 Para: 14-05 Não falte, amanhã teremos nossa Olimpíada de Literatura.", "prazo": "2026-05-14"}];
 const DATA_ALERTAS = [{"disciplina": "Língua Portuguesa", "texto": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma a", "prazo": "2026-05-21"}];
-const ATUALIZADO   = "18/05/2026 às 12:55";
+const ATUALIZADO   = "18/05/2026 às 14:53";
 
-// Cores por disciplina
 const CORES = {
-    "matemática":  { color:"#2563EB", bg:"#EFF6FF" },
-    "português":   { color:"#16A34A", bg:"#F0FDF4" },
-    "língua":      { color:"#16A34A", bg:"#F0FDF4" },
-    "história":    { color:"#DC2626", bg:"#FEF2F2" },
-    "geografia":   { color:"#7C3AED", bg:"#F5F3FF" },
-    "ciências":    { color:"#EA580C", bg:"#FFF7ED" },
-    "arte":        { color:"#DB2777", bg:"#FDF2F8" },
-    "física":      { color:"#059669", bg:"#ECFDF5" },
-    "tecnológica": { color:"#4F46E5", bg:"#EEF2FF" },
-    "inglês":      { color:"#0891B2", bg:"#ECFEFF" },
-    "l.e.m":       { color:"#0891B2", bg:"#ECFEFF" },
-    "projeto":     { color:"#B45309", bg:"#FFFBEB" },
+    "matemática":  {c:"#2563EB",b:"#EFF6FF"},
+    "português":   {c:"#16A34A",b:"#F0FDF4"},
+    "língua":      {c:"#16A34A",b:"#F0FDF4"},
+    "história":    {c:"#DC2626",b:"#FEF2F2"},
+    "geografia":   {c:"#7C3AED",b:"#F5F3FF"},
+    "ciências":    {c:"#EA580C",b:"#FFF7ED"},
+    "arte":        {c:"#DB2777",b:"#FDF2F8"},
+    "física":      {c:"#059669",b:"#ECFDF5"},
+    "tecnológica": {c:"#4F46E5",b:"#EEF2FF"},
+    "inglês":      {c:"#0891B2",b:"#ECFEFF"},
+    "l.e.m":       {c:"#0891B2",b:"#ECFEFF"},
+    "projeto":     {c:"#B45309",b:"#FFFBEB"},
 };
 
-function getCor(d) {
-    const dl = (d||"").toLowerCase();
-    for (const [k,v] of Object.entries(CORES)) if (dl.includes(k)) return v;
-    return { color:"#6B7280", bg:"#F9FAFB" };
+function cor(d) {
+    const dl=(d||"").toLowerCase();
+    for(const[k,v] of Object.entries(CORES)) if(dl.includes(k)) return v;
+    return {c:"#71717A",b:"#F4F4F5"};
 }
 
-function nomeCurto(d) {
-    const dl = (d||"").toLowerCase();
-    if (dl.includes("matemática"))  return "Matemática";
-    if (dl.includes("português") || dl.includes("língua")) return "Português";
-    if (dl.includes("história"))    return "História";
-    if (dl.includes("geografia"))   return "Geografia";
-    if (dl.includes("ciências"))    return "Ciências";
-    if (dl.includes("arte"))        return "Arte";
-    if (dl.includes("física"))      return "Ed. Física";
-    if (dl.includes("tecnológica")) return "Tecnologia";
-    if (dl.includes("inglês") || dl.includes("l.e.m")) return "Inglês";
-    if (dl.includes("projeto"))     return "Proj. Vida";
+function nome(d) {
+    const dl=(d||"").toLowerCase();
+    if(dl.includes("matemática"))  return "Matemática";
+    if(dl.includes("português")||dl.includes("língua")) return "Português";
+    if(dl.includes("história"))    return "História";
+    if(dl.includes("geografia"))   return "Geografia";
+    if(dl.includes("ciências"))    return "Ciências";
+    if(dl.includes("arte"))        return "Arte";
+    if(dl.includes("física"))      return "Ed. Física";
+    if(dl.includes("tecnológica")) return "Tecnologia";
+    if(dl.includes("inglês")||dl.includes("l.e.m")) return "Inglês";
+    if(dl.includes("projeto"))     return "Proj. Vida";
     return d.split(" ")[0];
 }
 
-function diffDias(prazo) {
-    const p = new Date(prazo+"T12:00:00");
-    const h = new Date(); h.setHours(0,0,0,0);
-    return Math.round((p-h)/86400000);
+function diff(p){const d=new Date(p+"T12:00:00"),h=new Date();h.setHours(0,0,0,0);return Math.round((d-h)/86400000);}
+
+function urg(d){
+    if(d===0) return{l:"🔴 Hoje",   c:"#EF4444"};
+    if(d===1) return{l:"🟠 Amanhã", c:"#F97316"};
+    if(d<=3)  return{l:`🟡 ${d}d`,  c:"#EAB308"};
+    if(d<=7)  return{l:`🟢 ${d}d`,  c:"#22C55E"};
+    return        {l:`🔵 ${d}d`,  c:"#3B82F6"};
 }
 
-function urgTag(diff) {
-    if (diff === 0)  return { label:"🔴 Hoje",        color:"#DC2626" };
-    if (diff === 1)  return { label:"🟠 Amanhã",      color:"#D97706" };
-    if (diff <= 3)   return { label:`🟡 ${diff} dias`, color:"#D97706" };
-    if (diff <= 7)   return { label:`🟢 ${diff} dias`, color:"#16A34A" };
-    return               { label:`🔵 ${diff} dias`, color:"#2563EB" };
-}
+function dstr(p){const d=new Date(p+"T12:00:00");return["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d.getDay()]+", "+d.toLocaleDateString("pt-BR");}
 
-function dataStr(prazo) {
-    const d  = new Date(prazo+"T12:00:00");
-    const ds = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d.getDay()];
-    return `${ds}, ${d.toLocaleDateString("pt-BR")}`;
-}
+function clean(t){return(t||"").replace(/^[-•\s]+/,"").replace(/\s+/g," ").trim();}
 
-function limpar(t) {
-    return (t||"").replace(/^[-•\s]+/,"").replace(/\s+/g," ").trim();
-}
+let aba="proximas", view="lista", filtro="Todos", calM=new Date().getMonth(), calY=new Date().getFullYear(), aIdx=0;
 
-// Estado
-let abaAtiva    = "proximas";
-let viewAtiva   = "lista";
-let filtroAtivo = "Todos";
-let calMes      = new Date().getMonth();
-let calAno      = new Date().getFullYear();
-
-// Init
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("update-time").textContent = ATUALIZADO;
-
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
-    const licFut  = DATA_LICOES.filter(i => diffDias(i.prazo) >= 0);
-    const provFut = DATA_PROVAS.filter(i => diffDias(i.prazo) >= 0);
-    const licHist = DATA_LICOES.filter(i => diffDias(i.prazo) < 0);
-    const provHist= DATA_PROVAS.filter(i => diffDias(i.prazo) < 0);
-
-    document.getElementById("pill-prox").textContent = licFut.length + provFut.length;
-    document.getElementById("pill-hist").textContent = licHist.length + provHist.length;
-    document.getElementById("count-lic").textContent  = licFut.length + " pendente(s)";
-    document.getElementById("count-prov").textContent = provFut.length + " pendente(s)";
-
-    renderSummary(licFut, provFut);
+document.addEventListener("DOMContentLoaded",()=>{
+    document.getElementById("ftxt").textContent=`pallusm.github.io/4a-provas · ${ATUALIZADO}`;
+    const lF=DATA_LICOES.filter(i=>diff(i.prazo)>=0);
+    const pF=DATA_PROVAS.filter(i=>diff(i.prazo)>=0);
+    const lH=DATA_LICOES.filter(i=>diff(i.prazo)<0);
+    const pH=DATA_PROVAS.filter(i=>diff(i.prazo)<0);
+    document.getElementById("pill-prox").textContent=lF.length+pF.length;
+    document.getElementById("pill-hist").textContent=lH.length+pH.length;
+    renderSum(lF,pF);
     renderAlertas();
-    renderCards("cards-licoes",  licFut,  false);
-    renderCards("cards-provas",  provFut, true);
-    renderCards("hist-cards-licoes",  licHist,  false, true);
-    renderCards("hist-cards-provas",  provHist, true,  true);
-    renderFiltros(licFut, provFut);
-    renderCal("cal-licoes", licFut);
-    renderCal("cal-provas", provFut);
+    renderFiltros(lF,pF);
+    applyFiltro();
+    renderCards("h-lic",lH,false,true);
+    renderCards("h-prov",pH,true,true);
 });
 
-function renderSummary(licFut, provFut) {
-    const todos  = [...licFut, ...provFut];
-    const nHoje  = todos.filter(i => diffDias(i.prazo) === 0).length;
-    const nAmanha= todos.filter(i => diffDias(i.prazo) === 1).length;
-    const nSemana= todos.filter(i => diffDias(i.prazo) <= 7 && diffDias(i.prazo) >= 0).length;
-    const nAlert = DATA_ALERTAS.length;
-
-    document.getElementById("summary-bar").innerHTML = `
-        ${nAlert > 0 ? `<div class="sum-chip"><span class="sum-dot" style="background:#FCA5A5"></span>⚠️ ${nAlert} alerta(s)</div>` : ""}
-        <div class="sum-chip"><span class="sum-dot" style="background:#FCA5A5"></span>Hoje: <b>${nHoje}</b></div>
-        <div class="sum-chip"><span class="sum-dot" style="background:#FCD34D"></span>Amanhã: <b>${nAmanha}</b></div>
-        <div class="sum-chip"><span class="sum-dot" style="background:#93C5FD"></span>Semana: <b>${nSemana}</b></div>
-        <div class="sum-chip" style="margin-left:auto"><span style="opacity:.7">${licFut.length} lições · ${provFut.length} provas</span></div>
-    `;
+function renderSum(lF,pF){
+    const all=[...lF,...pF];
+    const nH=all.filter(i=>diff(i.prazo)===0).length;
+    const nA=all.filter(i=>diff(i.prazo)===1).length;
+    const nS=all.filter(i=>diff(i.prazo)>=0&&diff(i.prazo)<=7).length;
+    document.getElementById("summary-bar").innerHTML=`
+        ${DATA_ALERTAS.length?`<div class="sum-chip"><span class="sum-dot" style="background:#EF4444"></span>⚠️ <b>${DATA_ALERTAS.length}</b> aviso(s)</div>`:""}
+        <div class="sum-chip"><span class="sum-dot" style="background:#EF4444"></span>Hoje <b>${nH}</b></div>
+        <div class="sum-chip"><span class="sum-dot" style="background:#F97316"></span>Amanhã <b>${nA}</b></div>
+        <div class="sum-chip"><span class="sum-dot" style="background:#3B82F6"></span>Semana <b>${nS}</b></div>
+        <div class="sum-chip" style="margin-left:auto;opacity:.6">${lF.length} lições · ${pF.length} provas</div>`;
 }
 
-function renderAlertas() {
-    const sec = document.getElementById("alertas-section");
-    if (!DATA_ALERTAS.length) { sec.innerHTML = ""; return; }
-
-    sec.innerHTML = `
-        <div class="section-header"><span class="section-title" style="color:#DC2626">⚠️ Atenção</span><span class="section-count" style="color:#DC2626">${DATA_ALERTAS.length} aviso(s)</span></div>
-        <div class="alert-wrapper">
-            <div class="alert-carousel">
-                <div class="alert-track" id="alert-track">
-                    ${DATA_ALERTAS.map(a => `
-                    <div class="alert-card">
-                        <div class="alert-icon">🚨</div>
-                        <div class="alert-body">
-                            <div class="alert-label">Aviso importante</div>
-                            <div class="alert-disc">${nomeCurto(a.disciplina)}</div>
-                            <div class="alert-text">${limpar(a.texto)}</div>
-                            ${a.prazo ? `<div class="alert-date">📅 ${dataStr(a.prazo)}</div>` : ""}
-                        </div>
-                    </div>`).join("")}
-                </div>
+function renderAlertas(){
+    const s=document.getElementById("alertas-sec");
+    if(!DATA_ALERTAS.length){s.innerHTML="";return;}
+    s.innerHTML=`
+        <div class="sec-label" style="margin-top:4px">
+            <span class="sec-title" style="color:var(--red)">⚠️ Atenção</span>
+            <span class="sec-count" style="color:var(--red)">${DATA_ALERTAS.length} aviso(s)</span>
+        </div>
+        <div class="alert-carousel">
+            <div class="alert-track" id="atrack">
+                ${DATA_ALERTAS.map(a=>`
+                <div class="alert-card">
+                    <div class="alert-icon">🚨</div>
+                    <div class="alert-body">
+                        <div class="alert-lbl">Aviso importante</div>
+                        <div class="alert-disc">${nome(a.disciplina)}</div>
+                        <div class="alert-txt">${clean(a.texto)}</div>
+                        ${a.prazo?`<div class="alert-date">📅 ${dstr(a.prazo)}</div>`:""}
+                    </div>
+                </div>`).join("")}
             </div>
-            <div class="alert-footer">
-                <div class="alert-dots" id="alert-dots">
-                    ${DATA_ALERTAS.map((_,i) => `<div class="alert-dot${i===0?" active":""}" onclick="irAlerta(${i})"></div>`).join("")}
-                </div>
-                <div class="alert-btns">
-                    <button class="alert-nav-btn" id="alert-prev" onclick="navAlerta(-1)" disabled>‹</button>
-                    <button class="alert-nav-btn" id="alert-next" onclick="navAlerta(1)" ${DATA_ALERTAS.length<=1?"disabled":""}>›</button>
-                    <button class="alert-close-btn" onclick="fecharAlertas()">Fechar todos ✕</button>
-                </div>
+        </div>
+        <div class="alert-footer">
+            <div class="alert-dots">${DATA_ALERTAS.map((_,i)=>`<div class="a-dot${i===0?" on":""}" onclick="goAlert(${i})"></div>`).join("")}</div>
+            <div class="alert-ctrls">
+                <button class="a-nav" id="aprev" onclick="goAlert(aIdx-1)" disabled>‹</button>
+                <button class="a-nav" id="anext" onclick="goAlert(aIdx+1)" ${DATA_ALERTAS.length<=1?"disabled":""}>›</button>
+                <button class="a-close" onclick="closeAlerts()">Fechar ✕</button>
             </div>
         </div>`;
 }
 
-let alertaAtual = 0;
-
-function navAlerta(dir) {
-    irAlerta(alertaAtual + dir);
+function goAlert(i){
+    const n=DATA_ALERTAS.length;
+    aIdx=Math.max(0,Math.min(i,n-1));
+    const t=document.getElementById("atrack");
+    if(t) t.style.transform=`translateX(-${aIdx*100}%)`;
+    document.querySelectorAll(".a-dot").forEach((d,j)=>d.classList.toggle("on",j===aIdx));
+    const p=document.getElementById("aprev"),nx=document.getElementById("anext");
+    if(p) p.disabled=aIdx===0;
+    if(nx) nx.disabled=aIdx===n-1;
 }
 
-function irAlerta(idx) {
-    const total = DATA_ALERTAS.length;
-    alertaAtual = Math.max(0, Math.min(idx, total - 1));
-    const track = document.getElementById("alert-track");
-    if (track) track.style.transform = `translateX(-${alertaAtual * 100}%)`;
-    document.querySelectorAll(".alert-dot").forEach((d,i) => d.classList.toggle("active", i===alertaAtual));
-    const prev = document.getElementById("alert-prev");
-    const next = document.getElementById("alert-next");
-    if (prev) prev.disabled = alertaAtual === 0;
-    if (next) next.disabled = alertaAtual === total - 1;
+function closeAlerts(){
+    const s=document.getElementById("alertas-sec");
+    if(s){s.style.transition="opacity 0.25s";s.style.opacity="0";setTimeout(()=>s.style.display="none",250);}
 }
 
-function fecharAlertas() {
-    const sec = document.getElementById("alertas-section");
-    if (sec) { sec.style.transition = "opacity 0.3s"; sec.style.opacity = "0"; setTimeout(() => sec.style.display="none", 300); }
-}
-
-function renderCards(containerId, itens, isProva, isHistory=false) {
-    const c = document.getElementById(containerId);
-    if (!c) return;
-    if (!itens.length) {
-        c.innerHTML = `<div class="empty"><div class="empty-icon">${isHistory ? "📂" : "✅"}</div><p>${isHistory ? "Nenhum registro anterior." : "Tudo em dia!"}</p></div>`;
-        return;
-    }
-    c.innerHTML = itens.map(item => {
-        const cor   = getCor(item.disciplina);
-        const texto = limpar(item.tarefa || item.conteudo || "");
-        const diff  = diffDias(item.prazo);
-        const urg   = urgTag(diff);
-        const nome  = nomeCurto(item.disciplina);
-        return `
-        <div class="card${isProva?" prova":""}${isHistory?" history":""}\" style="--disc-color:${cor.color}">
-            <div class="card-top">
-                <div class="card-tags">
-                    <span class="disc-tag" style="background:${cor.bg};color:${cor.color}">${nome}</span>
-                    ${isProva ? '<span class="tipo-tag">📝 Avaliação</span>' : ""}
-                </div>
-                ${!isHistory ? `<span class="urg-tag" style="color:${urg.color}">${urg.label}</span>` : ""}
-            </div>
-            <div class="card-date">${dataStr(item.prazo)}</div>
-            <div class="card-text">${texto}</div>
-        </div>`;
+// Filtros — sempre visíveis, só muda o estilo do chip ativo
+function renderFiltros(lF,pF){
+    const all=[...lF,...pF];
+    const discs=[...new Set(all.map(i=>nome(i.disciplina)))];
+    const c=document.getElementById("filtros");
+    c.innerHTML=["Todos",...discs].map(d=>{
+        const isTodos=d==="Todos";
+        const on=d===filtro;
+        const v=isTodos?null:cor(d);
+        const style=v
+            ?`border-color:${on?v.c:"var(--border)"};color:${on?v.c:"var(--muted)"};background:${on?v.b:"var(--surface)"}`
+            :`border-color:${on?"var(--school)":"var(--border)"};color:${on?"var(--school)":"var(--muted)"};background:${on?"#EEF2FF":"var(--surface)"}`;
+        return `<button class="f-chip${on?" on":""}" style="${style}" onclick="setFiltro('${d}')">
+            ${v?`<span class="cdot" style="background:${v.c}"></span>`:""}${d}
+        </button>`;
     }).join("");
 }
 
-function renderFiltros(licFut, provFut) {
-    const todos = [...(licFut||[]), ...(provFut||[])];
-    const discs = [...new Set(todos.map(i => nomeCurto(i.disciplina)))];
-    const c = document.getElementById("filtros");
-    c.innerHTML = ["Todos", ...discs].map(d => {
-        const cor    = d === "Todos" ? null : getCor(d);
-        const isAtivo = d === filtroAtivo;
-        let style = "";
-        let cls   = "filter-btn";
-        if (d === "Todos") {
-            style = isAtivo ? "background:var(--school);border-color:var(--school);color:white" : "border-color:var(--school);color:var(--school)";
-        } else if (cor) {
-            style = isAtivo
-                ? `background:${cor.color};border-color:${cor.color};color:white`
-                : `border-color:${cor.color};color:${cor.color}`;
+function setFiltro(d){
+    filtro=d;
+    const lF=DATA_LICOES.filter(i=>diff(i.prazo)>=0);
+    const pF=DATA_PROVAS.filter(i=>diff(i.prazo)>=0);
+    // Atualiza chips sem recriar (só o estilo)
+    document.querySelectorAll(".f-chip").forEach(btn=>{
+        const lbl=btn.textContent.trim();
+        const on=lbl===d;
+        btn.classList.toggle("on",on);
+        const v=lbl==="Todos"?null:cor(lbl);
+        if(v){
+            btn.style.borderColor=on?v.c:"var(--border)";
+            btn.style.color=on?v.c:"var(--muted)";
+            btn.style.background=on?v.b:"var(--surface)";
+        } else {
+            btn.style.borderColor=on?"var(--school)":"var(--border)";
+            btn.style.color=on?"var(--school)":"var(--muted)";
+            btn.style.background=on?"#EEF2FF":"var(--surface)";
         }
-        return `<button class="${cls}" style="${style}" onclick="filtrar('${d}')">${d}</button>`;
+    });
+    applyFiltro();
+}
+
+function applyFiltro(){
+    const lF=DATA_LICOES.filter(i=>diff(i.prazo)>=0);
+    const pF=DATA_PROVAS.filter(i=>diff(i.prazo)>=0);
+    const f=items=>filtro==="Todos"?items:items.filter(i=>nome(i.disciplina)===filtro);
+    const lFiltered=f(lF), pFiltered=f(pF);
+    document.getElementById("cnt-lic").textContent=lFiltered.length+" item(s)";
+    document.getElementById("cnt-prov").textContent=pFiltered.length+" item(s)";
+    renderCards("cards-lic",lFiltered,false);
+    renderCards("cards-prov",pFiltered,true);
+    renderCal("cal-lic",lFiltered);
+    renderCal("cal-prov",pFiltered);
+}
+
+function renderCards(id,itens,isP,isH=false){
+    const c=document.getElementById(id);if(!c)return;
+    if(!itens.length){c.innerHTML=`<div class="empty"><div class="empty-icon">${isH?"📂":"✅"}</div><p>${isH?"Sem registros.":"Tudo em dia!"}</p></div>`;return;}
+    c.innerHTML=itens.map(item=>{
+        const v=cor(item.disciplina),txt=clean(item.tarefa||item.conteudo||""),d=diff(item.prazo),u=urg(d),n=nome(item.disciplina);
+        return `<div class="card${isP?" prova":""}${isH?" hist":""}" style="--disc-color:${v.c}">
+            <div class="card-top">
+                <div class="card-left">
+                    <span class="disc-tag" style="background:${v.b};color:${v.c}">${n}</span>
+                    ${isP?'<span class="tipo-tag">Avaliação</span>':""}
+                </div>
+                ${!isH?`<span class="urg-tag" style="color:${u.c}">${u.l}</span>`:""}
+            </div>
+            <div class="card-date">${dstr(item.prazo)}</div>
+            <div class="card-text">${txt}</div>
+        </div>`;
     }).join("");
 }
 
-function filtrar(d) {
-    filtroAtivo = d;
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
-    const licFut  = DATA_LICOES.filter(i => diffDias(i.prazo) >= 0 && (d==="Todos"||nomeCurto(i.disciplina)===d));
-    const provFut = DATA_PROVAS.filter(i => diffDias(i.prazo) >= 0 && (d==="Todos"||nomeCurto(i.disciplina)===d));
-    renderCards("cards-licoes", licFut, false);
-    renderCards("cards-provas", provFut, true);
-    renderFiltros(licFut, provFut);
-    renderCal("cal-licoes", licFut);
-    renderCal("cal-provas", provFut);
-    document.getElementById("count-lic").textContent  = licFut.length  + " pendente(s)";
-    document.getElementById("count-prov").textContent = provFut.length + " pendente(s)";
-}
-
-// Calendário
-function renderCal(id, itens) {
-    const c = document.getElementById(id);
-    if (!c) return;
-    const porData = {};
-    itens.forEach(i => { if(!porData[i.prazo]) porData[i.prazo]=[]; porData[i.prazo].push(i); });
-
-    const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-    const dias  = ["D","S","T","Q","Q","S","S"];
-    const hoje  = new Date();
-    const primeiro = new Date(calAno, calMes, 1);
-    const inicio   = new Date(primeiro);
-    inicio.setDate(1 - primeiro.getDay());
-
-    let html = `
-    <div class="cal-header">
-        <button class="cal-nav" onclick="navMes(-1,'${id}',${JSON.stringify(itens).replace(/"/g,"&quot;")})">‹</button>
-        <span class="cal-month">${meses[calMes]} ${calAno}</span>
-        <button class="cal-nav" onclick="navMes(1,'${id}',${JSON.stringify(itens).replace(/"/g,"&quot;")})">›</button>
-    </div>
-    <div class="cal-grid">
-        ${dias.map(d=>`<div class="cal-dow">${d}</div>`).join("")}`;
-
-    const cur = new Date(inicio);
-    for (let w=0; w<6; w++) {
-        for (let d=0; d<7; d++) {
-            const same  = cur.getMonth() === calMes;
-            const today = cur.toDateString() === hoje.toDateString();
-            const key   = cur.toISOString().split("T")[0];
-            const items = porData[key]||[];
-            const has   = items.length > 0;
-
-            let cls = "cal-day";
-            if (!same) cls += " empty";
-            if (today) cls += " today";
-            if (has)   cls += " has-items";
-
-            const click = has ? `onclick="abrirDrawer('${key}',${JSON.stringify(items).replace(/"/g,"&quot;")})"` : "";
-            const dots  = items.slice(0,4).map(i=>`<span class="cal-dot" style="background:${getCor(i.disciplina).color}"></span>`).join("");
-
-            html += `<div class="${cls}" ${click}>
-                ${same ? `<div class="cal-num">${cur.getDate()}</div>` : ""}
-                ${same && has ? `<div class="cal-dots">${dots}</div>` : ""}
-            </div>`;
+function renderCal(id,itens){
+    const c=document.getElementById(id);if(!c)return;
+    const pd={};itens.forEach(i=>{if(!pd[i.prazo])pd[i.prazo]=[];pd[i.prazo].push(i);});
+    const M=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const D=["D","S","T","Q","Q","S","S"];
+    const hoje=new Date(),p1=new Date(calY,calM,1),ini=new Date(p1);
+    ini.setDate(1-p1.getDay());
+    let h=`<div class="cal-header">
+        <button class="cal-nav" onclick="navMes(-1,'${id}')">‹</button>
+        <span class="cal-month">${M[calM]} ${calY}</span>
+        <button class="cal-nav" onclick="navMes(1,'${id}')">›</button>
+    </div><div class="cal-grid">${D.map(d=>`<div class="cal-dow">${d}</div>`).join("")}`;
+    const cur=new Date(ini);
+    for(let w=0;w<6;w++){
+        for(let d=0;d<7;d++){
+            const same=cur.getMonth()===calM,today=cur.toDateString()===hoje.toDateString();
+            const key=cur.toISOString().split("T")[0],items=pd[key]||[];
+            let cls="cal-day"+(!same?" empty":"")+(today?" today":"")+(items.length?" clickable":"");
+            const clk=items.length?`onclick="openDrawer('${key}',${JSON.stringify(items).replace(/"/g,"&quot;")})"` :"";
+            const dots=items.slice(0,4).map(i=>`<span class="cal-dot" style="background:${cor(i.disciplina).c}"></span>`).join("");
+            h+=`<div class="${cls}" ${clk}>${same?`<div class="cal-num">${cur.getDate()}</div>`:""} ${same&&items.length?`<div class="cal-dots">${dots}</div>`:""}</div>`;
             cur.setDate(cur.getDate()+1);
         }
-        if (cur.getMonth()!==calMes && w>=3) break;
+        if(cur.getMonth()!==calM&&w>=3)break;
     }
-
-    c.innerHTML = html + "</div>";
+    c.innerHTML=h+"</div>";
 }
 
-function navMes(dir, id, itens) {
-    calMes += dir;
-    if (calMes>11){calMes=0;calAno++;}
-    if (calMes<0) {calMes=11;calAno--;}
-    renderCal(id, itens);
+function navMes(dir,id){
+    calM+=dir;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}
+    applyFiltro();
 }
 
-function abrirDrawer(key, itens) {
-    const d    = new Date(key+"T12:00:00");
-    const dias = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
-    const mes  = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][d.getMonth()];
-    document.getElementById("drawer-date").textContent = `${dias[d.getDay()]}, ${d.getDate()} de ${mes}`;
-    document.getElementById("drawer-content").innerHTML = itens.map(item => {
-        const cor = getCor(item.disciplina);
-        const isProva = !!item.conteudo;
-        return `<div class="card${isProva?" prova":""}" style="--disc-color:${cor.color};margin-bottom:8px">
-            <div class="card-tags" style="margin-bottom:8px">
-                <span class="disc-tag" style="background:${cor.bg};color:${cor.color}">${nomeCurto(item.disciplina)}</span>
-                ${isProva?'<span class="tipo-tag">📝 Avaliação</span>':""}
+function openDrawer(key,itens){
+    const d=new Date(key+"T12:00:00");
+    const dias=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+    const mes=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][d.getMonth()];
+    document.getElementById("drw-date").textContent=`${dias[d.getDay()]}, ${d.getDate()} de ${mes}`;
+    document.getElementById("drw-content").innerHTML=itens.map(item=>{
+        const v=cor(item.disciplina),isP=!!item.conteudo;
+        return `<div class="card${isP?" prova":""}" style="--disc-color:${v.c};margin-bottom:6px">
+            <div class="card-left" style="margin-bottom:6px">
+                <span class="disc-tag" style="background:${v.b};color:${v.c}">${nome(item.disciplina)}</span>
+                ${isP?'<span class="tipo-tag">Avaliação</span>':""}
             </div>
-            <div class="card-text">${limpar(item.tarefa||item.conteudo||"")}</div>
+            <div class="card-text">${clean(item.tarefa||item.conteudo||"")}</div>
         </div>`;
     }).join("");
     document.getElementById("overlay").classList.add("open");
 }
 
-function fecharDrawer(e) {
-    if (e.target===document.getElementById("overlay"))
-        document.getElementById("overlay").classList.remove("open");
-}
+function closeDrawer(e){if(e.target===document.getElementById("overlay"))document.getElementById("overlay").classList.remove("open");}
 
-function trocarAba(nome, btn) {
-    abaAtiva = nome;
+function trocarAba(n,btn){
+    aba=n;filtro="Todos";
     document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
     document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-    document.getElementById("tab-"+nome).classList.add("active");
+    document.getElementById("tab-"+n).classList.add("active");
     btn.classList.add("active");
 }
 
-function trocarView(v) {
-    viewAtiva = v;
-    document.getElementById("btn-lista").classList.toggle("active", v==="lista");
-    document.getElementById("btn-cal").classList.toggle("active",   v==="cal");
-    ["licoes","provas"].forEach(a => {
-        const cards = document.getElementById("cards-"+a);
-        const cal   = document.getElementById("cal-"+a);
-        if(cards) cards.style.display = v==="lista"?"grid":"none";
-        if(cal)   cal.classList.toggle("active-view", v==="cal");
+function trocarView(v){
+    view=v;
+    document.getElementById("btn-lista").classList.toggle("active",v==="lista");
+    document.getElementById("btn-cal").classList.toggle("active",v==="cal");
+    ["lic","prov"].forEach(a=>{
+        const cg=document.getElementById("cards-"+a),cv=document.getElementById("cal-"+a);
+        if(cg)cg.style.display=v==="lista"?"grid":"none";
+        if(cv)cv.classList.toggle("on",v==="cal");
     });
 }
 
-function toggleHistorico(id) {
-    const sec   = document.getElementById(id);
-    const arrow = document.getElementById("arrow-"+id);
-    sec.classList.toggle("open");
-    arrow.classList.toggle("open");
+function toggleH(id){
+    document.getElementById(id).classList.toggle("open");
+    document.getElementById("arr-"+id).classList.toggle("open");
 }
 
-function compartilhar() {
-    const url = "https://pallusm.github.io/4a-provas";
-    const msg = `📚 *4°A — Eduardo Gomes*\nConfira lições e provas da turma:\n${url}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+function compartilhar(){
+    const msg="📚 *4°A — Eduardo Gomes*\nLições e provas da turma:\nhttps://pallusm.github.io/4a-provas";
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
 }
 </script>
 </body>
