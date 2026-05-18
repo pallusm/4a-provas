@@ -4,28 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4°A — Eduardo Gomes</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg:        #F5F3EE;
-            --surface:   #FFFFFF;
-            --border:    #E8E4DC;
-            --text:      #1C1917;
-            --muted:     #78716C;
-            --accent:    #D97706;
-
-            /* Cores por disciplina */
-            --mat:   #2563EB; --mat-bg:   #EFF6FF;
-            --por:   #16A34A; --por-bg:   #F0FDF4;
-            --his:   #DC2626; --his-bg:   #FEF2F2;
-            --geo:   #7C3AED; --geo-bg:   #F5F3FF;
-            --ing:   #0891B2; --ing-bg:   #ECFEFF;
-            --cie:   #EA580C; --cie-bg:   #FFF7ED;
-            --art:   #DB2777; --art-bg:   #FDF2F8;
-            --edf:   #059669; --edf-bg:   #ECFDF5;
-            --tec:   #4F46E5; --tec-bg:   #EEF2FF;
-            --pro:   #B45309; --pro-bg:   #FFFBEB;
-            --out:   #6B7280; --out-bg:   #F9FAFB;
+            --school:  #1A3A6B;   /* azul escuro do colégio */
+            --school2: #142F58;
+            --bg:      #F2F4F8;
+            --surface: #FFFFFF;
+            --border:  #E2E6EF;
+            --text:    #111827;
+            --muted:   #6B7280;
+            --accent:  #F59E0B;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,53 +28,83 @@
 
         /* ── Header ─────────────────────────────────────────────────────── */
         header {
-            background: var(--text);
+            background: var(--school);
             color: white;
             padding: 20px 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 12px rgba(26,58,107,0.3);
         }
 
         .header-top {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
+            gap: 12px;
         }
 
         .school-name {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         header h1 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.25;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            flex-shrink: 0;
         }
 
         .update-time {
             font-family: 'DM Mono', monospace;
-            font-size: 11px;
+            font-size: 10px;
             color: rgba(255,255,255,0.4);
-            text-align: right;
             white-space: nowrap;
         }
+
+        .share-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        .share-btn:hover { opacity: 0.9; }
 
         /* ── Abas ───────────────────────────────────────────────────────── */
         .tabs {
             display: flex;
             gap: 2px;
-            margin-top: 16px;
+            margin-top: 14px;
         }
 
         .tab-btn {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.55);
             border: none;
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 8px 8px 0 0;
             font-family: 'DM Sans', sans-serif;
             font-size: 14px;
@@ -94,7 +113,7 @@
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
         }
 
         .tab-btn.active {
@@ -117,11 +136,41 @@
             background: rgba(255,255,255,0.2);
         }
 
+        /* ── Barra de resumo ────────────────────────────────────────────── */
+        .summary-bar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        .summary-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .summary-item strong { color: var(--text); }
+
         /* ── Controles ──────────────────────────────────────────────────── */
         .controls {
             background: var(--surface);
             border-bottom: 1px solid var(--border);
-            padding: 12px 16px;
+            padding: 10px 16px;
             display: flex;
             gap: 8px;
             align-items: center;
@@ -134,12 +183,13 @@
             border-radius: 8px;
             padding: 3px;
             gap: 2px;
+            flex-shrink: 0;
         }
 
         .view-btn {
             background: none;
             border: none;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 6px;
             font-family: 'DM Sans', sans-serif;
             font-size: 13px;
@@ -165,7 +215,7 @@
         .filter-btn {
             border: 1.5px solid var(--border);
             background: var(--surface);
-            padding: 5px 12px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-family: 'DM Sans', sans-serif;
             font-size: 12px;
@@ -176,8 +226,13 @@
             white-space: nowrap;
         }
 
-        .filter-btn.active {
-            border-color: currentColor;
+        .filter-btn.todos-active {
+            background: var(--school);
+            border-color: var(--school);
+            color: white;
+        }
+
+        .filter-btn.disc-active {
             color: white;
         }
 
@@ -199,13 +254,24 @@
             border-radius: 12px;
             padding: 14px 16px;
             border: 1px solid var(--border);
-            border-left: 4px solid var(--disc-color, #cbd5e0);
+            border-left: 4px solid var(--disc-color, #CBD5E0);
             transition: transform 0.15s, box-shadow 0.15s;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .card:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card.prova-card {
+            border-left-width: 4px;
+            background: linear-gradient(to right, rgba(220,38,38,0.03), white);
         }
 
         .card-top {
@@ -216,16 +282,29 @@
             gap: 8px;
         }
 
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .disc-tag {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
             padding: 3px 10px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 700;
-            background: var(--disc-bg);
-            color: var(--disc-color);
+        }
+
+        .tipo-tag {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: #FEF2F2;
+            color: #DC2626;
         }
 
         .urgency-tag {
@@ -236,22 +315,35 @@
             align-items: center;
             gap: 4px;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .urgency-tag.urgent { color: #DC2626; }
-        .urgency-tag.soon   { color: #D97706; }
+        .urgency-tag.hoje   { color: #DC2626; }
+        .urgency-tag.amanha { color: #D97706; }
+        .urgency-tag.breve  { color: #D97706; }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
 
         .card-date {
             font-family: 'DM Mono', monospace;
             font-size: 11px;
             color: var(--muted);
-            margin-bottom: 6px;
         }
 
         .card-text {
             font-size: 13px;
-            line-height: 1.65;
-            color: #44403C;
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .card-text strong {
+            color: var(--text);
+            font-weight: 600;
         }
 
         /* ── Calendário ─────────────────────────────────────────────────── */
@@ -262,16 +354,16 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .cal-nav {
-            background: none;
+            background: var(--surface);
             border: 1px solid var(--border);
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -280,7 +372,11 @@
             transition: all 0.15s;
         }
 
-        .cal-nav:hover { background: var(--border); color: var(--text); }
+        .cal-nav:hover {
+            background: var(--school);
+            border-color: var(--school);
+            color: white;
+        }
 
         .cal-month {
             font-size: 16px;
@@ -295,28 +391,43 @@
 
         .cal-dow {
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--muted);
             padding: 4px 0 8px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
         }
 
         .cal-day {
-            min-height: 64px;
+            min-height: 70px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 6px;
-            cursor: default;
             transition: all 0.15s;
+            position: relative;
         }
 
-        .cal-day.other-month { background: transparent; border-color: transparent; }
-        .cal-day.today { border-color: var(--accent); border-width: 2px; }
-        .cal-day.has-items { cursor: pointer; }
-        .cal-day.has-items:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-1px); }
+        .cal-day.other-month {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        .cal-day.today {
+            border-color: var(--school);
+            border-width: 2px;
+        }
+
+        .cal-day.has-items {
+            cursor: pointer;
+        }
+
+        .cal-day.has-items:hover {
+            box-shadow: 0 4px 12px rgba(26,58,107,0.15);
+            transform: translateY(-1px);
+            border-color: var(--school);
+        }
 
         .cal-day-num {
             font-size: 12px;
@@ -326,22 +437,15 @@
         }
 
         .cal-day.today .cal-day-num {
-            color: var(--accent);
-        }
-
-        .cal-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 1px;
+            color: var(--school);
+            font-weight: 700;
         }
 
         .cal-event-mini {
             font-size: 9px;
-            font-weight: 600;
-            padding: 1px 4px;
-            border-radius: 3px;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 4px;
             margin: 1px 0;
             white-space: nowrap;
             overflow: hidden;
@@ -355,22 +459,29 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.45);
             z-index: 100;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
+            align-items: flex-end;
+            justify-content: center;
         }
 
-        .drawer-overlay.open { display: flex; align-items: flex-end; }
+        .drawer-overlay.open { display: flex; }
 
         .drawer {
             background: var(--surface);
             border-radius: 20px 20px 0 0;
-            padding: 20px;
+            padding: 16px 20px 32px;
             width: 100%;
             max-width: 640px;
-            margin: 0 auto;
             max-height: 80vh;
             overflow-y: auto;
+            animation: slideUp 0.25s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to   { transform: translateY(0); }
         }
 
         .drawer-handle {
@@ -384,10 +495,10 @@
         .drawer-date {
             font-size: 13px;
             font-weight: 700;
-            color: var(--muted);
+            color: var(--school);
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         /* ── Empty ──────────────────────────────────────────────────────── */
@@ -398,7 +509,7 @@
         }
 
         .empty-icon { font-size: 40px; margin-bottom: 12px; }
-        .empty p { font-size: 14px; }
+        .empty p { font-size: 14px; line-height: 1.6; }
 
         /* ── Footer ─────────────────────────────────────────────────────── */
         footer {
@@ -409,10 +520,19 @@
             font-family: 'DM Mono', monospace;
         }
 
-        @media (max-width: 480px) {
+        /* ── Mobile ─────────────────────────────────────────────────────── */
+        @media (max-width: 520px) {
+            header h1 { font-size: 17px; }
+            .cal-day { min-height: 52px; padding: 4px; }
+            .cal-event-mini { font-size: 8px; padding: 1px 3px; }
+            .cal-day-num { font-size: 11px; }
+            .tab-btn { padding: 8px 14px; font-size: 13px; }
+            .summary-bar { gap: 10px; }
+        }
+
+        @media (max-width: 380px) {
             .cal-event-mini { display: none; }
-            .cal-day { min-height: 48px; }
-            header h1 { font-size: 20px; }
+            .cal-day { min-height: 44px; }
         }
     </style>
 </head>
@@ -422,9 +542,17 @@
     <div class="header-top">
         <div>
             <div class="school-name">Colégio Eduardo Gomes · Fund. Manhã</div>
-            <h1>4°A — Agenda<br>Escolar</h1>
+            <h1>4°A — Agenda Escolar</h1>
         </div>
-        <div class="update-time" id="update-time"></div>
+        <div class="header-right">
+            <div class="update-time" id="update-time"></div>
+            <button class="share-btn" onclick="compartilhar()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.498 14.382c-.301-.01-.6.04-.888.14l-2.16-1.517A4.91 4.91 0 0 0 14.6 12c0-.347-.038-.685-.109-1.01l2.17-1.52c.284.097.58.147.877.147 1.55 0 2.81-1.26 2.81-2.81S19.088 4 17.538 4c-1.55 0-2.81 1.26-2.81 2.81 0 .347.038.685.109 1.01l-2.17 1.52a2.796 2.796 0 0 0-4.335 2.33c0 .347.038.685.109 1.01l-2.16 1.517a2.796 2.796 0 1 0 .762 1.3l2.16-1.517c.534.43 1.208.69 1.944.69.736 0 1.41-.26 1.944-.69l2.16 1.517a2.796 2.796 0 1 0 2.957-1.118z"/>
+                </svg>
+                Compartilhar
+            </button>
+        </div>
     </div>
     <div class="tabs">
         <button class="tab-btn active" onclick="trocarAba('licoes', this)">
@@ -435,6 +563,9 @@
         </button>
     </div>
 </header>
+
+<!-- Barra de resumo -->
+<div class="summary-bar" id="summary-bar"></div>
 
 <!-- Controles -->
 <div class="controls">
@@ -461,9 +592,9 @@
     </div>
 </div>
 
-<footer id="footer-link"></footer>
+<footer>pallusm.github.io/4a-provas · Atualizado automaticamente</footer>
 
-<!-- Drawer do calendário -->
+<!-- Drawer -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="fecharDrawer(event)">
     <div class="drawer">
         <div class="drawer-handle"></div>
@@ -473,76 +604,110 @@
 </div>
 
 <script>
-// ── Dados injetados pelo script Python ───────────────────────────────────────
-const DATA_LICOES  = [{"disciplina": "Matemática", "tarefa": "Para: 18/05 Realizar os exercícios 1, 4 e 5, páginas 46 a 49, linhas paralelas e perpendiculares.", "prazo": "2026-05-18"}, {"disciplina": "Língua Portuguesa", "tarefa": "Ler a história: “Trancado entre múmias” - páginas 85 a 89 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Matemática", "tarefa": "Para: 19/05 Realizar os exercícios 1 e 2, página 58, multiplicação e divisão por 10, 100 e 1.000.", "prazo": "2026-05-19"}, {"disciplina": "História", "tarefa": "Tarefa de casa - p. 169- ex. 1 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}];
-const DATA_PROVAS  = [{"disciplina": "Língua Portuguesa", "conteudo": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}];
-const ATUALIZADO   = "18/05/2026 às 11:56";
+// ── Dados injetados pelo Python ───────────────────────────────────────────────
+const DATA_LICOES = [{"disciplina": "Matemática", "tarefa": "Para: 18/05 Realizar os exercícios 1, 4 e 5, páginas 46 a 49, linhas paralelas e perpendiculares.", "prazo": "2026-05-18"}, {"disciplina": "Língua Portuguesa", "tarefa": "Ler a história: “Trancado entre múmias” - páginas 85 a 89 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Matemática", "tarefa": "Para: 19/05 Realizar os exercícios 1 e 2, página 58, multiplicação e divisão por 10, 100 e 1.000.", "prazo": "2026-05-19"}, {"disciplina": "História", "tarefa": "Tarefa de casa - p. 169- ex. 1 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}];
+const DATA_PROVAS = [{"disciplina": "Língua Portuguesa", "conteudo": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}];
+const ATUALIZADO  = "18/05/2026 às 12:10";
 
-// ── Cores por disciplina ─────────────────────────────────────────────────────
-const DISC_CORES = {
-    "Matemática":           { color: "#2563EB", bg: "#EFF6FF" },
-    "Língua Portuguesa":    { color: "#16A34A", bg: "#F0FDF4" },
-    "História":             { color: "#DC2626", bg: "#FEF2F2" },
-    "Geografia":            { color: "#7C3AED", bg: "#F5F3FF" },
-    "Ciências":             { color: "#EA580C", bg: "#FFF7ED" },
-    "Arte":                 { color: "#DB2777", bg: "#FDF2F8" },
-    "Educação Física":      { color: "#059669", bg: "#ECFDF5" },
-    "Educação Tecnológica": { color: "#4F46E5", bg: "#EEF2FF" },
-    "Projeto de Vida":      { color: "#B45309", bg: "#FFFBEB" },
+// ── Cores por disciplina ──────────────────────────────────────────────────────
+const CORES = {
+    "matemática":     { color: "#2563EB", bg: "#EFF6FF" },
+    "português":      { color: "#16A34A", bg: "#F0FDF4" },
+    "história":       { color: "#DC2626", bg: "#FEF2F2" },
+    "geografia":      { color: "#7C3AED", bg: "#F5F3FF" },
+    "ciências":       { color: "#EA580C", bg: "#FFF7ED" },
+    "arte":           { color: "#DB2777", bg: "#FDF2F8" },
+    "física":         { color: "#059669", bg: "#ECFDF5" },
+    "tecnológica":    { color: "#4F46E5", bg: "#EEF2FF" },
+    "inglês":         { color: "#0891B2", bg: "#ECFEFF" },
+    "l.e.m":          { color: "#0891B2", bg: "#ECFEFF" },
+    "projeto":        { color: "#B45309", bg: "#FFFBEB" },
 };
 
 function getCor(disciplina) {
-    for (const [key, val] of Object.entries(DISC_CORES)) {
-        if (disciplina.toLowerCase().includes(key.toLowerCase()) ||
-            key.toLowerCase().includes(disciplina.toLowerCase().split(" ")[0])) {
-            return val;
-        }
-    }
-    // Inglês
-    if (disciplina.toLowerCase().includes("inglês") || disciplina.toLowerCase().includes("l.e.m")) {
-        return { color: "#0891B2", bg: "#ECFEFF" };
+    const d = disciplina.toLowerCase();
+    for (const [key, val] of Object.entries(CORES)) {
+        if (d.includes(key)) return val;
     }
     return { color: "#6B7280", bg: "#F9FAFB" };
 }
 
 function nomeCurto(disciplina) {
-    const mapa = {
-        "Língua Portuguesa": "Português",
-        "Educação Física": "Ed. Física",
-        "Educação Tecnológica": "Tecnologia",
-        "Projeto de Vida": "Proj. Vida",
-    };
-    for (const [k,v] of Object.entries(mapa)) {
-        if (disciplina.includes(k)) return v;
-    }
-    if (disciplina.includes("Inglês") || disciplina.includes("L.E.M")) return "Inglês";
+    const d = disciplina.toLowerCase();
+    if (d.includes("matemática"))          return "Matemática";
+    if (d.includes("português") || d.includes("língua portuguesa")) return "Português";
+    if (d.includes("história"))            return "História";
+    if (d.includes("geografia"))           return "Geografia";
+    if (d.includes("ciências"))            return "Ciências";
+    if (d.includes("arte"))                return "Arte";
+    if (d.includes("física"))              return "Ed. Física";
+    if (d.includes("tecnológica"))         return "Tecnologia";
+    if (d.includes("inglês") || d.includes("l.e.m")) return "Inglês";
+    if (d.includes("projeto"))             return "Proj. Vida";
     return disciplina.split(" ")[0];
 }
 
+function limparTexto(texto) {
+    // Remove o "Para: DD/MM" do início e limpa
+    return texto
+        .replace(/^[-•\s]+/, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
 // ── Estado ────────────────────────────────────────────────────────────────────
-let abaAtiva  = "licoes";
-let viewAtiva = "lista";
+let abaAtiva    = "licoes";
+let viewAtiva   = "lista";
 let filtroAtivo = "Todos";
-let calMes = new Date().getMonth();
-let calAno = new Date().getFullYear();
+let calMes      = new Date().getMonth();
+let calAno      = new Date().getFullYear();
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("update-time").textContent = ATUALIZADO;
-    document.getElementById("footer-link").textContent = "pallusm.github.io/4a-provas · Atualizado automaticamente";
-    document.getElementById("pill-lic").textContent  = DATA_LICOES.length;
-    document.getElementById("pill-prov").textContent = DATA_PROVAS.length;
-
+    document.getElementById("pill-lic").textContent    = DATA_LICOES.length;
+    document.getElementById("pill-prov").textContent   = DATA_PROVAS.length;
+    renderSummary();
     renderTudo();
 });
 
 function dados() { return abaAtiva === "licoes" ? DATA_LICOES : DATA_PROVAS; }
-function textoItem(item) { return item.tarefa || item.conteudo || ""; }
+function textoItem(item) { return limparTexto(item.tarefa || item.conteudo || ""); }
 
 function dadosFiltrados() {
     if (filtroAtivo === "Todos") return dados();
-    return dados().filter(i => nomeCurto(i.disciplina) === filtroAtivo ||
-                               i.disciplina.includes(filtroAtivo));
+    return dados().filter(i => nomeCurto(i.disciplina) === filtroAtivo);
+}
+
+// ── Resumo ────────────────────────────────────────────────────────────────────
+function renderSummary() {
+    const hoje   = new Date(); hoje.setHours(0,0,0,0);
+    const amanha = new Date(hoje); amanha.setDate(amanha.getDate() + 1);
+    const semana = new Date(hoje); semana.setDate(semana.getDate() + 7);
+
+    const todos  = [...DATA_LICOES, ...DATA_PROVAS];
+    const nHoje  = todos.filter(i => new Date(i.prazo+"T12:00:00").toDateString() === hoje.toDateString()).length;
+    const nAmanha= todos.filter(i => new Date(i.prazo+"T12:00:00").toDateString() === amanha.toDateString()).length;
+    const nSemana= todos.filter(i => { const d = new Date(i.prazo+"T12:00:00"); return d >= hoje && d <= semana; }).length;
+
+    const bar = document.getElementById("summary-bar");
+    bar.innerHTML = `
+        <div class="summary-item">
+            <span class="summary-dot" style="background:#DC2626"></span>
+            <span>Hoje: <strong>${nHoje}</strong></span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-dot" style="background:#D97706"></span>
+            <span>Amanhã: <strong>${nAmanha}</strong></span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-dot" style="background:#1A3A6B"></span>
+            <span>Esta semana: <strong>${nSemana}</strong></span>
+        </div>
+        <div class="summary-item" style="margin-left:auto">
+            <span style="font-size:12px;color:#6B7280">${DATA_LICOES.length} lições · ${DATA_PROVAS.length} provas</span>
+        </div>
+    `;
 }
 
 // ── Render principal ──────────────────────────────────────────────────────────
@@ -555,23 +720,24 @@ function renderTudo() {
 // ── Filtros ───────────────────────────────────────────────────────────────────
 function renderFiltros() {
     const disciplinas = [...new Set(dados().map(i => nomeCurto(i.disciplina)))];
-    const container = document.getElementById("filtros");
+    const container   = document.getElementById("filtros");
     container.innerHTML = "";
 
     ["Todos", ...disciplinas].forEach(d => {
         const btn = document.createElement("button");
-        btn.className = "filter-btn" + (d === filtroAtivo ? " active" : "");
+        btn.className = "filter-btn";
         btn.textContent = d;
 
-        if (d !== "Todos") {
+        if (d === "Todos") {
+            if (filtroAtivo === "Todos") btn.classList.add("todos-active");
+        } else {
             const cor = getCor(d);
-            if (d === filtroAtivo) {
+            btn.style.borderColor = cor.color;
+            btn.style.color = cor.color;
+            if (filtroAtivo === d) {
+                btn.classList.add("disc-active");
                 btn.style.background = cor.color;
-                btn.style.borderColor = cor.color;
                 btn.style.color = "white";
-            } else {
-                btn.style.borderColor = cor.color;
-                btn.style.color = cor.color;
             }
         }
 
@@ -582,40 +748,48 @@ function renderFiltros() {
 
 // ── Cards ─────────────────────────────────────────────────────────────────────
 function renderCards() {
-    const id = "cards-" + abaAtiva;
+    const id        = "cards-" + abaAtiva;
     const container = document.getElementById(id);
-    const itens = dadosFiltrados();
+    const itens     = dadosFiltrados();
 
     if (!itens.length) {
-        container.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><p>Nada por aqui!</p></div>`;
+        const msg = filtroAtivo === "Todos"
+            ? "Nenhuma tarefa pendente! ✅"
+            : `Nenhuma tarefa de ${filtroAtivo} pendente.`;
+        container.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><p>${msg}</p></div>`;
         return;
     }
 
     container.innerHTML = itens.map(item => {
-        const prazo = new Date(item.prazo + "T12:00:00");
-        const hoje  = new Date(); hoje.setHours(0,0,0,0);
-        const diff  = Math.round((prazo - hoje) / 86400000);
-        const cor   = getCor(item.disciplina);
-        const texto = textoItem(item);
+        const prazo   = new Date(item.prazo + "T12:00:00");
+        const hoje    = new Date(); hoje.setHours(0,0,0,0);
+        const diff    = Math.round((prazo - hoje) / 86400000);
+        const cor     = getCor(item.disciplina);
+        const texto   = textoItem(item);
+        const isProva = !!item.conteudo;
 
         let urgLabel = "", urgClass = "";
-        if (diff === 0)      { urgLabel = "🔴 Hoje";     urgClass = "urgent"; }
-        else if (diff === 1) { urgLabel = "🟠 Amanhã";   urgClass = "soon"; }
-        else if (diff <= 3)  { urgLabel = `🟡 ${diff}d`; urgClass = "soon"; }
-        else                 { urgLabel = `🟢 ${diff}d`; }
+        if (diff === 0)      { urgLabel = "🔴 Hoje";        urgClass = "hoje"; }
+        else if (diff === 1) { urgLabel = "🟠 Amanhã";      urgClass = "amanha"; }
+        else if (diff <= 3)  { urgLabel = `🟡 Em ${diff}d`; urgClass = "breve"; }
+        else                 { urgLabel = `🟢 Em ${diff}d`; }
 
-        const ds = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][prazo.getDay()];
+        const ds      = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][prazo.getDay()];
         const dataStr = `${ds}, ${prazo.toLocaleDateString("pt-BR")}`;
+        const nome    = nomeCurto(item.disciplina);
 
         return `
-        <div class="card" style="--disc-color:${cor.color}; --disc-bg:${cor.bg}">
+        <div class="card${isProva ? " prova-card" : ""}" style="--disc-color:${cor.color}">
             <div class="card-top">
-                <span class="disc-tag" style="background:${cor.bg}; color:${cor.color}">
-                    ${nomeCurto(item.disciplina)}
-                </span>
+                <div class="card-left">
+                    <span class="disc-tag" style="background:${cor.bg};color:${cor.color}">${nome}</span>
+                    ${isProva ? '<span class="tipo-tag">📝 Avaliação</span>' : ""}
+                </div>
                 <span class="urgency-tag ${urgClass}">${urgLabel}</span>
             </div>
-            <div class="card-date">${dataStr}</div>
+            <div class="card-meta">
+                <span class="card-date">${dataStr}</span>
+            </div>
             <div class="card-text">${texto}</div>
         </div>`;
     }).join("");
@@ -623,25 +797,22 @@ function renderCards() {
 
 // ── Calendário ────────────────────────────────────────────────────────────────
 function renderCal() {
-    const id = "cal-" + abaAtiva;
+    const id        = "cal-" + abaAtiva;
     const container = document.getElementById(id);
-    const itens = dadosFiltrados();
+    const itens     = dadosFiltrados();
 
-    // Mapeia datas → itens
     const porData = {};
     itens.forEach(item => {
-        const k = item.prazo;
-        if (!porData[k]) porData[k] = [];
-        porData[k].push(item);
+        if (!porData[item.prazo]) porData[item.prazo] = [];
+        porData[item.prazo].push(item);
     });
 
-    const hoje   = new Date();
-    const meses  = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
-                     "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-    const dias   = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+    const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+                   "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const dias  = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+    const hoje  = new Date();
 
-    const primeiro = new Date(calAno, calMes, 1);
-    const ultimo   = new Date(calAno, calMes + 1, 0);
+    const primeiro   = new Date(calAno, calMes, 1);
     const inicioGrid = new Date(primeiro);
     inicioGrid.setDate(1 - primeiro.getDay());
 
@@ -669,7 +840,7 @@ function renderCal() {
             if (hasItems)     cls += " has-items";
 
             const onclick = hasItems
-                ? `onclick="abrirDrawer('${dateKey}', ${JSON.stringify(dayItems).replace(/"/g, "&quot;")})"` : "";
+                ? `onclick="abrirDrawer('${dateKey}', ${JSON.stringify(dayItems).replace(/"/g,"&quot;")})"` : "";
 
             const eventos = dayItems.slice(0, 3).map(item => {
                 const cor = getCor(item.disciplina);
@@ -700,22 +871,24 @@ function navMes(dir) {
 
 // ── Drawer ────────────────────────────────────────────────────────────────────
 function abrirDrawer(dateKey, itens) {
-    const d = new Date(dateKey + "T12:00:00");
+    const d    = new Date(dateKey + "T12:00:00");
     const dias = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
-    const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+    const meses= ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 
     document.getElementById("drawer-date").textContent =
         `${dias[d.getDay()]}, ${d.getDate()} de ${meses[d.getMonth()]}`;
 
     document.getElementById("drawer-content").innerHTML = itens.map(item => {
-        const cor   = getCor(item.disciplina);
-        const texto = textoItem(item);
+        const cor    = getCor(item.disciplina);
+        const texto  = textoItem(item);
+        const isProva = !!item.conteudo;
         return `
-        <div class="card" style="--disc-color:${cor.color}; --disc-bg:${cor.bg}; margin-bottom:10px">
+        <div class="card${isProva ? " prova-card" : ""}" style="--disc-color:${cor.color};margin-bottom:10px">
             <div class="card-top">
-                <span class="disc-tag" style="background:${cor.bg}; color:${cor.color}">
-                    ${nomeCurto(item.disciplina)}
-                </span>
+                <div class="card-left">
+                    <span class="disc-tag" style="background:${cor.bg};color:${cor.color}">${nomeCurto(item.disciplina)}</span>
+                    ${isProva ? '<span class="tipo-tag">📝 Avaliação</span>' : ""}
+                </div>
             </div>
             <div class="card-text">${texto}</div>
         </div>`;
@@ -752,6 +925,13 @@ function trocarView(view) {
         if (cards) cards.style.display = view === "lista" ? "grid" : "none";
         if (cal)   cal.classList.toggle("active-view", view === "cal");
     });
+}
+
+// ── Compartilhar ──────────────────────────────────────────────────────────────
+function compartilhar() {
+    const url = "https://pallusm.github.io/4a-provas";
+    const msg = `📚 *4°A — Eduardo Gomes*\nConfira as lições e provas da turma:\n${url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
 }
 </script>
 
