@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Provas — 4°A Eduardo Gomes</title>
+    <title>4°A — Eduardo Gomes</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,28 +17,56 @@
         header {
             background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
-            padding: 24px 20px 20px;
+            padding: 24px 20px 0;
             text-align: center;
         }
 
-        header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 4px;
+        header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        header p  { font-size: 13px; opacity: 0.75; margin-bottom: 16px; }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            padding-bottom: 0;
         }
 
-        header p {
-            font-size: 13px;
-            opacity: 0.75;
+        .tab-btn {
+            background: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px 8px 0 0;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #f0f4f8;
+            color: #2d3748;
+        }
+
+        .badge-count {
+            background: #e53e3e;
+            color: white;
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 6px;
         }
 
         .atualizado {
             background: #2d3748;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,255,255,0.5);
             text-align: center;
-            font-size: 12px;
-            padding: 8px;
+            font-size: 11px;
+            padding: 6px;
         }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
         .container {
             max-width: 640px;
@@ -62,11 +90,11 @@
             border-left: 4px solid #cbd5e0;
         }
 
-        .card.hoje       { border-left-color: #e53e3e; }
-        .card.amanha     { border-left-color: #dd6b20; }
-        .card.em-breve   { border-left-color: #d69e2e; }
-        .card.esta-semana{ border-left-color: #38a169; }
-        .card.futuro     { border-left-color: #3182ce; }
+        .card.hoje        { border-left-color: #e53e3e; }
+        .card.amanha      { border-left-color: #dd6b20; }
+        .card.em-breve    { border-left-color: #d69e2e; }
+        .card.esta-semana { border-left-color: #38a169; }
+        .card.futuro      { border-left-color: #3182ce; }
 
         .card-header {
             display: flex;
@@ -77,36 +105,12 @@
             gap: 6px;
         }
 
-        .badge {
-            font-size: 13px;
-            font-weight: 600;
-        }
+        .badge     { font-size: 13px; font-weight: 600; }
+        .data      { font-size: 12px; color: #718096; }
+        .disciplina { font-size: 16px; font-weight: 700; color: #2d3748; margin-bottom: 8px; }
+        .conteudo  { font-size: 13px; color: #4a5568; line-height: 1.6; white-space: pre-wrap; }
 
-        .data {
-            font-size: 12px;
-            color: #718096;
-        }
-
-        .disciplina {
-            font-size: 16px;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 8px;
-        }
-
-        .conteudo {
-            font-size: 13px;
-            color: #4a5568;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 60px 20px;
-            color: #718096;
-        }
-
+        .empty      { text-align: center; padding: 60px 20px; color: #718096; }
         .empty-icon { font-size: 48px; margin-bottom: 16px; }
 
         footer {
@@ -118,28 +122,96 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>📚 Provas e Avaliações</h1>
-        <p>4°A Fund. Manhã — Colégio Eduardo Gomes</p>
-    </header>
-    <div class="atualizado">Atualizado em 18/05/2026 às 11:14</div>
 
-    <div class="container">
-        <p class="total">1 avaliação(ões) encontrada(s)</p>
-        
-            <div class="card em-breve">
-                <div class="card-header">
-                    <span class="badge">🟡 Em 3 dias</span>
-                    <span class="data">Quinta, 21/05/2026</span>
-                </div>
-                <div class="disciplina">Língua Portuguesa</div>
-                <div class="conteudo">- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma a</div>
-            </div>
-            
+<header>
+    <h1>📚 4°A — Eduardo Gomes</h1>
+    <p>Fund. Manhã · Atualizado em 18/05/2026 às 11:23</p>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="trocarAba('licoes', this)">
+            Lições de Casa
+            <span class="badge-count">5</span>
+        </button>
+        <button class="tab-btn" onclick="trocarAba('provas', this)">
+            Provas
+            <span class="badge-count">1</span>
+        </button>
     </div>
+</header>
 
-    <footer>
-        Atualizado automaticamente · 18/05/2026 às 11:14
-    </footer>
+<div class="atualizado">Atualizado automaticamente em 18/05/2026 às 11:23</div>
+
+<div id="tab-licoes" class="tab-content active">
+    <div class="container">
+        <p class="total">5 lição(ões) pendente(s)</p>
+        
+        <div class="card hoje">
+            <div class="card-header">
+                <span class="badge">🔴 HOJE</span>
+                <span class="data">Segunda, 18/05/2026</span>
+            </div>
+            <div class="disciplina">Matemática</div>
+            <div class="conteudo">Para: 18/05 Realizar os exercícios 1, 4 e 5, páginas 46 a 49, linhas paralelas e perpendiculares.</div>
+        </div>
+        <div class="card amanha">
+            <div class="card-header">
+                <span class="badge">🟠 AMANHÃ</span>
+                <span class="data">Terça, 19/05/2026</span>
+            </div>
+            <div class="disciplina">Língua Portuguesa</div>
+            <div class="conteudo">Ler a história: “Trancado entre múmias” - páginas 85 a 89 Para: 19-05</div>
+        </div>
+        <div class="card amanha">
+            <div class="card-header">
+                <span class="badge">🟠 AMANHÃ</span>
+                <span class="data">Terça, 19/05/2026</span>
+            </div>
+            <div class="disciplina">Matemática</div>
+            <div class="conteudo">Para: 19/05 Realizar os exercícios 1 e 2, página 58, multiplicação e divisão por 10, 100 e 1.000.</div>
+        </div>
+        <div class="card amanha">
+            <div class="card-header">
+                <span class="badge">🟠 AMANHÃ</span>
+                <span class="data">Terça, 19/05/2026</span>
+            </div>
+            <div class="disciplina">História</div>
+            <div class="conteudo">Tarefa de casa - p. 169- ex. 1 Para: 19-05</div>
+        </div>
+        <div class="card em-breve">
+            <div class="card-header">
+                <span class="badge">🟡 Em 3 dias</span>
+                <span class="data">Quinta, 21/05/2026</span>
+            </div>
+            <div class="disciplina">Língua Portuguesa</div>
+            <div class="conteudo">- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atençã</div>
+        </div>
+    </div>
+</div>
+
+<div id="tab-provas" class="tab-content">
+    <div class="container">
+        <p class="total">1 prova(s) / avaliação(ões)</p>
+        
+        <div class="card em-breve">
+            <div class="card-header">
+                <span class="badge">🟡 Em 3 dias</span>
+                <span class="data">Quinta, 21/05/2026</span>
+            </div>
+            <div class="disciplina">Língua Portuguesa</div>
+            <div class="conteudo">- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma a</div>
+        </div>
+    </div>
+</div>
+
+<footer>pallusm.github.io/4a-provas</footer>
+
+<script>
+function trocarAba(nome, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + nome).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+
 </body>
 </html>
