@@ -142,6 +142,29 @@
         .drawer-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
         .drawer-date { font-size: 12px; font-weight: 700; color: var(--school); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
 
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+        .stat-card.full { grid-column: 1/-1; }
+        .stat-num { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+        .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+        .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+        .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .bar-label { font-size: 12px; font-weight: 600; color: var(--text); width: 80px; flex-shrink: 0; text-align: right; }
+        .bar-track { flex: 1; height: 8px; background: var(--subtle); border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+        .bar-count { font-size: 11px; font-weight: 700; color: var(--muted); font-family: 'JetBrains Mono', monospace; width: 24px; text-align: right; flex-shrink: 0; }
+
+        .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 12px; }
+        .week-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .week-bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; min-height: 60px; }
+        .week-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 2px; transition: height 0.5s ease; }
+        .week-label { font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+        .week-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
+
+        .medal { font-size: 18px; margin-right: 4px; }
+
         /* Empty */
         .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
         .empty-icon { font-size: 36px; margin-bottom: 10px; }
@@ -169,6 +192,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="trocarAba('proximas',this)">📅 Próximas <span class="pill" id="pill-prox">0</span></button>
         <button class="tab-btn" onclick="trocarAba('historico',this)">📚 Histórico <span class="pill" id="pill-hist">0</span></button>
+        <button class="tab-btn" onclick="trocarAba('stats',this)">📊 Stats</button>
     </div>
 </header>
 
@@ -203,6 +227,10 @@
     </div>
 </div>
 
+<div id="tab-stats" class="tab-content">
+    <div class="container" id="stats-container"></div>
+</div>
+
 <footer id="ftxt">pallusm.github.io/4a-provas</footer>
 
 <div class="overlay" id="overlay" onclick="closeDrawer(event)">
@@ -217,7 +245,7 @@
 const DATA_LICOES  = [{"disciplina": "Matemática", "tarefa": "Para: 18/05 Realizar os exercícios 1, 4 e 5, páginas 46 a 49, linhas paralelas e perpendiculares.", "prazo": "2026-05-18"}, {"disciplina": "Língua Portuguesa", "tarefa": "Ler a história: “Trancado entre múmias” - páginas 85 a 89 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Matemática", "tarefa": "Para: 19/05 Realizar os exercícios 1 e 2, página 58, multiplicação e divisão por 10, 100 e 1.000.", "prazo": "2026-05-19"}, {"disciplina": "História", "tarefa": "Tarefa de casa - p. 169- ex. 1 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}, {"disciplina": "Matemática", "tarefa": "Para: 29/01 Conforme explicado em aula, finalizar o desenho da capa do caderno de Matemática. Temas: País dos números. O que fazer? Criar um desenho com elementos da Matemática, imaginando como seria o seu país dos números. Atenção! Não utilize canetinha, como combinado em aula.", "prazo": "2026-01-29"}, {"disciplina": "Matemática", "tarefa": "Para: 04/02 Realizar os exercícios da página 17, análise de gráfico.", "prazo": "2026-02-04"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 28 e 29 - ex. 1-a, b, c. Para: 04-02", "prazo": "2026-02-04"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 29 e 30 - ex. 2-a,b Para: 05-02", "prazo": "2026-02-05"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 33 - ex. 6 Para: 06-02", "prazo": "2026-02-06"}, {"disciplina": "Projeto de Vida", "tarefa": "Conforme explicado em sala, na próxima aula, faremos uma entrevista com as Orientadoras Andrea e Carol. Na folha monobloco fornecida pela professora, coloque o seu nome, ano, título “Entrevista com a O.E”. Elabore duas perguntas a serem realizadas no dia da entrevista com as orientadoras. Para ajudar, pense em tudo que engloba o ambiente escolar como: regras de convivência, nas amizades construídas, hora do lanche, hora da entrada e saída, biblioteca, esportes e sala de aula. Para: 09/02", "prazo": "2026-02-09"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo da língua - página 30 - ex. 3. Para: 10-02", "prazo": "2026-02-10"}, {"disciplina": "Matemática", "tarefa": "Para: 10/02 Realizar a folha avulsa com exercícios da tabuada.", "prazo": "2026-02-10"}, {"disciplina": "História", "tarefa": "p. 119 a 121 (ex. 1 ao 4). Para: 10-02", "prazo": "2026-02-10"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 31 e 32 - ex. 4 e 5 Para: 12-02", "prazo": "2026-02-12"}, {"disciplina": "Matemática", "tarefa": "Para: 12/02 Realizar os exercícios sobre leitura e interpretação de gráfico, página 18.", "prazo": "2026-02-12"}, {"disciplina": "Geografia", "tarefa": "A zona rural do município - p. 172 e 173- ex. 1, 2 e 3. Para: 12-02", "prazo": "2026-02-12"}, {"disciplina": "Ciências", "tarefa": "Para: 13/02 Observar com mais atenção os pontos de referência da sua casa até a escola e o nascer do Sol.", "prazo": "2026-02-13"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – As capitais – p. 188 a 191 – ex. 2. Para: 19-02", "prazo": "2026-02-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 49 - ex. 1 Para: 20-02", "prazo": "2026-02-20"}, {"disciplina": "Ciências", "tarefa": "Para: 20/02 Realizar os exercícios 1, 3, 4, 5 e 6, páginas 133 a 135, sobre localização e orientação.", "prazo": "2026-02-20"}, {"disciplina": "Matemática", "tarefa": "Para: 23/02 Finalizar o exercícios 5, página 24, cálculo mental de adição.", "prazo": "2026-02-23"}, {"disciplina": "História", "tarefa": "Primeiras comunidades humanas – p. 141 e 142 - ex. 1 Para: 24-02", "prazo": "2026-02-24"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - página 50 - exs. 2 letra A e ex. 3 Para: 25-02", "prazo": "2026-02-25"}, {"disciplina": "Língua Portuguesa", "tarefa": "Para: 26/02 - Estudo da língua - página 51 - exs. 4 e 5", "prazo": "2026-02-26"}, {"disciplina": "Ciências", "tarefa": "Para: 27/02 Realizar os exercícios 1, 2 e 3, páginas 145 e 146, sobre o relógio de sol.", "prazo": "2026-02-27"}, {"disciplina": "Matemática", "tarefa": "Para: 03/03 Realização dos algoritmos em folha avulsa. Lembrete: Dia 04/03 Atividade Avaliativa de Cálculo, não falte!", "prazo": "2026-03-03"}, {"disciplina": "História", "tarefa": "Preparar a leitura para a próxima aula- p. 144 e 145 Para: 03-03", "prazo": "2026-03-03"}, {"disciplina": "Língua Portuguesa", "tarefa": "2) Estudo do texto - páginas 79 e 80 - exs. 3 e 4 Para: 04-03", "prazo": "2026-03-04"}, {"disciplina": "Matemática", "tarefa": "Para: 04/03 Atividade Avaliativa de Matemática, não falte! Algoritmos de adição, subtração e multiplicação.", "prazo": "2026-03-04"}, {"disciplina": "Geografia", "tarefa": "Para: 05/03 - As siglas dos estados – p. 199 – ex. 2 Atenção! Dia 05/03 não falte! Teremos uma atividade avaliativa. Estudar - ATIVIDADE AVALIATIVA Módulo 1 – O lugar onde vivemos – Recordando os municípios p. 163; A zona rural do município p. 165 a 170; O município e seus vizinhos p. 171 e 174. Módulo 2 – O mapa do Brasil – A cartografia p. 176; Um município muito importante: a capital p. 177; Estados e capitais p. 178 a 180; Brasília, a capital do Brasil p. 182. Módulo 3 – As siglas dos estados – Para que servem as siglas p. 194. Estudar a tabela de siglas, estados e capitais.", "prazo": "2026-03-05"}, {"disciplina": "Língua Portuguesa", "tarefa": "Para: 06/03 - Iniciaremos a apostila de Ortografia. Os alunos deverão colorir a capa com capricho e realizar a atividade 1. Esse momento de colorir é muito importante, pois contribui para o desenvolvimento da coordenação motora fina, do controle do traçado e da organização no espaço da folha. Além disso, peço que a apostila seja mantida limpa e bem cuidada, pois será utilizada ao longo de todo o ano.", "prazo": "2026-03-06"}, {"disciplina": "Língua Portuguesa", "tarefa": "Apostila de ortografia- atividade 2. Para: 09-03", "prazo": "2026-03-09"}, {"disciplina": "Matemática", "tarefa": "Para: 10/03 Realizar os algoritmos em folha avulsa.", "prazo": "2026-03-10"}, {"disciplina": "História", "tarefa": "Atividade avaliativa 10-03 Questões descritivas e de múltipla escolha Detetives do passado- p.108 e 109 Explorar documentos- p. 112 e 113 História e cronologia- p. 114 e 115 As primeiras comunidades humanas- p. 122 Os primeiros humanos- p. 123 A vida na Pré-História- p.128 e 129", "prazo": "2026-03-10"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Apostila de Ortografia - Atividade 3 Para: 13-03", "prazo": "2026-03-13"}, {"disciplina": "Ciências", "tarefa": "Para: 13/03 Realizar os exercícios sobre magnetismo, págias 160 a 164.", "prazo": "2026-03-13"}, {"disciplina": "Ciências", "tarefa": "Para: 16/03 Atividade Avaliativa de Ciências! Estudar: Módulo 1: Orientação e localização, pp. 124, 125, 126, 127 Módulo 2: Orientar-se pelo Sol, pp. 137; 142 e 143. Módulo 3: O ímã, o magnetismo e a bússola, pp. 149, 150, 153, 155, 156 e 157", "prazo": "2026-03-16"}, {"disciplina": "Língua Portuguesa", "tarefa": "Atividade avaliativa de interpretação de texto - 17-03 Texto jornalístico: páginas 53 a 59; Revisão disponível no Classroom.", "prazo": "2026-03-17"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – Correção da atividade avaliativa (os alunos receberão uma folha onde deverão realizar a correção dos exercícios que erraram na prova). Para: 19-03", "prazo": "2026-03-19"}, {"disciplina": "Matemática", "tarefa": "Para: 19/03 Entrega da pesquisa sobre a vida e obra de Lygia Clark. Orientações: Em sala, a professora explicou como utilizar as ferramentas de busca e os termos necessários para a pesquisa. Além disso, orientou que o trabalho deve ser escrito com caneta azul (escura) ou preta e sem rasuras.", "prazo": "2026-03-19"}, {"disciplina": "Língua Portuguesa", "tarefa": "Apostila de Ortografia- tarefa 4. Para: 23-03", "prazo": "2026-03-23"}, {"disciplina": "Matemática", "tarefa": "Para: 23/03 Não falte, trabalho avaliativo prático em sala.", "prazo": "2026-03-23"}, {"disciplina": "História", "tarefa": "Não falte, dia 24-03 trabalho avaliativo", "prazo": "2026-03-24"}, {"disciplina": "Matemática", "tarefa": "Para: 25/03 Atividade Avaliativa de Matemática, não falte! Estudar: • Construir e analisar gráficos, págs. 9 a 16. • Sistema de numeração decimal, págs. 36 a 42. • Situações-problema envolvendo adição e subtração • Algoritmo de adição, subtração e multiplicação.", "prazo": "2026-03-25"}, {"disciplina": "Língua Portuguesa", "tarefa": "Páginas 102 e 103 - exs. 1 e 2 Para: 26-03", "prazo": "2026-03-26"}, {"disciplina": "Matemática", "tarefa": "Para: 26/03 Finalizar a pintura das figuras planificadas.", "prazo": "2026-03-26"}, {"disciplina": "Geografia", "tarefa": "Não falte, trabalho avaliativo ( 26-03)", "prazo": "2026-03-26"}, {"disciplina": "Matemática", "tarefa": "Para: 27/03 Estudar as tabuadas (5, 6, 7, 8 e 9).", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "tarefa": "Dia 27-03, iniciaremos a Roda de leitura.", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo da língua - página 103 - ex. 03 Para: 31-03", "prazo": "2026-03-31"}, {"disciplina": "Matemática", "tarefa": "Para: 06/04 Realizar os algoritmos de multiplicação no caderno. Arquivo no Classroom.", "prazo": "2026-04-06"}, {"disciplina": "História", "tarefa": "Realizar as páginas 158 a 160. Para: 07-04 ( realizamos em sala)", "prazo": "2026-04-07"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estude para o Simulado- Revisão no classroom. Para: 09-04 - Roda de leitura: Realize a leitura do seu livro. O aluno deverá pensar em uma forma de apresentar a história para os colegas. As orientações completas para essa atividade estão disponíveis no Google Classroom.", "prazo": "2026-04-09"}, {"disciplina": "Matemática", "tarefa": "Para: 13/04 Segue atividade avaliativa de Matemática para assinar e devolver. Obs. Iniciar os estudos para a Avaliação Tirmestral de Matemática.", "prazo": "2026-04-13"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 32 e 33 - exs. 1,2,3 Para: 17-04", "prazo": "2026-04-17"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Apostila de Ortografia - tarefa 6 2) Estudo da língua - página 34 - exs. 4 e 5 Para: 23-04", "prazo": "2026-04-23"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Estudo da língua - páginas 60 e 61 - exs. 4 e 5 - Para: 05-05 2) (próxima semana) Pesquisa página 54 - Orientações disponíveis no Google Classroom. Neste dia, não falte, pois faremos um trabalho. Para: 11-05 Atenção: Estou enviando hoje a folha da Narizinho Arrebitado que postei dia 27-04 e esqueci de enviar para os alunos. Ela deverá ser entregue dia 11-05, para relembrar a história eles podem rever no classroom na data de 17-03", "prazo": "2026-04-27"}, {"disciplina": "Matemática", "tarefa": "Para: 28/04 Realizar os exercícios 2 e 3, página 19, apostila 2, sobre números naturais.", "prazo": "2026-04-28"}, {"disciplina": "História", "tarefa": "Tarefa de casa- Leitura- Um morro com muita história para contar- p. 123 e 124. Para: 28-04", "prazo": "2026-04-28"}, {"disciplina": "Língua Portuguesa", "tarefa": "1) Apostila de Ortografia - Tarefa 7 2) Estudo do texto - páginas 58 e 59 - exs. 1 e 2 Para: 30-04", "prazo": "2026-04-30"}, {"disciplina": "Ciências", "tarefa": "Para: 30/04 1) Realizar os exercícios do \"Em casa\", páginas 129 e 130. 2) Assistir ao vídeo do Manual do Mundo: Como guardar o cheiro das plantas (Classroom).", "prazo": "2026-04-30"}, {"disciplina": "Língua Portuguesa", "tarefa": "(Para: 04-05) Rever a história “Narizinho Arrebitado”, disponibilizada no Google Classroom, e realizar a atividade referente à história em folha avulsa.", "prazo": "2026-05-04"}, {"disciplina": "Projeto de Vida", "tarefa": "Exercício 2 – Página 18 do nosso livro. Para: 04/05", "prazo": "2026-05-04"}, {"disciplina": "Matemática", "tarefa": "Para: 05/05 Realizar os exercícios 2 e 3, página 29, subtração por compensação.", "prazo": "2026-05-05"}, {"disciplina": "História", "tarefa": "Como atividade para casa, os alunos deverão preparar a leitura das páginas 138 a 143 e elaborar 2 perguntas sobre o texto lido Para: 05-05", "prazo": "2026-05-05"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo do texto - páginas 80 e 81 - exs. 1 e 2 Para: 07-05", "prazo": "2026-05-07"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – A bandeira do Brasil – p. 193 – ex. 1 p. 194 e 195 2 e colorir a bandeira do Brasil da página 175 Para: 07-05", "prazo": "2026-05-07"}, {"disciplina": "Ciências", "tarefa": "Para: 08/05 Realizar o \"Em casa\", páginas 140 e 141, sobre as substâncias produzidas por plantas.", "prazo": "2026-05-08"}, {"disciplina": "Matemática", "tarefa": "Para: 11/05 Realizar os algoritmos de subtração em folha avulsa. Arquivo no Classroom.", "prazo": "2026-05-11"}, {"disciplina": "Matemática", "tarefa": "Para: 12/05 Realizar folha avulsa de sistema de numeração decimal.", "prazo": "2026-05-12"}, {"disciplina": "História", "tarefa": "Realização das atividades 1 e 2 das páginas 150 e 151, que servirão para consolidar o entendimento sobre as primeiras formas de comércio e a busca por metais ou especiarias. Para: 12-05", "prazo": "2026-05-12"}, {"disciplina": "Língua Portuguesa", "tarefa": "Estudo da língua - páginas 81 e 82 - exs. 3 e 4 Para: 14-05 Não falte, amanhã teremos nossa Olimpíada de Literatura.", "prazo": "2026-05-14"}, {"disciplina": "Ciências", "tarefa": "Para: 14/05 Realizar os exercícios 1, 2, 3 e 4, páginas 152 a 154, fotossíntese.", "prazo": "2026-05-14"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa – Divisa do estado de Pará - p. 194 e 195 - ex. 3 e 4 Para: 14-05", "prazo": "2026-05-14"}];
 const DATA_PROVAS  = [{"disciplina": "Língua Portuguesa", "conteudo": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma apresentação criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e características Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Você pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATENÇÃO, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUEÇA DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}, {"disciplina": "Matemática", "conteudo": "Para: 03/03 Realização dos algoritmos em folha avulsa. Lembrete: Dia 04/03 Atividade Avaliativa de Cálculo, não falte!", "prazo": "2026-03-03"}, {"disciplina": "Língua Portuguesa", "conteudo": "1) Estudo do texto - páginas 78 e 79 - exs. 1 e 2 Para: 04-03 2) No dia 06/03, não falte! Teremos atividade avaliativa de História em Quadrinhos. Reveja na apostila (págs. 46 e 47) as principais características do gênero e os tipos de balões.", "prazo": "2026-03-04"}, {"disciplina": "Matemática", "conteudo": "Para: 04/03 Atividade Avaliativa de Matemática, não falte! Algoritmos de adição, subtração e multiplicação.", "prazo": "2026-03-04"}, {"disciplina": "Geografia", "conteudo": "Para: 05/03 - As siglas dos estados – p. 199 – ex. 2 Atenção! Dia 05/03 não falte! Teremos uma atividade avaliativa. Estudar - ATIVIDADE AVALIATIVA Módulo 1 – O lugar onde vivemos – Recordando os municípios p. 163; A zona rural do município p. 165 a 170; O município e seus vizinhos p. 171 e 174. Módulo 2 – O mapa do Brasil – A cartografia p. 176; Um município muito importante: a capital p. 177; Estados e capitais p. 178 a 180; Brasília, a capital do Brasil p. 182. Módulo 3 – As siglas dos estados – Para que servem as siglas p. 194. Estudar a tabela de siglas, estados e capitais.", "prazo": "2026-03-05"}, {"disciplina": "Língua Portuguesa", "conteudo": "Apostila de ortografia- atividade 2. Para: 09-03", "prazo": "2026-03-09"}, {"disciplina": "História", "conteudo": "Atividade avaliativa 10-03 Questões descritivas e de múltipla escolha Detetives do passado- p.108 e 109 Explorar documentos- p. 112 e 113 História e cronologia- p. 114 e 115 As primeiras comunidades humanas- p. 122 Os primeiros humanos- p. 123 A vida na Pré-História- p.128 e 129", "prazo": "2026-03-10"}, {"disciplina": "Ciências", "conteudo": "Para: 16/03 Atividade Avaliativa de Ciências! Estudar: Módulo 1: Orientação e localização, pp. 124, 125, 126, 127 Módulo 2: Orientar-se pelo Sol, pp. 137; 142 e 143. Módulo 3: O ímã, o magnetismo e a bússola, pp. 149, 150, 153, 155, 156 e 157", "prazo": "2026-03-16"}, {"disciplina": "Língua Portuguesa", "conteudo": "Atividade avaliativa de interpretação de texto - 17-03 Texto jornalístico: páginas 53 a 59; Revisão disponível no Classroom.", "prazo": "2026-03-17"}, {"disciplina": "Geografia", "conteudo": "Tarefa de casa – Correção da atividade avaliativa (os alunos receberão uma folha onde deverão realizar a correção dos exercícios que erraram na prova). Para: 19-03", "prazo": "2026-03-19"}, {"disciplina": "Matemática", "conteudo": "Para: 23/03 Não falte, trabalho avaliativo prático em sala.", "prazo": "2026-03-23"}, {"disciplina": "Língua Portuguesa", "conteudo": "Atenção: No dia 23/03, não falte! Teremos uma Atividade Avaliativa de Estudo da Língua e Ortografia. Estudar: As classes de palavras: substantivo, artigo e adjetivo: páginas 18 a 23 / 42 / 44 e 67; Concordância nominal: páginas 69 e 70; Ortografia G ou J: página 71. Ortografia do “S”: apostila de ortografia. Atenção! No Classroom, temos várias revisões e jogos que os ajudarão nos estudos.", "prazo": "2026-03-23"}, {"disciplina": "História", "conteudo": "Não falte, dia 24-03 trabalho avaliativo", "prazo": "2026-03-24"}, {"disciplina": "Matemática", "conteudo": "Para: 25/03 Atividade Avaliativa de Matemática, não falte! Estudar: • Construir e analisar gráficos, págs. 9 a 16. • Sistema de numeração decimal, págs. 36 a 42. • Situações-problema envolvendo adição e subtração • Algoritmo de adição, subtração e multiplicação.", "prazo": "2026-03-25"}, {"disciplina": "Matemática", "conteudo": "Para: 26/03 Finalizar a pintura das figuras planificadas.", "prazo": "2026-03-26"}, {"disciplina": "Geografia", "conteudo": "Não falte, trabalho avaliativo ( 26-03)", "prazo": "2026-03-26"}, {"disciplina": "Matemática", "conteudo": "Para: 27/03 Estudar as tabuadas (5, 6, 7, 8 e 9).", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "conteudo": "Dia 27-03, iniciaremos a Roda de leitura.", "prazo": "2026-03-27"}, {"disciplina": "Língua Portuguesa", "conteudo": "Estude para o Simulado- Revisão no classroom. Para: 09-04 - Roda de leitura: Realize a leitura do seu livro. O aluno deverá pensar em uma forma de apresentar a história para os colegas. As orientações completas para essa atividade estão disponíveis no Google Classroom.", "prazo": "2026-04-09"}, {"disciplina": "Matemática", "conteudo": "Para: 13/04 Segue atividade avaliativa de Matemática para assinar e devolver. Obs. Iniciar os estudos para a Avaliação Tirmestral de Matemática.", "prazo": "2026-04-13"}, {"disciplina": "Língua Portuguesa", "conteudo": "1) Estudo da língua - páginas 60 e 61 - exs. 4 e 5 - Para: 05-05 2) (próxima semana) Pesquisa página 54 - Orientações disponíveis no Google Classroom. Neste dia, não falte, pois faremos um trabalho. Para: 11-05 Atenção: Estou enviando hoje a folha da Narizinho Arrebitado que postei dia 27-04 e esqueci de enviar para os alunos. Ela deverá ser entregue dia 11-05, para relembrar a história eles podem rever no classroom na data de 17-03", "prazo": "2026-04-27"}, {"disciplina": "Língua Portuguesa", "conteudo": "Estudo da língua - páginas 81 e 82 - exs. 3 e 4 Para: 14-05 Não falte, amanhã teremos nossa Olimpíada de Literatura.", "prazo": "2026-05-14"}];
 const DATA_ALERTAS = [{"disciplina": "Língua Portuguesa", "texto": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma a", "prazo": "2026-05-21"}];
-const ATUALIZADO   = "18/05/2026 às 14:53";
+const ATUALIZADO   = "18/05/2026 às 16:21";
 
 const CORES = {
     "matemática":  {c:"#2563EB",b:"#EFF6FF"},
@@ -402,12 +430,40 @@ function applyFiltro(){
     renderCal("cal-prov",pFiltered);
 }
 
+function makeId(disciplina, prazo) {
+    const d = nome(disciplina).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+        .replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"");
+    return `${d}-${prazo.replace(/-/g,"")}`;
+}
+
+// Ao carregar a página, rola até o card se houver hash na URL
+window.addEventListener("load", () => {
+    if (!location.hash) return;
+    const id = location.hash.slice(1);
+
+    // Garante que a aba Próximas está ativa
+    const tabBtn = document.querySelector(".tab-btn");
+    if (tabBtn) trocarAba("proximas", tabBtn);
+
+    // Espera o DOM renderizar os cards
+    setTimeout(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.style.transition = "box-shadow 0.3s";
+        el.style.boxShadow  = "0 0 0 3px #F59E0B";
+        setTimeout(() => el.style.boxShadow = "", 2500);
+    }, 600);
+});
+
 function renderCards(id,itens,isP,isH=false){
     const c=document.getElementById(id);if(!c)return;
     if(!itens.length){c.innerHTML=`<div class="empty"><div class="empty-icon">${isH?"📂":"✅"}</div><p>${isH?"Sem registros.":"Tudo em dia!"}</p></div>`;return;}
     c.innerHTML=itens.map(item=>{
         const v=cor(item.disciplina),txt=clean(item.tarefa||item.conteudo||""),d=diff(item.prazo),u=urg(d),n=nome(item.disciplina);
-        return `<div class="card${isP?" prova":""}${isH?" hist":""}" style="--disc-color:${v.c}">
+        const cardId = makeId(item.disciplina, item.prazo);
+        return `<div class="card${isP?" prova":""}${isH?" hist":""}" id="${cardId}" style="--disc-color:${v.c}">
             <div class="card-top">
                 <div class="card-left">
                     <span class="disc-tag" style="background:${v.b};color:${v.c}">${n}</span>
@@ -474,12 +530,162 @@ function openDrawer(key,itens){
 
 function closeDrawer(e){if(e.target===document.getElementById("overlay"))document.getElementById("overlay").classList.remove("open");}
 
+function renderStats() {
+    const todos = [...DATA_LICOES, ...DATA_PROVAS];
+    const licoes = DATA_LICOES;
+    const provas = DATA_PROVAS;
+
+    // Contagem por disciplina (lições)
+    const porDisc = {};
+    licoes.forEach(i => {
+        const n = nome(i.disciplina);
+        porDisc[n] = (porDisc[n] || 0) + 1;
+    });
+    const discOrdenado = Object.entries(porDisc).sort((a,b) => b[1]-a[1]);
+    const maxDisc = discOrdenado[0]?.[1] || 1;
+
+    // Provas por disciplina
+    const provasPorDisc = {};
+    provas.forEach(i => {
+        const n = nome(i.disciplina);
+        provasPorDisc[n] = (provasPorDisc[n] || 0) + 1;
+    });
+
+    // Lições por semana do ano
+    const porSemana = {};
+    licoes.forEach(i => {
+        const d = new Date(i.prazo+"T12:00:00");
+        const sem = getWeekNumber(d);
+        porSemana[sem] = (porSemana[sem] || 0) + 1;
+    });
+    const semanas = Object.entries(porSemana).sort((a,b)=>a[0]-b[0]).slice(-8);
+    const maxSem = Math.max(...semanas.map(s=>s[1]), 1);
+
+    // Média por semana
+    const totalSemanas = Object.keys(porSemana).length || 1;
+    const media = (licoes.length / totalSemanas).toFixed(1);
+
+    // Disciplina mais urgente
+    const futuras = DATA_LICOES.filter(i => diff(i.prazo) >= 0);
+    const maisUrgente = futuras.length ? nome(futuras[0].disciplina) : "—";
+
+    // Medals
+    const medals = ["🥇","🥈","🥉"];
+
+    const c = document.getElementById("stats-container");
+    c.innerHTML = `
+        <!-- Números rápidos -->
+        <div class="sec-label" style="margin-top:4px">
+            <span class="sec-title">🔢 Resumo do Ano</span>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-num">${licoes.length}</div>
+                <div class="stat-label">Lições no ano</div>
+                <div class="stat-sub">~${media} por semana</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">${provas.length}</div>
+                <div class="stat-label">Provas no ano</div>
+                <div class="stat-sub">${futuras.length} pendente(s)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">${discOrdenado.length}</div>
+                <div class="stat-label">Disciplinas ativas</div>
+                <div class="stat-sub">com lição de casa</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" style="font-size:16px;padding-top:4px">${maisUrgente}</div>
+                <div class="stat-label">Próxima entrega</div>
+                <div class="stat-sub">${futuras.length ? dstr(futuras[0].prazo) : "—"}</div>
+            </div>
+        </div>
+
+        <!-- Ranking de lições -->
+        <div class="sec-label">
+            <span class="sec-title">🏆 Ranking de Lições</span>
+            <span class="sec-count">por disciplina</span>
+        </div>
+        <div class="stat-card full">
+            ${discOrdenado.map(([disc, count], i) => {
+                const v = cor(disc);
+                const pct = Math.round((count / maxDisc) * 100);
+                return `
+                <div class="bar-row">
+                    <div class="bar-label">${medals[i] || ""} ${disc}</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:${pct}%;background:${v.c}"></div>
+                    </div>
+                    <div class="bar-count">${count}</div>
+                </div>`;
+            }).join("")}
+        </div>
+
+        <!-- Provas por disciplina -->
+        ${Object.keys(provasPorDisc).length > 0 ? `
+        <div class="sec-label">
+            <span class="sec-title">📝 Provas por Disciplina</span>
+        </div>
+        <div class="stat-card full">
+            ${Object.entries(provasPorDisc).sort((a,b)=>b[1]-a[1]).map(([disc, count]) => {
+                const v = cor(disc);
+                const pct = Math.round((count / Math.max(...Object.values(provasPorDisc))) * 100);
+                return `
+                <div class="bar-row">
+                    <div class="bar-label">${disc}</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:${pct}%;background:${v.c}"></div>
+                    </div>
+                    <div class="bar-count">${count}</div>
+                </div>`;
+            }).join("")}
+        </div>` : ""}
+
+        <!-- Volume por semana -->
+        <div class="sec-label">
+            <span class="sec-title">📅 Últimas 8 Semanas</span>
+            <span class="sec-count">lições de casa</span>
+        </div>
+        <div class="stat-card full">
+            <div class="week-grid">
+                ${semanas.map(([sem, count]) => `
+                <div class="week-col">
+                    <div class="week-num">${count}</div>
+                    <div class="week-bar-wrap">
+                        <div class="week-bar" style="height:${Math.round((count/maxSem)*100)}%;background:var(--school)"></div>
+                    </div>
+                    <div class="week-label">S${sem}</div>
+                </div>`).join("")}
+            </div>
+        </div>
+    `;
+}
+
+function getWeekNumber(d) {
+    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+}
+
 function trocarAba(n,btn){
     aba=n;filtro="Todos";
     document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
     document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
     document.getElementById("tab-"+n).classList.add("active");
     btn.classList.add("active");
+    // Esconde controls quando está em stats
+    const controls = document.querySelector(".controls");
+    const summaryBar = document.getElementById("summary-bar");
+    if (n === "stats") {
+        controls.style.display = "none";
+        summaryBar.style.display = "none";
+        renderStats();
+    } else {
+        controls.style.display = "flex";
+        summaryBar.style.display = "flex";
+    }
 }
 
 function trocarView(v){
