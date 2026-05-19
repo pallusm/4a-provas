@@ -1,594 +1,833 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#1A3A6B">
-    <title>4°A — Eduardo Gomes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({ appId: "1c203a60-4ab3-4ee6-8c14-a307ad62fb7b", notifyButton: { enable: false } });
-        });
-    </script>
-    <style>
-        :root {
-            --school: #1A3A6B;
-            --bg: #F5F5F5;
-            --white: #FFFFFF;
-            --border: #E0E0E0;
-            --text: #111111;
-            --muted: #666666;
-            --accent: #F59E0B;
-            --red: #DC2626;
-            --radius: 10px;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        html { font-size: 16px; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
-
-        /* Header */
-        header { background: var(--school); color: white; padding: 16px 16px 0; padding-top: calc(16px + env(safe-area-inset-top)); position: sticky; top: 0; z-index: 10; }
-        .hdr-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-        .school-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
-        .hdr-title { font-size: 18px; font-weight: 700; }
-        .hdr-time { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.4); text-align: right; }
-        .share-btn { display: flex; align-items: center; gap: 5px; background: #25D366; color: white; border: none; padding: 7px 13px; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 6px; }
-
-        /* Tabs */
-        .tabs { display: flex; gap: 2px; margin-top: 12px; }
-        .tab { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); border: none; padding: 9px 16px; border-radius: 8px 8px 0 0; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
-        .tab.active { background: var(--bg); color: var(--text); }
-        .badge { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 20px; background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); }
-        .tab.active .badge { background: var(--accent); color: white; }
-
-        /* Summary */
-        .summary { background: white; border-bottom: 1px solid var(--border); padding: 8px 16px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
-        .summary::-webkit-scrollbar { display: none; }
-        .sum-chip { display: flex; align-items: center; gap: 5px; background: var(--bg); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
-        .sum-chip b { color: var(--text); }
-        .sdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-
-        /* Controls */
-        .controls { background: white; border-bottom: 1px solid var(--border); padding: 8px 16px; display: flex; gap: 8px; align-items: center; overflow-x: auto; scrollbar-width: none; }
-        .controls::-webkit-scrollbar { display: none; }
-        .view-toggle { display: flex; background: var(--bg); border-radius: var(--radius); padding: 3px; gap: 2px; flex-shrink: 0; }
-        .view-btn { background: none; border: none; padding: 5px 12px; border-radius: 7px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--muted); transition: all 0.15s; }
-        .view-btn.active { background: white; color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .filters { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
-        .filters::-webkit-scrollbar { display: none; }
-        .fchip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
-        .fchip.on { font-weight: 700; }
-        .fchip .fdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-
-        /* Content */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .container { max-width: 640px; margin: 0 auto; padding: 16px; padding-bottom: calc(32px + env(safe-area-inset-bottom)); }
-
-        /* Section */
-        .sec-header { display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px; }
-        .sec-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-        .sec-count { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-
-        /* Alert */
-        .alert-box { background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px; }
-        .alert-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); margin-bottom: 3px; }
-        .alert-disc { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-        .alert-text { font-size: 13px; color: #555; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .alert-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--red); margin-top: 5px; }
-        .alert-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-        .alert-dots { display: flex; gap: 4px; }
-        .adot { width: 5px; height: 5px; border-radius: 50%; background: #FECACA; cursor: pointer; transition: all 0.2s; }
-        .adot.on { width: 14px; border-radius: 3px; background: var(--red); }
-        .alert-btns { display: flex; gap: 4px; }
-        .anav { background: none; border: 1px solid #FECACA; color: var(--red); width: 28px; height: 28px; border-radius: var(--radius); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .anav:disabled { opacity: 0.3; }
-        .aclose { background: none; border: 1px solid #FECACA; color: var(--red); padding: 0 10px; height: 28px; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; }
-        .alert-carousel { overflow: hidden; border-radius: var(--radius); }
-        .alert-track { display: flex; transition: transform 0.3s ease; }
-        .alert-card { flex: 0 0 100%; }
-
-        /* Cards */
-        .cards { display: grid; gap: 8px; }
-        .card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; border-left: 3px solid #ccc; transition: box-shadow 0.15s; }
-        .card:target { box-shadow: 0 0 0 3px var(--accent); }
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px; }
-        .disc-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
-        .tipo-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: #FEF2F2; color: var(--red); }
-        .urg-tag { font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
-        .card-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-        .card-text { font-size: 13px; line-height: 1.65; color: #444; }
-
-        /* History */
-        .hist-btn { width: 100%; background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; margin-top: 16px; }
-        .hist-arrow { transition: transform 0.2s; }
-        .hist-arrow.open { transform: rotate(180deg); }
-        .hist-body { display: none; margin-top: 6px; }
-        .hist-body.open { display: block; }
-        .card.hist { opacity: 0.6; }
-
-        /* Calendar */
-        .cal-view { display: none; }
-        .cal-view.on { display: block; }
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .cal-nav { background: white; border: 1px solid var(--border); width: 40px; height: 40px; border-radius: var(--radius); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted); }
-        .cal-month { font-size: 15px; font-weight: 700; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-        .cal-dow { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); padding: 3px 0 8px; text-transform: uppercase; }
-        .cal-day { aspect-ratio: 1; min-height: 44px; background: white; border: 1px solid var(--border); border-radius: 8px; padding: 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .cal-day.empty { background: none; border-color: transparent; }
-        .cal-day.today { border-color: var(--school); border-width: 2px; }
-        .cal-day.clickable { cursor: pointer; }
-        .cal-day.clickable:active { background: var(--bg); }
-        .cal-num { font-size: 11px; font-weight: 600; color: var(--muted); }
-        .cal-day.today .cal-num { color: var(--school); font-weight: 700; }
-        .cal-dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; }
-        .cdot { width: 5px; height: 5px; border-radius: 50%; }
-
-        /* Stats */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-        .stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
-        .stat-card.full { grid-column: 1/-1; }
-        .stat-num { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; margin-bottom: 4px; }
-        .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
-        .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
-        .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .bar-label { font-size: 12px; font-weight: 600; width: 80px; text-align: right; flex-shrink: 0; color: var(--text); }
-        .bar-track { flex: 1; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
-        .bar-count { font-size: 11px; font-weight: 700; color: var(--muted); width: 24px; text-align: right; font-family: 'JetBrains Mono', monospace; }
-
-        /* Drawer */
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: flex-end; justify-content: center; backdrop-filter: blur(3px); }
-        .overlay.open { display: flex; }
-        .drawer { background: white; border-radius: 16px 16px 0 0; padding: 12px 16px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); width: 100%; max-width: 640px; max-height: 85vh; overflow-y: auto; animation: slideUp 0.25s ease; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .drawer-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
-        .drawer-date { font-size: 12px; font-weight: 700; color: var(--school); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
-
-        /* Empty */
-        .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
-        .empty-icon { font-size: 36px; margin-bottom: 10px; }
-        .empty p { font-size: 14px; }
-
-        footer { text-align: center; padding: 24px; font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f7" />
+  <title>4ºA — Agenda Escolar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f5f7;
+      --surface:#ffffff;
+      --surface-2:#fbfbfd;
+      --text:#1d1d1f;
+      --muted:#6e6e73;
+      --muted-2:#86868b;
+      --border:rgba(0,0,0,.08);
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+      --shadow-soft:0 4px 14px rgba(0,0,0,.045);
+      --blue:#007aff;
+      --blue-dark:#0a3a75;
+      --green:#34c759;
+      --orange:#ff9500;
+      --red:#ff3b30;
+      --yellow:#ffcc00;
+      --purple:#af52de;
+      --radius:22px;
+      --radius-sm:14px;
+      --max:960px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      line-height:1.45;
+    }
+    button{font-family:inherit}
+    .page{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(0,122,255,.08), transparent 36vw),
+        radial-gradient(circle at top right, rgba(52,199,89,.06), transparent 34vw),
+        var(--bg);
+    }
+    .shell{width:min(var(--max),calc(100% - 32px)); margin:0 auto}
+    header{
+      padding:34px 0 22px;
+    }
+    .topbar{display:flex; align-items:flex-start; justify-content:space-between; gap:16px}
+    .eyebrow{
+      color:#b06a00;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.09em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(30px,5vw,54px);
+      letter-spacing:-.055em;
+      line-height:.98;
+      font-weight:800;
+    }
+    .sub{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:15px;
+      max-width:560px;
+    }
+    .updated{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:16px;
+      padding:8px 12px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(16px);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .share{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 16px;
+      border:0;
+      border-radius:999px;
+      background:#1fc55f;
+      color:white;
+      font-weight:800;
+      font-size:14px;
+      box-shadow:0 8px 20px rgba(31,197,95,.22);
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .share:active{transform:scale(.98)}
+    .hero-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin:28px 0 18px;
+    }
+    .metric{
+      background:rgba(255,255,255,.84);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow-soft);
+      min-height:116px;
+    }
+    .metric.primary{
+      background:linear-gradient(145deg,#007aff,#155ed1);
+      color:white;
+      border-color:transparent;
+    }
+    .metric .label{
+      color:inherit;
+      opacity:.72;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:14px;
+    }
+    .metric .num{
+      font-size:36px;
+      letter-spacing:-.04em;
+      font-weight:800;
+      line-height:1;
+    }
+    .metric .hint{
+      margin-top:10px;
+      color:inherit;
+      opacity:.68;
+      font-size:12px;
+      font-weight:600;
+    }
+    .tabs-wrap{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(245,245,247,.86);
+      backdrop-filter:blur(22px);
+      border-top:1px solid rgba(255,255,255,.6);
+      border-bottom:1px solid var(--border);
+    }
+    .tabs-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+    }
+    .tabs,.view-toggle{
+      display:flex;
+      gap:4px;
+      padding:4px;
+      background:rgba(255,255,255,.78);
+      border:1px solid var(--border);
+      border-radius:999px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+    }
+    .tab,.view-btn,.filter-chip{
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      padding:9px 14px;
+      white-space:nowrap;
+    }
+    .tab.active,.view-btn.active{
+      background:var(--text);
+      color:white;
+      box-shadow:var(--shadow-soft);
+    }
+    .tab .badge{
+      margin-left:6px;
+      display:inline-flex;
+      min-width:20px;
+      height:20px;
+      padding:0 6px;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      background:rgba(0,0,0,.08);
+      font-size:12px;
+    }
+    .tab.active .badge{background:rgba(255,255,255,.22)}
+    .filters{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding:14px 0 2px;
+      scrollbar-width:none;
+    }
+    .filters::-webkit-scrollbar{display:none}
+    .filter-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--border);
+      padding:8px 12px;
+    }
+    .filter-chip.active{
+      background:#fff;
+      color:var(--text);
+      box-shadow:var(--shadow-soft);
+      border-color:rgba(0,122,255,.22);
+    }
+    .dot{width:7px;height:7px;border-radius:999px;display:inline-block;background:var(--blue)}
+    main{padding:28px 0 60px}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+    .view{display:none}
+    .view.active{display:block}
+    .section{
+      margin:24px 0 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .section h2{
+      margin:0;
+      font-size:13px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .section .count{
+      color:var(--muted-2);
+      font-size:12px;
+      font-weight:700;
+    }
+    .cards{display:grid;gap:12px}
+    .card{
+      background:rgba(255,255,255,.92);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:17px 18px;
+      box-shadow:var(--shadow-soft);
+      scroll-margin-top:120px;
+    }
+    .card:hover{box-shadow:var(--shadow)}
+    .card-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .subject{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      font-weight:800;
+      color:var(--text);
+      line-height:1;
+    }
+    .subject .pill{
+      color:var(--disc);
+      background:var(--disc-bg);
+      padding:7px 10px;
+      border-radius:999px;
+    }
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      color:var(--status);
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+    .date{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:650;
+      margin-bottom:8px;
+    }
+    .text{
+      color:#37373a;
+      font-size:15px;
+      line-height:1.62;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+    }
+    .long .text{
+      max-height:132px;
+      overflow:hidden;
+      position:relative;
+    }
+    .long:not(.expanded) .text:after{
+      content:"";
+      position:absolute;
+      left:0;right:0;bottom:0;height:42px;
+      background:linear-gradient(transparent,rgba(255,255,255,.96));
+    }
+    .long.expanded .text{max-height:none}
+    .more{
+      margin-top:10px;
+      border:0;
+      background:transparent;
+      color:var(--blue);
+      font-weight:800;
+      font-size:13px;
+      cursor:pointer;
+      padding:0;
+    }
+    .alert-card{
+      border-color:rgba(255,59,48,.20);
+      background:linear-gradient(180deg,#fff,#fff7f7);
+    }
+    .alert-card .subject .pill{
+      color:#bf2b23;
+      background:#fff0ef;
+    }
+    .alert-summary{
+      margin-bottom:10px;
+      color:#444;
+      font-size:15px;
+      line-height:1.55;
+    }
+    .hint-link{
+      color:var(--blue);
+      font-size:13px;
+      font-weight:800;
+      margin-top:8px;
+    }
+    .empty{
+      background:rgba(255,255,255,.6);
+      border:1px dashed rgba(0,0,0,.12);
+      border-radius:var(--radius);
+      padding:26px;
+      text-align:center;
+      color:var(--muted);
+      font-weight:650;
+    }
+    .calendar{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow-soft);
+    }
+    .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .cal-title{font-weight:800;font-size:18px;letter-spacing:-.02em}
+    .cal-nav{display:flex;gap:8px}
+    .cal-nav button{
+      width:36px;height:36px;border:1px solid var(--border);border-radius:999px;background:#fff;cursor:pointer;font-weight:800;
+    }
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+    .dow{text-align:center;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;padding-bottom:6px}
+    .day{
+      min-height:82px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:var(--surface-2);
+      padding:8px;
+      cursor:pointer;
+    }
+    .day.muted{opacity:.35;cursor:default}
+    .day.today{border-color:rgba(0,122,255,.55);box-shadow:0 0 0 3px rgba(0,122,255,.10)}
+    .day-num{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px}
+    .day-events{display:flex;gap:4px;flex-wrap:wrap}
+    .event-dot{width:8px;height:8px;border-radius:999px;background:var(--blue)}
+    .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow-soft);
+    }
+    .stat-title{font-weight:800;margin-bottom:8px}
+    .stat-row{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;padding:8px 0;border-top:1px solid rgba(0,0,0,.06)}
+    footer{
+      color:var(--muted-2);
+      font-size:12px;
+      text-align:center;
+      padding:26px 0 44px;
+    }
+    .notice{
+      width:min(var(--max),calc(100% - 32px));
+      margin:0 auto 16px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+      text-align:center;
+    }
+    .drawer-backdrop{
+      position:fixed;inset:0;background:rgba(0,0,0,.24);
+      backdrop-filter:blur(10px);
+      display:none;
+      align-items:flex-end;
+      z-index:50;
+    }
+    .drawer-backdrop.open{display:flex}
+    .drawer{
+      width:100%;
+      max-height:78vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:26px 26px 0 0;
+      padding:18px 18px calc(28px + env(safe-area-inset-bottom));
+      box-shadow:0 -18px 40px rgba(0,0,0,.16);
+    }
+    .drawer .handle{width:42px;height:5px;background:#ddd;border-radius:999px;margin:0 auto 16px}
+    @media(max-width:760px){
+      .shell{width:min(var(--max),calc(100% - 22px))}
+      header{padding-top:24px}
+      .topbar{display:block}
+      .share{margin-top:18px;width:100%;justify-content:center}
+      .hero-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+      .metric{padding:15px;min-height:102px}
+      .metric .num{font-size:30px}
+      .tabs-line{display:block}
+      .tabs{overflow:auto;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .view-toggle{margin-top:10px;width:max-content}
+      .card{padding:15px}
+      .stat-grid{grid-template-columns:1fr}
+      .day{min-height:54px;padding:6px}
+      .day .day-num{font-size:11px}
+      h1{font-size:36px}
+    }
+  </style>
 </head>
 <body>
-
-<header>
-    <div class="hdr-top">
+<div class="page">
+  <header>
+    <div class="shell">
+      <div class="topbar">
         <div>
-            <div class="school-tag">Colégio Eduardo Gomes · Fund. Manhã</div>
-            <div class="hdr-title">4°A — Agenda Escolar</div>
+          <div class="eyebrow">Colégio Eduardo Gomes · Fund. Manhã</div>
+          <h1>4ºA — Agenda Escolar</h1>
+          <p class="sub">Resumo automático das lições, avaliações e alertas importantes para as famílias.</p>
+          <div class="updated" id="updated">Atualizado em 19/05/2026 às 16:58</div>
         </div>
-        <div style="text-align:right">
-            <div class="hdr-time" id="hdr-time"></div>
-            <button class="share-btn" onclick="compartilhar()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3 0-.6 0-.9.1l-2.1-1.5c.1-.3.1-.7.1-1s0-.7-.1-1l2.1-1.5c.3.1.6.1.9.1 1.5 0 2.8-1.3 2.8-2.8S19 4 17.5 4 14.7 5.3 14.7 6.8c0 .3 0 .7.1 1l-2.1 1.5c-.5-.4-1.2-.7-1.9-.7s-1.4.3-1.9.7L6.8 7.8c.1-.3.1-.7.1-1C6.9 5.3 5.6 4 4.1 4S1.3 5.3 1.3 6.8 2.6 9.6 4.1 9.6c.3 0 .6 0 .9-.1l2.1 1.5c-.1.3-.1.7-.1 1s0 .7.1 1L4.9 14.5c-.3-.1-.6-.1-.9-.1-1.5 0-2.8 1.3-2.8 2.8S3.5 20 5 20s2.8-1.3 2.8-2.8c0-.3 0-.7-.1-1l2.1-1.5c.5.4 1.2.7 1.9.7s1.4-.3 1.9-.7l2.1 1.5c-.1.3-.1.7-.1 1 0 1.5 1.3 2.8 2.8 2.8s2.8-1.3 2.8-2.8-1.2-2.8-2.7-2.8z"/></svg>
-                Compartilhar
-            </button>
+        <button class="share" onclick="shareSite()">Compartilhar</button>
+      </div>
+      <div class="hero-grid" id="heroGrid"></div>
+    </div>
+  </header>
+
+  <div class="tabs-wrap">
+    <div class="shell">
+      <div class="tabs-line">
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="proximas">Próximas <span class="badge" id="bProx">0</span></button>
+          <button class="tab" data-tab="historico">Histórico <span class="badge" id="bHist">0</span></button>
+          <button class="tab" data-tab="stats">Estatísticas</button>
         </div>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="lista">Lista</button>
+          <button class="view-btn" data-view="calendario">Calendário</button>
+        </div>
+      </div>
+      <div class="filters" id="filters"></div>
     </div>
-    <div class="tabs">
-        <button class="tab active" onclick="setTab('proximas',this)">📅 Próximas <span class="badge" id="b-prox">0</span></button>
-        <button class="tab" onclick="setTab('historico',this)">📚 Histórico <span class="badge" id="b-hist">0</span></button>
-        <button class="tab" onclick="setTab('stats',this)">📊 Estatísticas</button>
-    </div>
-</header>
+  </div>
 
-<div class="summary" id="summary"></div>
+  <main class="shell">
+    <section class="tab-panel active" id="tab-proximas">
+      <div class="view active" id="view-lista">
+        <div id="alertsWrap"></div>
+        <div class="section"><h2>Lições de casa</h2><span class="count" id="cntLicoes"></span></div>
+        <div class="cards" id="licoesWrap"></div>
 
-<div class="controls" id="controls">
-    <div class="view-toggle">
-        <button class="view-btn active" id="vb-lista" onclick="setView('lista')">Lista</button>
-        <button class="view-btn" id="vb-cal" onclick="setView('cal')">Calendário</button>
-    </div>
-    <div class="filters" id="filters"></div>
+        <div class="section"><h2>Próxima aula / sem prazo</h2><span class="count" id="cntSemPrazo"></span></div>
+        <div class="cards" id="semPrazoWrap"></div>
+
+        <div class="section"><h2>Provas & avaliações</h2><span class="count" id="cntProvas"></span></div>
+        <div class="cards" id="provasWrap"></div>
+      </div>
+      <div class="view" id="view-calendario">
+        <div class="calendar">
+          <div class="cal-head">
+            <button aria-label="Mês anterior" class="calPrev">‹</button>
+            <div class="cal-title" id="calTitle"></div>
+            <button aria-label="Próximo mês" class="calNext">›</button>
+          </div>
+          <div class="cal-grid" id="calendarGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-historico">
+      <div class="section"><h2>Lições anteriores</h2><span class="count" id="cntHistL"></span></div>
+      <div class="cards" id="histLicoes"></div>
+      <div class="section"><h2>Avaliações anteriores</h2><span class="count" id="cntHistP"></span></div>
+      <div class="cards" id="histProvas"></div>
+    </section>
+
+    <section class="tab-panel" id="tab-stats">
+      <div class="stat-grid" id="statsGrid"></div>
+    </section>
+  </main>
+
+  <div class="notice">Resumo automático criado para facilitar a organização das famílias. Em caso de dúvida, consulte sempre o portal oficial da escola.</div>
+  <footer>pallusm.github.io/4a-provas · <span id="footerDate">19/05/2026 às 16:58</span></footer>
 </div>
 
-<!-- Próximas -->
-<div class="tab-content active" id="tab-proximas">
-    <div class="container">
-        <div id="alertas"></div>
-        <div class="sec-header"><span class="sec-title">📋 Lições de Casa</span><span class="sec-count" id="cnt-lic"></span></div>
-        <div class="cards" id="cards-lic"></div>
-        <div class="cal-view" id="cal-lic"></div>
-        <div class="sec-header" style="margin-top:20px"><span class="sec-title">📝 Provas & Avaliações</span><span class="sec-count" id="cnt-prov"></span></div>
-        <div class="cards" id="cards-prov"></div>
-        <div class="cal-view" id="cal-prov"></div>
-    </div>
-</div>
-
-<!-- Histórico -->
-<div class="tab-content" id="tab-historico">
-    <div class="container">
-        <button class="hist-btn" onclick="toggleHist('hl')"><span>📚 Lições anteriores</span><span class="hist-arrow" id="arr-hl">▼</span></button>
-        <div class="hist-body" id="hl"><div class="cards" id="h-lic"></div></div>
-        <button class="hist-btn" onclick="toggleHist('hp')"><span>📝 Provas anteriores</span><span class="hist-arrow" id="arr-hp">▼</span></button>
-        <div class="hist-body" id="hp"><div class="cards" id="h-prov"></div></div>
-    </div>
-</div>
-
-<!-- Estatísticas -->
-<div class="tab-content" id="tab-stats">
-    <div class="container" id="stats-container"></div>
-</div>
-
-<footer id="footer">pallusm.github.io/4a-provas</footer>
-
-<div class="overlay" id="overlay" onclick="closeDrawer(event)">
-    <div class="drawer">
-        <div class="drawer-handle"></div>
-        <div class="drawer-date" id="drw-date"></div>
-        <div id="drw-content"></div>
-    </div>
+<div class="drawer-backdrop" id="drawer" onclick="closeDrawer(event)">
+  <div class="drawer">
+    <div class="handle"></div>
+    <div id="drawerContent"></div>
+  </div>
 </div>
 
 <script>
-const DATA_LICOES  = [{"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 26, "fonte": "Ben\u00edcio", "tarefa": "p. 169- ex. 1 Para: 19-05"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 11, "fonte": "Ben\u00edcio", "tarefa": "Para: 19/05 Realizar os exerc\u00edcios 1 e 2, p\u00e1gina 58, multiplica\u00e7\u00e3o e divis\u00e3o por 10, 100 e 1.000."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 10, "fonte": "Ben\u00edcio", "tarefa": "Ler a hist\u00f3ria: \u201cTrancado entre m\u00famias\u201d - p\u00e1ginas 85 a 89 Para: 19-05"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-05-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 8, "fonte": "Heitor", "tarefa": "Os alunos que n\u00e3o finalizaram o desenho da p\u00e1gina 36, terminar em casa para pr\u00f3xima aula (20/05)."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 9, "fonte": "Ben\u00edcio", "tarefa": "Para: 20/05 Realizar os exerc\u00edcios 3 e 4, p\u00e1gina 59, multiplica\u00e7\u00e3o e divis\u00e3o por 10, 100 e 1.000."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 7, "fonte": "Ben\u00edcio", "tarefa": "p. 170, 171 e 172 ex 2, 3 e 4. Para: 26-05"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": null, "sem_prazo": true, "prazo_tipo": "proxima_aula", "origens": ["Ben\u00edcio"], "linha_origem": 8, "fonte": "Ben\u00edcio", "tarefa": "Os alunos que n\u00e3o finalizaram as atividades da page 36 do workbook durante aula, finalizar em casa e trazer para corre\u00e7\u00e3o na pr\u00f3xima aula."}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": null, "sem_prazo": true, "prazo_tipo": "proxima_aula", "origens": ["Ben\u00edcio"], "linha_origem": 12, "fonte": "Ben\u00edcio", "tarefa": "Conforme o orientado em aula, quem n\u00e3o conseguiu finalizar o Lapbook, dever\u00e1 finalizar como tarefa de casa e trazer na pr\u00f3xima aula."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-01-29", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 288, "fonte": "Ben\u00edcio", "tarefa": "Para: 29/01 Conforme explicado em aula, finalizar o desenho da capa do caderno de Matem\u00e1tica. Temas: Pa\u00eds dos n\u00fameros. O que fazer? Criar um desenho com elementos da Matem\u00e1tica, imaginando como seria o seu pa\u00eds dos n\u00fameros. Aten\u00e7\u00e3o! N\u00e3o utilize canetinha, como combinado em aula."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 273, "fonte": "Ben\u00edcio", "tarefa": "Para: 04/02 Realizar os exerc\u00edcios da p\u00e1gina 17, an\u00e1lise de gr\u00e1fico."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 274, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 28 e 29 - ex. 1-a, b, c. Tarefa de casa: Tarefa de casa: Estudo do texto - p\u00e1ginas 28 e 29 - ex. 1-a, b, c. Para: 04-02"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 268, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 29 e 30 - ex. 2-a,b Tarefa de casa: Tarefa de casa: Estudo do texto - p\u00e1ginas 29 e 30 - ex. 2-a,b Para: 05-02"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 263, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 33 - ex. 6 Para: 06-02"}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": "2026-02-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 211, "fonte": "Ben\u00edcio", "tarefa": "Conforme explicado em sala, na pr\u00f3xima aula, faremos uma entrevista com as Orientadoras Andrea e Carol. Na folha monobloco fornecida pela professora, coloque o seu nome, ano, t\u00edtulo \u201cEntrevista com a O.E\u201d. Elabore duas perguntas a serem realizadas no dia da entrevista com as orientadoras. Para ajudar, pense em tudo que engloba o ambiente escolar como: regras de conviv\u00eancia, nas amizades constru\u00eddas, hora do lanche, hora da entrada e sa\u00edda, biblioteca, esportes e sala de aula. Para: 09/02"}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": "2026-02-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 276, "fonte": "Ben\u00edcio", "tarefa": "Conforme o explicado, finalizar a customiza\u00e7\u00e3o iniciada em sala. Para: 09/02"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-02-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 271, "fonte": "Ben\u00edcio", "tarefa": "p. 119 a 121 (ex. 1 ao 4). https://youtu.be/9zjXvb7Zp8U?si=dJWhdWUXRpabzvne Tarefa de casa: Tarefa de casa: p. 119 a 121 (ex. 1 ao 4). Para: 10-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 256, "fonte": "Ben\u00edcio", "tarefa": "Para: 10/02 Realizar a folha avulsa com exerc\u00edcios da tabuada."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 255, "fonte": "Ben\u00edcio", "tarefa": "Estudo da l\u00edngua - p\u00e1gina 30 - ex. 3 Tarefa de casa: Tarefa de casa: Estudo da l\u00edngua - p\u00e1gina 30 - ex. 3. Para: 10-02"}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-02-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 261, "fonte": "Ben\u00edcio", "tarefa": "A zona rural do munic\u00edpio - p. 172 e 173- ex. 1, 2 e 3. Tarefa de casa: Tarefa de casa: A zona rural do munic\u00edpio - p. 172 e 173- ex. 1, 2 e 3. Para: 12-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 250, "fonte": "Ben\u00edcio", "tarefa": "Para: 12/02 Realizar os exerc\u00edcios sobre leitura e interpreta\u00e7\u00e3o de gr\u00e1fico, p\u00e1gina 18."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 249, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 31 e 32 - ex. 4 e 5 Para: 12-02"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-02-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 258, "fonte": "Ben\u00edcio", "tarefa": "Para: 13/02 Observar com mais aten\u00e7\u00e3o os pontos de refer\u00eancia da sua casa at\u00e9 a escola e o nascer do Sol."}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-02-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 242, "fonte": "Ben\u00edcio", "tarefa": "Tarefa de casa \u2013 As capitais \u2013 p. 188 a 191 \u2013 ex. 2. Para: 19-02"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-02-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 239, "fonte": "Ben\u00edcio", "tarefa": "Para: 20/02 Realizar os exerc\u00edcios 1, 3, 4, 5 e 6, p\u00e1ginas 133 a 135, sobre localiza\u00e7\u00e3o e orienta\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 236, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 49 - ex. 1 Tarefa de casa: Tarefa de casa: Estudo do texto - p\u00e1gina 49 - ex. 1 Para: 20-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 237, "fonte": "Ben\u00edcio", "tarefa": "Para: 23/02 Finalizar o exerc\u00edcios 5, p\u00e1gina 24, c\u00e1lculo mental de adi\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-02-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 252, "fonte": "Ben\u00edcio", "tarefa": "Primeiras comunidades humanas \u2013 p. 141 e 142 - ex. 1 Para: 24-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 229, "fonte": "Ben\u00edcio", "tarefa": "Para: 24/02 Realizar os exerc\u00edcios 1 e 2, p\u00e1gina 32, c\u00e1lculo mental."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-25", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 227, "fonte": "Ben\u00edcio", "tarefa": "Para: 25/02 Realizar a folha avulsa de multiplica\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-25", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 228, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 50 - exs. 2 letra A e ex. 3 Para: 25-02"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 222, "fonte": "Ben\u00edcio", "tarefa": "Para: 26/02 - Estudo da l\u00edngua - p\u00e1gina 51 - exs. 4 e 5"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-02-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 231, "fonte": "Ben\u00edcio", "tarefa": "Para: 27/02 Realizar os exerc\u00edcios 1, 2 e 3, p\u00e1ginas 145 e 146, sobre o rel\u00f3gio de sol."}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 213, "fonte": "Ben\u00edcio", "tarefa": "IMPORTANTE: Hoje os livros de ingl\u00eas est\u00e3o indo para casa para serem encapados e etiquetados. Prazo para o retorno dos livros: 02/03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 212, "fonte": "Heitor", "tarefa": "IMPORTANTE: Hoje os livros de ingl\u00eas est\u00e3o indo para casa para serem encapados e etiquetados. Prazo para o retorno dos livros: 02/03"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-03-03", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 225, "fonte": "Ben\u00edcio", "tarefa": "Preparar a leitura para a pr\u00f3xima aula- p. 144 e 145 Tarefa de casa: Tarefa de casa: Preparar a leitura para a pr\u00f3xima aula- p. 144 e 145 Para: 03-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 203, "fonte": "Ben\u00edcio", "tarefa": "2) Estudo do texto - p\u00e1ginas 79 e 80 - exs. 3 e 4 Para: 04-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 214, "fonte": "Ben\u00edcio", "tarefa": "Para: 06/03 - Iniciaremos a apostila de Ortografia. Os alunos dever\u00e3o colorir a capa com capricho e realizar a atividade 1. Esse momento de colorir \u00e9 muito importante, pois contribui para o desenvolvimento da coordena\u00e7\u00e3o motora fina, do controle do tra\u00e7ado e da organiza\u00e7\u00e3o no espa\u00e7o da folha. Al\u00e9m disso, pe\u00e7o que a apostila seja mantida limpa e bem cuidada, pois ser\u00e1 utilizada ao longo de todo o ano."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 195, "fonte": "Ben\u00edcio", "tarefa": "Apostila de ortografia- atividade 2. Para: 09-03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 191, "fonte": "Ben\u00edcio", "tarefa": "Para: 10/03 Realizar os algoritmos em folha avulsa."}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 187, "fonte": "Ben\u00edcio", "tarefa": "1 - Concluir a pesquisa e finalizar o preenchimento da folha de pesquisa que foi entregue hoje na aula. Seguir as orienta\u00e7\u00f5es dadas pela teacher. 2 - Trazer fotos OU desenhos do bug pesquisado, podem ser impressos ou feitos pelo aluno, de 2 a 4 figuras (tamanho aproximado: 10 cm) - para dia 11/03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 187, "fonte": "Heitor", "tarefa": "1 - Concluir a pesquisa e finalizar o preenchimento da folha de pesquisa que foi entregue hoje na aula. Seguir as orienta\u00e7\u00f5es dadas pela teacher. 2 - Trazer fotos OU desenhos do bug pesquisado, podem ser impressos ou feitos pelo aluno, de 2 a 4 figuras (tamanho aproximado: 10 cm) - para dia 11/03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 189, "fonte": "Ben\u00edcio", "tarefa": "Para: 11/03 Realizar os exerc\u00edcos de sistema de numera\u00e7\u00e3o decimal, p\u00e1ginas 46 e 47."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 184, "fonte": "Ben\u00edcio", "tarefa": "Para: 12/03 Recortar e trazer para a aula os anexo 1, figuras planas."}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 193, "fonte": "Ben\u00edcio", "tarefa": "Para: 13/03 Realizar os exerc\u00edcios sobre magnetismo, p\u00e1gias 160 a 164."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 178, "fonte": "Ben\u00edcio", "tarefa": "1) Apostila de Ortografia - Atividade 3 Para: 13-03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 168, "fonte": "Ben\u00edcio", "tarefa": "Para: 18/03 Realizar os exerc\u00edcios sobre figras planas, ex 3 e 4, p\u00e1ginas 70 e 71."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 179, "fonte": "Ben\u00edcio", "tarefa": "Para: 19/03 Entrega da pesquisa sobre a vida e obra de Lygia Clark. Orienta\u00e7\u00f5es: Em sala, a professora explicou como utilizar as ferramentas de busca e os termos necess\u00e1rios para a pesquisa. Al\u00e9m disso, orientou que o trabalho deve ser escrito com caneta azul (escura) ou preta e sem rasuras."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 163, "fonte": "Ben\u00edcio", "tarefa": "Para: 23/03 Estudar as tabuadas (2, 3, 4 e 5)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 157, "fonte": "Ben\u00edcio", "tarefa": "Apostila de Ortografia- tarefa 4. Para: 23-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 162, "fonte": "Ben\u00edcio", "tarefa": "Desenhar um personagem do S\u00edtio do Picapau Amarelo (ver instru\u00e7\u00f5es no Classroom) Para: 23-03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 156, "fonte": "Heitor", "tarefa": "Realizar p\u00e1gina 86 do Workbook. Nomear as imagens com os nomes corretos (para 24/03)"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 144, "fonte": "Ben\u00edcio", "tarefa": "Para: 26/03 Finalizar a pintura das figuras planificadas."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 143, "fonte": "Ben\u00edcio", "tarefa": "P\u00e1ginas 102 e 103 - exs. 1 e 2 Tarefa de casa: Tarefa de casa: P\u00e1ginas 102 e 103 - exs. 1 e 2 Para: 26-03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 139, "fonte": "Ben\u00edcio", "tarefa": "Para: 27/03 Estudar as tabuadas (5, 6, 7, 8 e 9)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 149, "fonte": "Ben\u00edcio", "tarefa": "Dia 27-03, iniciaremos a Roda de leitura."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-30", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 134, "fonte": "Ben\u00edcio", "tarefa": "Apostila de Ortografia- tarefa 5 Para: 30-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-31", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 130, "fonte": "Ben\u00edcio", "tarefa": "Estudo da l\u00edngua - p\u00e1gina 103 - ex. 03 Para: 31-03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 133, "fonte": "Ben\u00edcio", "tarefa": "Lembrete - English Video Quiz - DATA: 02/04 Conte\u00fado: Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook."}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 133, "fonte": "Heitor", "tarefa": "Lembrete - English Video Quiz - DATA: 02/04 Conte\u00fado: Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 125, "fonte": "Ben\u00edcio", "tarefa": "Para: 06/04 Realizar os algoritmos de multiplica\u00e7\u00e3o no caderno. Arquivo no Classroom."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-04-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 127, "fonte": "Ben\u00edcio", "tarefa": "Realizar as p\u00e1ginas 158 a 160. Para: 07-04 ( realizamos em sala)"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-17", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 84, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 32 e 33 - exs. 1,2,3 Para: 17-04"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 75, "fonte": "Heitor", "tarefa": "Os alunos que n\u00e3o terminaram a os desenhos da p\u00e1gina 26, terminar para pr\u00f3xima aula. (23/04)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 103, "fonte": "Ben\u00edcio", "tarefa": "(Para: 15 dias) 2\u00aa Proposta da Roda de Leitura Tarefa de casa: 2\u00aa Proposta da Roda de Leitura Quando lemos uma hist\u00f3ria, sempre existe um momento que nos marca de forma especial\u2026 pode ser o mais engra\u00e7ado, o mais emocionante, o mais bonito ou at\u00e9 aquele que nos faz refletir. Pensando nisso, a proposta de hoje \u00e9 muito especial: escolha o trecho mais emocionante da sua hist\u00f3ria e prepare uma apresenta\u00e7\u00e3o para compartilhar com os seus amigos! Voc\u00ea pode caprichar e montar uma apresenta\u00e7\u00e3o bem bonita ou fazer um cartaz cheio de criatividade. Tenho certeza de que ser\u00e1 um momento encantador de troca e descobertas! Para: 23-04"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 76, "fonte": "Ben\u00edcio", "tarefa": "1) Apostila de Ortografia - tarefa 6 2) Estudo da l\u00edngua - p\u00e1gina 34 - exs. 4 e 5 Para: 23-04"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 48, "fonte": "Ben\u00edcio", "tarefa": "1) Estudo da l\u00edngua - p\u00e1ginas 60 e 61 - exs. 4 e 5 - Para: 05-05 2) (pr\u00f3xima semana) Pesquisa p\u00e1gina 54 - Orienta\u00e7\u00f5es dispon\u00edveis no Google Classroom. Neste dia, n\u00e3o falte, pois faremos um trabalho. Para: 11-05 Aten\u00e7\u00e3o: Estou enviando hoje a folha da Narizinho Arrebitado que postei dia 27-04 e esqueci de enviar para os alunos. Ela dever\u00e1 ser entregue dia 11-05, para relembrar a hist\u00f3ria eles podem rever no classroom na data de 17-03"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-04-28", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 69, "fonte": "Ben\u00edcio", "tarefa": "Leitura- Um morro com muita hist\u00f3ria para contar- p. 123 e 124. Para: 28-04"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-28", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 65, "fonte": "Ben\u00edcio", "tarefa": "Para: 28/04 Realizar os exerc\u00edcios 2 e 3, p\u00e1gina 19, apostila 2, sobre n\u00fameros naturais."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-29", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 63, "fonte": "Ben\u00edcio", "tarefa": "Para: 29/04 Finalizar os exerc\u00edcios da p\u00e1gina 17 e 18."}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-04-30", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 66, "fonte": "Ben\u00edcio", "tarefa": "Para: 30/04 1) Realizar os exerc\u00edcios do \"Em casa\", p\u00e1ginas 129 e 130. 2) Assistir ao v\u00eddeo do Manual do Mundo: Como guardar o cheiro das plantas (Classroom)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-30", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 58, "fonte": "Ben\u00edcio", "tarefa": "1) Apostila de Ortografia - Tarefa 7 2) Estudo do texto - p\u00e1ginas 58 e 59 - exs. 1 e 2 Para: 30-04"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 64, "fonte": "Ben\u00edcio", "tarefa": "(Para: 04-05) Rever a hist\u00f3ria \u201cNarizinho Arrebitado\u201d, disponibilizada no Google Classroom, e realizar a atividade referente \u00e0 hist\u00f3ria em folha avulsa."}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": "2026-05-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 78, "fonte": "Ben\u00edcio", "tarefa": "Exerc\u00edcio 2 \u2013 P\u00e1gina 18 do nosso livro. Para: 04/05"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 61, "fonte": "Ben\u00edcio", "tarefa": "Como atividade para casa, os alunos dever\u00e3o preparar a leitura das p\u00e1ginas 138 a 143 e elaborar 2 perguntas sobre o texto lido Para: 05-05"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 49, "fonte": "Ben\u00edcio", "tarefa": "Para: 05/05 Realizar os exerc\u00edcios 2 e 3, p\u00e1gina 29, subtra\u00e7\u00e3o por compensa\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 47, "fonte": "Ben\u00edcio", "tarefa": "Para: 06/05 Realizar a folha avulsa de multiplica\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 52, "fonte": "Ben\u00edcio", "tarefa": "Tarefa de casa \u2013 A bandeira do Brasil \u2013 p. 193 \u2013 ex. 1 p. 194 e 195 2 e colorir a bandeira do Brasil da p\u00e1gina 175 Para: 07-05"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 41, "fonte": "Heitor", "tarefa": "Realizar as atividades da p. 32 do Workbook, conforme orienta\u00e7\u00f5es dada em sala de aula, para dia 07/05."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 71, "fonte": "Ben\u00edcio", "tarefa": "(Prazo 15 dias) - 3\u00aa Proposta da Roda de Leitura dispon\u00edvel no Google Classroom. 3\u00aa Proposta da Roda de Leitura Oi, meus queridos alunos! Chegou a hora de mais um desafio super divertido! Nesta proposta, voc\u00eas v\u00e3o ler uma hist\u00f3ria com bastante aten\u00e7\u00e3o e, depois, criar um enigma para que os colegas tentem adivinhar qual \u00e9 o nome do seu livro. Como fazer: - Leia a hist\u00f3ria com aten\u00e7\u00e3o; - Pense em pistas criativas (sem revelar o nome do livro!) ; - Monte um enigma bem interessante e desafiador. Vale usar a criatividade! Voc\u00ea pode escolher como apresentar: - Cartaz - Apresenta\u00e7\u00e3o - Desenhos - Ou qualquer ideia criativa que quiser! Na hora da apresenta\u00e7\u00e3o, capriche na fala, explique bem as pistas e deixe seus colegas curiosos! Para: 07-05"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 42, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 80 e 81 - exs. 1 e 2 Para: 07-05"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-05-08", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 51, "fonte": "Ben\u00edcio", "tarefa": "Para: 08/05 Realizar o \"Em casa\", p\u00e1ginas 140 e 141, sobre as subst\u00e2ncias produzidas por plantas."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 38, "fonte": "Ben\u00edcio", "tarefa": "Para: 11/05 Realizar os algoritmos de subtra\u00e7\u00e3o em folha avulsa. Arquivo no Classroom."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 45, "fonte": "Ben\u00edcio", "tarefa": "Realiza\u00e7\u00e3o das atividades 1 e 2 das p\u00e1ginas 150 e 151, que servir\u00e3o para consolidar o entendimento sobre as primeiras formas de com\u00e9rcio e a busca por metais ou especiarias. Para: 12-05"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 30, "fonte": "Ben\u00edcio", "tarefa": "Para: 12/05 Realizar folha avulsa de sistema de numera\u00e7\u00e3o decimal."}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-05-14", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 34, "fonte": "Ben\u00edcio", "tarefa": "Para: 14/05 Realizar os exerc\u00edcios 1, 2, 3 e 4, p\u00e1ginas 152 a 154, fotoss\u00edntese."}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-05-14", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 35, "fonte": "Ben\u00edcio", "tarefa": "Tarefa de casa \u2013 Divisa do estado de Par\u00e1 - p. 194 e 195 - ex. 3 e 4 Para: 14-05"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-14", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 23, "fonte": "Ben\u00edcio", "tarefa": "Estudo da l\u00edngua - p\u00e1ginas 81 e 82 - exs. 3 e 4 Para: 14-05 N\u00e3o falte, amanh\u00e3 teremos nossa Olimp\u00edada de Literatura."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 19, "fonte": "Ben\u00edcio", "tarefa": "Para: 18/05 Realizar os exerc\u00edcios 1, 4 e 5, p\u00e1ginas 46 a 49, linhas paralelas e perpendiculares."}];
-const DATA_PROVAS  = [{"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-21", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 37, "fonte": "Ben\u00edcio", "conteudo": "- 4\u00aa Proposta da Roda de Leitura \u2013 Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, voc\u00eas ir\u00e3o escolher o personagem de que mais gostaram (ou acharam mais interessante) da hist\u00f3ria lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a hist\u00f3ria com aten\u00e7\u00e3o; Escolha um personagem marcante; Pense em suas caracter\u00edsticas, gostos e jeito de ser; Monte uma apresenta\u00e7\u00e3o criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e caracter\u00edsticas Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Voc\u00ea pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATEN\u00c7\u00c3O, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUE\u00c7A DE REALIZAR A SUA PESQUISA NA APOSTILA."}, {"tipo": "prova", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 7, "fonte": "Ben\u00edcio", "conteudo": "Aten\u00e7\u00e3o- Trazer as imagens das especiarias solicitadas no planner para o dia 26-05. As imagens ser\u00e3o utilizadas no trabalho avaliativo que acontecer\u00e1 neste dia. N\u00e3o falte e n\u00e3o esque\u00e7a de trazer as imagens conforme est\u00e1 descrito no bilhete colado no planner. Para: 26-05"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-03", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 210, "fonte": "Ben\u00edcio", "conteudo": "Para: 03/03 Realiza\u00e7\u00e3o dos algoritmos em folha avulsa. Lembrete: Dia 04/03 Atividade Avaliativa de C\u00e1lculo, n\u00e3o falte!"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 223, "fonte": "Ben\u00edcio", "conteudo": "Para: 04/03 Atividade Avaliativa de Matem\u00e1tica, n\u00e3o falte! Algoritmos de adi\u00e7\u00e3o, subtra\u00e7\u00e3o e multiplica\u00e7\u00e3o."}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 209, "fonte": "Ben\u00edcio", "conteudo": "1) Estudo do texto - p\u00e1ginas 78 e 79 - exs. 1 e 2 Para: 04-03 2) No dia 06/03, n\u00e3o falte! Teremos atividade avaliativa de Hist\u00f3ria em Quadrinhos. Reveja na apostila (p\u00e1gs. 46 e 47) as principais caracter\u00edsticas do g\u00eanero e os tipos de bal\u00f5es."}, {"tipo": "prova", "disciplina": "Geografia", "grupo": null, "prazo": "2026-03-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 215, "fonte": "Ben\u00edcio", "conteudo": "Para: 05/03 - As siglas dos estados \u2013 p. 199 \u2013 ex. 2 Aten\u00e7\u00e3o! Dia 05/03 n\u00e3o falte! Teremos uma atividade avaliativa. Estudar - ATIVIDADE AVALIATIVA M\u00f3dulo 1 \u2013 O lugar onde vivemos \u2013 Recordando os munic\u00edpios p. 163; A zona rural do munic\u00edpio p. 165 a 170; O munic\u00edpio e seus vizinhos p. 171 e 174. M\u00f3dulo 2 \u2013 O mapa do Brasil \u2013 A cartografia p. 176; Um munic\u00edpio muito importante: a capital p. 177; Estados e capitais p. 178 a 180; Bras\u00edlia, a capital do Brasil p. 182. M\u00f3dulo 3 \u2013 As siglas dos estados \u2013 Para que servem as siglas p. 194. Estudar a tabela de siglas, estados e capitais."}, {"tipo": "prova", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-03-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 206, "fonte": "Ben\u00edcio", "conteudo": "Atividade avaliativa 10-03 Quest\u00f5es descritivas e de m\u00faltipla escolha Detetives do passado- p.108 e 109 Explorar documentos- p. 112 e 113 Hist\u00f3ria e cronologia- p. 114 e 115 As primeiras comunidades humanas- p. 122 Os primeiros humanos- p. 123 A vida na Pr\u00e9-Hist\u00f3ria- p.128 e 129"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 207, "fonte": "Ben\u00edcio", "conteudo": "ATIVIDADES AVALIATIVAS: Entre os dias 09 e 13/03, os alunos far\u00e3o o trabalho de ingl\u00eas, procurem n\u00e3o faltar, n\u00e3o \u00e9 necess\u00e1rio estudo pr\u00e9vio. ATIVIDADE AVALIATIVA 1 - Estudar a UNIT 0 - pages - Student\u2019s book: 6, 7, 8 e 9 - Workbook: 4, 5, 6, 7 Datas: 4A - 18/03; 4B - 17/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 206, "fonte": "Heitor", "conteudo": "ATIVIDADES AVALIATIVAS: Entre os dias 09 e 13/03, os alunos far\u00e3o o trabalho de ingl\u00eas, procurem n\u00e3o faltar, n\u00e3o \u00e9 necess\u00e1rio estudo pr\u00e9vio. ATIVIDADE AVALIATIVA 1 - Estudar a UNIT 0 - pages - Student\u2019s book: 6, 7, 8 e 9 - Workbook: 4, 5, 6, 7 Datas: 4A - 18/03; 4B - 17/03"}, {"tipo": "prova", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-03-16", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 173, "fonte": "Ben\u00edcio", "conteudo": "Para: 16/03 Atividade Avaliativa de Ci\u00eancias! Estudar: M\u00f3dulo 1: Orienta\u00e7\u00e3o e localiza\u00e7\u00e3o, pp. 124, 125, 126, 127 M\u00f3dulo 2: Orientar-se pelo Sol, pp. 137; 142 e 143. M\u00f3dulo 3: O \u00edm\u00e3, o magnetismo e a b\u00fassola, pp. 149, 150, 153, 155, 156 e 157"}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-17", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 183, "fonte": "Ben\u00edcio", "conteudo": "Atividade avaliativa de interpreta\u00e7\u00e3o de texto - 17-03 Texto jornal\u00edstico: p\u00e1ginas 53 a 59; Revis\u00e3o dispon\u00edvel no Classroom."}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 177, "fonte": "Ben\u00edcio", "conteudo": ">>ATEN\u00c7\u00c3O \u00c0S DATAS DAS ATIVIDADES AVALIATIVAS<< 1 - ATIVIDADE AVALIATIVA 1 (vocabulary/grammar) - leitura e escrita Estudar a UNIT 0 (Welcome) - Student\u2019s book: pages 6, 7, 8 e 9 - Workbook: pages 4, 5, 6, 7 DATA: 18/03 2 - Atividade Avaliativa 2 \u2013 Listening and Vocabulary - Skills: Listening, Reading and Writing - referente \u00e0s units 0 (Welcome) and 1 (In the yard). CONTE\u00daDO: unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 DATA: 26/03 3 - Atividade Avaliativa 3 - Language practice, listening, reading - English Video Quiz - Atividade realizada em Chromebooks em forma de quiz, para avaliar listening, reading e compreens\u00e3o. V\u00eddeo/interpreta\u00e7\u00e3o - Conte\u00fado: unit 1 (In the yard) - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook. DATA: 02/04"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 174, "fonte": "Ben\u00edcio", "conteudo": "ATIVIDADE AVALIATIVA 1 (vocabulary/grammar) - leitura e escrita Estudar a UNIT 0 (Welcome) - Student\u2019s book: pages 6, 7, 8 e 9 - Workbook: pages 4, 5, 6, 7 DATA: 18/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 174, "fonte": "Heitor", "conteudo": ">>ATEN\u00c7\u00c3O \u00c0S DATAS DAS ATIVIDADES AVALIATIVAS<< 1 - ATIVIDADE AVALIATIVA 1 (vocabulary/grammar) - leitura e escrita Conte\u00fado: Student\u2019s book: pages 6, 7, 8 e 9 - Workbook: pages 4, 5, 6, 7 DATA: 18/03 2 - Atividade Avaliativa 2 \u2013 Listening and Vocabulary - Skills: Listening, Reading and Writing Conte\u00fado unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 DATA: 26/03 3 - Atividade Avaliativa 3 - Language practice, listening, reading - English Video Quiz - Atividade realizada em Chromebooks em forma de quiz, para avaliar listening, reading e compreens\u00e3o. V\u00eddeo/interpreta\u00e7\u00e3o - Conte\u00fado: Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook. DATA: 02/04"}, {"tipo": "prova", "disciplina": "Geografia", "grupo": null, "prazo": "2026-03-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 176, "fonte": "Ben\u00edcio", "conteudo": "Tarefa de casa \u2013 Corre\u00e7\u00e3o da atividade avaliativa (os alunos receber\u00e3o uma folha onde dever\u00e3o realizar a corre\u00e7\u00e3o dos exerc\u00edcios que erraram na prova). Para: 19-03"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 158, "fonte": "Ben\u00edcio", "conteudo": "Para: 23/03 N\u00e3o falte, trabalho avaliativo pr\u00e1tico em sala."}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 170, "fonte": "Ben\u00edcio", "conteudo": "Aten\u00e7\u00e3o: No dia 23/03, n\u00e3o falte! Teremos uma Atividade Avaliativa de Estudo da L\u00edngua e Ortografia. Estudar: As classes de palavras: substantivo, artigo e adjetivo: p\u00e1ginas 18 a 23 / 42 / 44 e 67; Concord\u00e2ncia nominal: p\u00e1ginas 69 e 70; Ortografia G ou J: p\u00e1gina 71. Ortografia do \u201cS\u201d: apostila de ortografia. Aten\u00e7\u00e3o! No Classroom, temos v\u00e1rias revis\u00f5es e jogos que os ajudar\u00e3o nos estudos."}, {"tipo": "prova", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-03-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 152, "fonte": "Ben\u00edcio", "conteudo": "N\u00e3o falte, dia 24-03 trabalho avaliativo"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-25", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 154, "fonte": "Ben\u00edcio", "conteudo": "Para: 25/03 Atividade Avaliativa de Matem\u00e1tica, n\u00e3o falte! Estudar: \u2022 Construir e analisar gr\u00e1ficos, p\u00e1gs. 9 a 16. \u2022 Sistema de numera\u00e7\u00e3o decimal, p\u00e1gs. 36 a 42. \u2022 Situa\u00e7\u00f5es-problema envolvendo adi\u00e7\u00e3o e subtra\u00e7\u00e3o \u2022 Algoritmo de adi\u00e7\u00e3o, subtra\u00e7\u00e3o e multiplica\u00e7\u00e3o."}, {"tipo": "prova", "disciplina": "Geografia", "grupo": null, "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 155, "fonte": "Ben\u00edcio", "conteudo": "N\u00e3o falte, trabalho avaliativo ( 26-03)"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 147, "fonte": "Ben\u00edcio", "conteudo": "Lembrete - nesta semana temos atividade avaliativa! Estudar units 0 (Welcome) and 1 (In the yard). CONTE\u00daDO: unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 4A: 26/03 e 4B: 27/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 147, "fonte": "Heitor", "conteudo": "Lembrete - nesta semana temos atividade avaliativa! Estudar units 0 (Welcome) and 1 (In the yard). CONTE\u00daDO: unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 4A: 26/03 e 4B: 27/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 123, "fonte": "Ben\u00edcio", "conteudo": "Estudar para a atividade avaliativa desta semana. Conte\u00fado: Unit 1 (In the yard) - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Dia: 02/04"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 123, "fonte": "Heitor", "conteudo": "Estudar para a atividade avaliativa desta semana. Conte\u00fado: Unit 1 (In the yard) - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Dia: 02/04"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-04-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 112, "fonte": "Ben\u00edcio", "conteudo": "PROVA TRIMESTRAL - DIA 09/04 - CONTE\u00daDO: Unit 0 - Welcome - reading, writing and listening Personal information and information about a friend (name, age, favorite color, sport, animal); months of the year, birthday; e-mail pen pal. Student\u2019s Book, pages: 7, 8, 9 / Workbook: 2, 5, 6, 7 Unit 1 - In the yard - reading, writing and listening - Insects (bugs), pets, plants; possessives: My, your, his, her, our, their; demonstratives: that/those (singular/plural), favorite animal or bug. Student\u2019s Book, pages: 16, 17, 18, 19 / Workbook: 12, 13, 14, 15 Unit 2 - At school Name the rooms at school; what students like about school Student\u2019s Book, pages: 26, 27 / Workbook: 20, 21"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 112, "fonte": "Heitor", "conteudo": "PROVA TRIMESTRAL - DIA 09/04 - CONTE\u00daDO: Unit 0 - Welcome - reading, writing and listening Personal information and information about a friend (name, age, favorite color, sport, animal); months of the year, birthday; e-mail pen pal. Student\u2019s Book, pages: 7, 8, 9 / Workbook: 2, 5, 6, 7 Unit 1 - In the yard - reading, writing and listening - Insects (bugs), pets, plants; possessives: My, your, his, her, our, their; demonstratives: that/those (singular/plural), favorite animal or bug. Student\u2019s Book, pages: 16, 17, 18, 19 / Workbook: 12, 13, 14, 15 Unit 2 - At school Name the rooms at school; what students like about school Student\u2019s Book, pages: 26, 27 / Workbook: 20, 21"}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 138, "fonte": "Ben\u00edcio", "conteudo": "Estude para o Simulado- Revis\u00e3o no classroom. Para: 09-04 - Roda de leitura: Realize a leitura do seu livro. O aluno dever\u00e1 pensar em uma forma de apresentar a hist\u00f3ria para os colegas. As orienta\u00e7\u00f5es completas para essa atividade est\u00e3o dispon\u00edveis no Google Classroom."}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 115, "fonte": "Ben\u00edcio", "conteudo": "Para: 13/04 Segue atividade avaliativa de Matem\u00e1tica para assinar e devolver. Obs. Iniciar os estudos para a Avalia\u00e7\u00e3o Tirmestral de Matem\u00e1tica."}];
+const DATA_LICOES = [{"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 26, "fonte": "Ben\u00edcio", "tarefa": "p. 169- ex. 1 Para: 19-05"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 11, "fonte": "Ben\u00edcio", "tarefa": "Para: 19/05 Realizar os exerc\u00edcios 1 e 2, p\u00e1gina 58, multiplica\u00e7\u00e3o e divis\u00e3o por 10, 100 e 1.000."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 10, "fonte": "Ben\u00edcio", "tarefa": "Ler a hist\u00f3ria: \u201cTrancado entre m\u00famias\u201d - p\u00e1ginas 85 a 89 Para: 19-05"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-05-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 8, "fonte": "Heitor", "tarefa": "Os alunos que n\u00e3o finalizaram o desenho da p\u00e1gina 36, terminar em casa para pr\u00f3xima aula (20/05)."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 9, "fonte": "Ben\u00edcio", "tarefa": "Para: 20/05 Realizar os exerc\u00edcios 3 e 4, p\u00e1gina 59, multiplica\u00e7\u00e3o e divis\u00e3o por 10, 100 e 1.000."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 7, "fonte": "Ben\u00edcio", "tarefa": "p. 170, 171 e 172 ex 2, 3 e 4. Para: 26-05"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": null, "sem_prazo": true, "prazo_tipo": "proxima_aula", "origens": ["Ben\u00edcio"], "linha_origem": 8, "fonte": "Ben\u00edcio", "tarefa": "Os alunos que n\u00e3o finalizaram as atividades da page 36 do workbook durante aula, finalizar em casa e trazer para corre\u00e7\u00e3o na pr\u00f3xima aula."}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": null, "sem_prazo": true, "prazo_tipo": "proxima_aula", "origens": ["Ben\u00edcio"], "linha_origem": 12, "fonte": "Ben\u00edcio", "tarefa": "Conforme o orientado em aula, quem n\u00e3o conseguiu finalizar o Lapbook, dever\u00e1 finalizar como tarefa de casa e trazer na pr\u00f3xima aula."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-01-29", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 288, "fonte": "Ben\u00edcio", "tarefa": "Para: 29/01 Conforme explicado em aula, finalizar o desenho da capa do caderno de Matem\u00e1tica. Temas: Pa\u00eds dos n\u00fameros. O que fazer? Criar um desenho com elementos da Matem\u00e1tica, imaginando como seria o seu pa\u00eds dos n\u00fameros. Aten\u00e7\u00e3o! N\u00e3o utilize canetinha, como combinado em aula."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 273, "fonte": "Ben\u00edcio", "tarefa": "Para: 04/02 Realizar os exerc\u00edcios da p\u00e1gina 17, an\u00e1lise de gr\u00e1fico."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 274, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 28 e 29 - ex. 1-a, b, c. Tarefa de casa: Tarefa de casa: Estudo do texto - p\u00e1ginas 28 e 29 - ex. 1-a, b, c. Para: 04-02"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 268, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 29 e 30 - ex. 2-a,b Tarefa de casa: Tarefa de casa: Estudo do texto - p\u00e1ginas 29 e 30 - ex. 2-a,b Para: 05-02"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 263, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 33 - ex. 6 Para: 06-02"}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": "2026-02-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 211, "fonte": "Ben\u00edcio", "tarefa": "Conforme explicado em sala, na pr\u00f3xima aula, faremos uma entrevista com as Orientadoras Andrea e Carol. Na folha monobloco fornecida pela professora, coloque o seu nome, ano, t\u00edtulo \u201cEntrevista com a O.E\u201d. Elabore duas perguntas a serem realizadas no dia da entrevista com as orientadoras. Para ajudar, pense em tudo que engloba o ambiente escolar como: regras de conviv\u00eancia, nas amizades constru\u00eddas, hora do lanche, hora da entrada e sa\u00edda, biblioteca, esportes e sala de aula. Para: 09/02"}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": "2026-02-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 276, "fonte": "Ben\u00edcio", "tarefa": "Conforme o explicado, finalizar a customiza\u00e7\u00e3o iniciada em sala. Para: 09/02"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-02-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 271, "fonte": "Ben\u00edcio", "tarefa": "p. 119 a 121 (ex. 1 ao 4). https://youtu.be/9zjXvb7Zp8U?si=dJWhdWUXRpabzvne Tarefa de casa: Tarefa de casa: p. 119 a 121 (ex. 1 ao 4). Para: 10-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 256, "fonte": "Ben\u00edcio", "tarefa": "Para: 10/02 Realizar a folha avulsa com exerc\u00edcios da tabuada."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 255, "fonte": "Ben\u00edcio", "tarefa": "Estudo da l\u00edngua - p\u00e1gina 30 - ex. 3 Tarefa de casa: Tarefa de casa: Estudo da l\u00edngua - p\u00e1gina 30 - ex. 3. Para: 10-02"}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-02-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 261, "fonte": "Ben\u00edcio", "tarefa": "A zona rural do munic\u00edpio - p. 172 e 173- ex. 1, 2 e 3. Tarefa de casa: Tarefa de casa: A zona rural do munic\u00edpio - p. 172 e 173- ex. 1, 2 e 3. Para: 12-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 250, "fonte": "Ben\u00edcio", "tarefa": "Para: 12/02 Realizar os exerc\u00edcios sobre leitura e interpreta\u00e7\u00e3o de gr\u00e1fico, p\u00e1gina 18."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 249, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 31 e 32 - ex. 4 e 5 Para: 12-02"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-02-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 258, "fonte": "Ben\u00edcio", "tarefa": "Para: 13/02 Observar com mais aten\u00e7\u00e3o os pontos de refer\u00eancia da sua casa at\u00e9 a escola e o nascer do Sol."}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-02-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 242, "fonte": "Ben\u00edcio", "tarefa": "Tarefa de casa \u2013 As capitais \u2013 p. 188 a 191 \u2013 ex. 2. Para: 19-02"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-02-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 239, "fonte": "Ben\u00edcio", "tarefa": "Para: 20/02 Realizar os exerc\u00edcios 1, 3, 4, 5 e 6, p\u00e1ginas 133 a 135, sobre localiza\u00e7\u00e3o e orienta\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-20", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 236, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 49 - ex. 1 Tarefa de casa: Tarefa de casa: Estudo do texto - p\u00e1gina 49 - ex. 1 Para: 20-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 237, "fonte": "Ben\u00edcio", "tarefa": "Para: 23/02 Finalizar o exerc\u00edcios 5, p\u00e1gina 24, c\u00e1lculo mental de adi\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-02-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 252, "fonte": "Ben\u00edcio", "tarefa": "Primeiras comunidades humanas \u2013 p. 141 e 142 - ex. 1 Para: 24-02"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 229, "fonte": "Ben\u00edcio", "tarefa": "Para: 24/02 Realizar os exerc\u00edcios 1 e 2, p\u00e1gina 32, c\u00e1lculo mental."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-02-25", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 227, "fonte": "Ben\u00edcio", "tarefa": "Para: 25/02 Realizar a folha avulsa de multiplica\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-25", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 228, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1gina 50 - exs. 2 letra A e ex. 3 Para: 25-02"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-02-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 222, "fonte": "Ben\u00edcio", "tarefa": "Para: 26/02 - Estudo da l\u00edngua - p\u00e1gina 51 - exs. 4 e 5"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-02-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 231, "fonte": "Ben\u00edcio", "tarefa": "Para: 27/02 Realizar os exerc\u00edcios 1, 2 e 3, p\u00e1ginas 145 e 146, sobre o rel\u00f3gio de sol."}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 213, "fonte": "Ben\u00edcio", "tarefa": "IMPORTANTE: Hoje os livros de ingl\u00eas est\u00e3o indo para casa para serem encapados e etiquetados. Prazo para o retorno dos livros: 02/03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 212, "fonte": "Heitor", "tarefa": "IMPORTANTE: Hoje os livros de ingl\u00eas est\u00e3o indo para casa para serem encapados e etiquetados. Prazo para o retorno dos livros: 02/03"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-03-03", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 225, "fonte": "Ben\u00edcio", "tarefa": "Preparar a leitura para a pr\u00f3xima aula- p. 144 e 145 Tarefa de casa: Tarefa de casa: Preparar a leitura para a pr\u00f3xima aula- p. 144 e 145 Para: 03-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 203, "fonte": "Ben\u00edcio", "tarefa": "2) Estudo do texto - p\u00e1ginas 79 e 80 - exs. 3 e 4 Para: 04-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 214, "fonte": "Ben\u00edcio", "tarefa": "Para: 06/03 - Iniciaremos a apostila de Ortografia. Os alunos dever\u00e3o colorir a capa com capricho e realizar a atividade 1. Esse momento de colorir \u00e9 muito importante, pois contribui para o desenvolvimento da coordena\u00e7\u00e3o motora fina, do controle do tra\u00e7ado e da organiza\u00e7\u00e3o no espa\u00e7o da folha. Al\u00e9m disso, pe\u00e7o que a apostila seja mantida limpa e bem cuidada, pois ser\u00e1 utilizada ao longo de todo o ano."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 195, "fonte": "Ben\u00edcio", "tarefa": "Apostila de ortografia- atividade 2. Para: 09-03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 191, "fonte": "Ben\u00edcio", "tarefa": "Para: 10/03 Realizar os algoritmos em folha avulsa."}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 187, "fonte": "Ben\u00edcio", "tarefa": "1 - Concluir a pesquisa e finalizar o preenchimento da folha de pesquisa que foi entregue hoje na aula. Seguir as orienta\u00e7\u00f5es dadas pela teacher. 2 - Trazer fotos OU desenhos do bug pesquisado, podem ser impressos ou feitos pelo aluno, de 2 a 4 figuras (tamanho aproximado: 10 cm) - para dia 11/03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 187, "fonte": "Heitor", "tarefa": "1 - Concluir a pesquisa e finalizar o preenchimento da folha de pesquisa que foi entregue hoje na aula. Seguir as orienta\u00e7\u00f5es dadas pela teacher. 2 - Trazer fotos OU desenhos do bug pesquisado, podem ser impressos ou feitos pelo aluno, de 2 a 4 figuras (tamanho aproximado: 10 cm) - para dia 11/03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 189, "fonte": "Ben\u00edcio", "tarefa": "Para: 11/03 Realizar os exerc\u00edcos de sistema de numera\u00e7\u00e3o decimal, p\u00e1ginas 46 e 47."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 184, "fonte": "Ben\u00edcio", "tarefa": "Para: 12/03 Recortar e trazer para a aula os anexo 1, figuras planas."}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 193, "fonte": "Ben\u00edcio", "tarefa": "Para: 13/03 Realizar os exerc\u00edcios sobre magnetismo, p\u00e1gias 160 a 164."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 178, "fonte": "Ben\u00edcio", "tarefa": "1) Apostila de Ortografia - Atividade 3 Para: 13-03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 168, "fonte": "Ben\u00edcio", "tarefa": "Para: 18/03 Realizar os exerc\u00edcios sobre figras planas, ex 3 e 4, p\u00e1ginas 70 e 71."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 179, "fonte": "Ben\u00edcio", "tarefa": "Para: 19/03 Entrega da pesquisa sobre a vida e obra de Lygia Clark. Orienta\u00e7\u00f5es: Em sala, a professora explicou como utilizar as ferramentas de busca e os termos necess\u00e1rios para a pesquisa. Al\u00e9m disso, orientou que o trabalho deve ser escrito com caneta azul (escura) ou preta e sem rasuras."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 163, "fonte": "Ben\u00edcio", "tarefa": "Para: 23/03 Estudar as tabuadas (2, 3, 4 e 5)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 157, "fonte": "Ben\u00edcio", "tarefa": "Apostila de Ortografia- tarefa 4. Para: 23-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 162, "fonte": "Ben\u00edcio", "tarefa": "Desenhar um personagem do S\u00edtio do Picapau Amarelo (ver instru\u00e7\u00f5es no Classroom) Para: 23-03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 156, "fonte": "Heitor", "tarefa": "Realizar p\u00e1gina 86 do Workbook. Nomear as imagens com os nomes corretos (para 24/03)"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 144, "fonte": "Ben\u00edcio", "tarefa": "Para: 26/03 Finalizar a pintura das figuras planificadas."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 143, "fonte": "Ben\u00edcio", "tarefa": "P\u00e1ginas 102 e 103 - exs. 1 e 2 Tarefa de casa: Tarefa de casa: P\u00e1ginas 102 e 103 - exs. 1 e 2 Para: 26-03"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 139, "fonte": "Ben\u00edcio", "tarefa": "Para: 27/03 Estudar as tabuadas (5, 6, 7, 8 e 9)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 149, "fonte": "Ben\u00edcio", "tarefa": "Dia 27-03, iniciaremos a Roda de leitura."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-30", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 134, "fonte": "Ben\u00edcio", "tarefa": "Apostila de Ortografia- tarefa 5 Para: 30-03"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-31", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 130, "fonte": "Ben\u00edcio", "tarefa": "Estudo da l\u00edngua - p\u00e1gina 103 - ex. 03 Para: 31-03"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 133, "fonte": "Ben\u00edcio", "tarefa": "Lembrete - English Video Quiz - DATA: 02/04 Conte\u00fado: Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook."}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 133, "fonte": "Heitor", "tarefa": "Lembrete - English Video Quiz - DATA: 02/04 Conte\u00fado: Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 125, "fonte": "Ben\u00edcio", "tarefa": "Para: 06/04 Realizar os algoritmos de multiplica\u00e7\u00e3o no caderno. Arquivo no Classroom."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-04-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 127, "fonte": "Ben\u00edcio", "tarefa": "Realizar as p\u00e1ginas 158 a 160. Para: 07-04 ( realizamos em sala)"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-17", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 84, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 32 e 33 - exs. 1,2,3 Para: 17-04"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 75, "fonte": "Heitor", "tarefa": "Os alunos que n\u00e3o terminaram a os desenhos da p\u00e1gina 26, terminar para pr\u00f3xima aula. (23/04)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 103, "fonte": "Ben\u00edcio", "tarefa": "(Para: 15 dias) 2\u00aa Proposta da Roda de Leitura Tarefa de casa: 2\u00aa Proposta da Roda de Leitura Quando lemos uma hist\u00f3ria, sempre existe um momento que nos marca de forma especial\u2026 pode ser o mais engra\u00e7ado, o mais emocionante, o mais bonito ou at\u00e9 aquele que nos faz refletir. Pensando nisso, a proposta de hoje \u00e9 muito especial: escolha o trecho mais emocionante da sua hist\u00f3ria e prepare uma apresenta\u00e7\u00e3o para compartilhar com os seus amigos! Voc\u00ea pode caprichar e montar uma apresenta\u00e7\u00e3o bem bonita ou fazer um cartaz cheio de criatividade. Tenho certeza de que ser\u00e1 um momento encantador de troca e descobertas! Para: 23-04"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 76, "fonte": "Ben\u00edcio", "tarefa": "1) Apostila de Ortografia - tarefa 6 2) Estudo da l\u00edngua - p\u00e1gina 34 - exs. 4 e 5 Para: 23-04"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-27", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 48, "fonte": "Ben\u00edcio", "tarefa": "1) Estudo da l\u00edngua - p\u00e1ginas 60 e 61 - exs. 4 e 5 - Para: 05-05 2) (pr\u00f3xima semana) Pesquisa p\u00e1gina 54 - Orienta\u00e7\u00f5es dispon\u00edveis no Google Classroom. Neste dia, n\u00e3o falte, pois faremos um trabalho. Para: 11-05 Aten\u00e7\u00e3o: Estou enviando hoje a folha da Narizinho Arrebitado que postei dia 27-04 e esqueci de enviar para os alunos. Ela dever\u00e1 ser entregue dia 11-05, para relembrar a hist\u00f3ria eles podem rever no classroom na data de 17-03"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-04-28", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 69, "fonte": "Ben\u00edcio", "tarefa": "Leitura- Um morro com muita hist\u00f3ria para contar- p. 123 e 124. Para: 28-04"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-28", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 65, "fonte": "Ben\u00edcio", "tarefa": "Para: 28/04 Realizar os exerc\u00edcios 2 e 3, p\u00e1gina 19, apostila 2, sobre n\u00fameros naturais."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-29", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 63, "fonte": "Ben\u00edcio", "tarefa": "Para: 29/04 Finalizar os exerc\u00edcios da p\u00e1gina 17 e 18."}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-04-30", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 66, "fonte": "Ben\u00edcio", "tarefa": "Para: 30/04 1) Realizar os exerc\u00edcios do \"Em casa\", p\u00e1ginas 129 e 130. 2) Assistir ao v\u00eddeo do Manual do Mundo: Como guardar o cheiro das plantas (Classroom)."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-30", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 58, "fonte": "Ben\u00edcio", "tarefa": "1) Apostila de Ortografia - Tarefa 7 2) Estudo do texto - p\u00e1ginas 58 e 59 - exs. 1 e 2 Para: 30-04"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 64, "fonte": "Ben\u00edcio", "tarefa": "(Para: 04-05) Rever a hist\u00f3ria \u201cNarizinho Arrebitado\u201d, disponibilizada no Google Classroom, e realizar a atividade referente \u00e0 hist\u00f3ria em folha avulsa."}, {"tipo": "licao", "disciplina": "Projeto de Vida", "grupo": null, "prazo": "2026-05-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 78, "fonte": "Ben\u00edcio", "tarefa": "Exerc\u00edcio 2 \u2013 P\u00e1gina 18 do nosso livro. Para: 04/05"}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 61, "fonte": "Ben\u00edcio", "tarefa": "Como atividade para casa, os alunos dever\u00e3o preparar a leitura das p\u00e1ginas 138 a 143 e elaborar 2 perguntas sobre o texto lido Para: 05-05"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 49, "fonte": "Ben\u00edcio", "tarefa": "Para: 05/05 Realizar os exerc\u00edcios 2 e 3, p\u00e1gina 29, subtra\u00e7\u00e3o por compensa\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-06", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 47, "fonte": "Ben\u00edcio", "tarefa": "Para: 06/05 Realizar a folha avulsa de multiplica\u00e7\u00e3o."}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 52, "fonte": "Ben\u00edcio", "tarefa": "Tarefa de casa \u2013 A bandeira do Brasil \u2013 p. 193 \u2013 ex. 1 p. 194 e 195 2 e colorir a bandeira do Brasil da p\u00e1gina 175 Para: 07-05"}, {"tipo": "licao", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 41, "fonte": "Heitor", "tarefa": "Realizar as atividades da p. 32 do Workbook, conforme orienta\u00e7\u00f5es dada em sala de aula, para dia 07/05."}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 71, "fonte": "Ben\u00edcio", "tarefa": "(Prazo 15 dias) - 3\u00aa Proposta da Roda de Leitura dispon\u00edvel no Google Classroom. 3\u00aa Proposta da Roda de Leitura Oi, meus queridos alunos! Chegou a hora de mais um desafio super divertido! Nesta proposta, voc\u00eas v\u00e3o ler uma hist\u00f3ria com bastante aten\u00e7\u00e3o e, depois, criar um enigma para que os colegas tentem adivinhar qual \u00e9 o nome do seu livro. Como fazer: - Leia a hist\u00f3ria com aten\u00e7\u00e3o; - Pense em pistas criativas (sem revelar o nome do livro!) ; - Monte um enigma bem interessante e desafiador. Vale usar a criatividade! Voc\u00ea pode escolher como apresentar: - Cartaz - Apresenta\u00e7\u00e3o - Desenhos - Ou qualquer ideia criativa que quiser! Na hora da apresenta\u00e7\u00e3o, capriche na fala, explique bem as pistas e deixe seus colegas curiosos! Para: 07-05"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-07", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 42, "fonte": "Ben\u00edcio", "tarefa": "Estudo do texto - p\u00e1ginas 80 e 81 - exs. 1 e 2 Para: 07-05"}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-05-08", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 51, "fonte": "Ben\u00edcio", "tarefa": "Para: 08/05 Realizar o \"Em casa\", p\u00e1ginas 140 e 141, sobre as subst\u00e2ncias produzidas por plantas."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-11", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 38, "fonte": "Ben\u00edcio", "tarefa": "Para: 11/05 Realizar os algoritmos de subtra\u00e7\u00e3o em folha avulsa. Arquivo no Classroom."}, {"tipo": "licao", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 45, "fonte": "Ben\u00edcio", "tarefa": "Realiza\u00e7\u00e3o das atividades 1 e 2 das p\u00e1ginas 150 e 151, que servir\u00e3o para consolidar o entendimento sobre as primeiras formas de com\u00e9rcio e a busca por metais ou especiarias. Para: 12-05"}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-12", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 30, "fonte": "Ben\u00edcio", "tarefa": "Para: 12/05 Realizar folha avulsa de sistema de numera\u00e7\u00e3o decimal."}, {"tipo": "licao", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-05-14", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 34, "fonte": "Ben\u00edcio", "tarefa": "Para: 14/05 Realizar os exerc\u00edcios 1, 2, 3 e 4, p\u00e1ginas 152 a 154, fotoss\u00edntese."}, {"tipo": "licao", "disciplina": "Geografia", "grupo": null, "prazo": "2026-05-14", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 35, "fonte": "Ben\u00edcio", "tarefa": "Tarefa de casa \u2013 Divisa do estado de Par\u00e1 - p. 194 e 195 - ex. 3 e 4 Para: 14-05"}, {"tipo": "licao", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-14", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 23, "fonte": "Ben\u00edcio", "tarefa": "Estudo da l\u00edngua - p\u00e1ginas 81 e 82 - exs. 3 e 4 Para: 14-05 N\u00e3o falte, amanh\u00e3 teremos nossa Olimp\u00edada de Literatura."}, {"tipo": "licao", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-05-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 19, "fonte": "Ben\u00edcio", "tarefa": "Para: 18/05 Realizar os exerc\u00edcios 1, 4 e 5, p\u00e1ginas 46 a 49, linhas paralelas e perpendiculares."}];
+const DATA_PROVAS = [{"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-21", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 37, "fonte": "Ben\u00edcio", "conteudo": "- 4\u00aa Proposta da Roda de Leitura \u2013 Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, voc\u00eas ir\u00e3o escolher o personagem de que mais gostaram (ou acharam mais interessante) da hist\u00f3ria lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a hist\u00f3ria com aten\u00e7\u00e3o; Escolha um personagem marcante; Pense em suas caracter\u00edsticas, gostos e jeito de ser; Monte uma apresenta\u00e7\u00e3o criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e caracter\u00edsticas Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Voc\u00ea pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATEN\u00c7\u00c3O, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUE\u00c7A DE REALIZAR A SUA PESQUISA NA APOSTILA."}, {"tipo": "prova", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 7, "fonte": "Ben\u00edcio", "conteudo": "Aten\u00e7\u00e3o- Trazer as imagens das especiarias solicitadas no planner para o dia 26-05. As imagens ser\u00e3o utilizadas no trabalho avaliativo que acontecer\u00e1 neste dia. N\u00e3o falte e n\u00e3o esque\u00e7a de trazer as imagens conforme est\u00e1 descrito no bilhete colado no planner. Para: 26-05"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-03", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 210, "fonte": "Ben\u00edcio", "conteudo": "Para: 03/03 Realiza\u00e7\u00e3o dos algoritmos em folha avulsa. Lembrete: Dia 04/03 Atividade Avaliativa de C\u00e1lculo, n\u00e3o falte!"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 223, "fonte": "Ben\u00edcio", "conteudo": "Para: 04/03 Atividade Avaliativa de Matem\u00e1tica, n\u00e3o falte! Algoritmos de adi\u00e7\u00e3o, subtra\u00e7\u00e3o e multiplica\u00e7\u00e3o."}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-04", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 209, "fonte": "Ben\u00edcio", "conteudo": "1) Estudo do texto - p\u00e1ginas 78 e 79 - exs. 1 e 2 Para: 04-03 2) No dia 06/03, n\u00e3o falte! Teremos atividade avaliativa de Hist\u00f3ria em Quadrinhos. Reveja na apostila (p\u00e1gs. 46 e 47) as principais caracter\u00edsticas do g\u00eanero e os tipos de bal\u00f5es."}, {"tipo": "prova", "disciplina": "Geografia", "grupo": null, "prazo": "2026-03-05", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 215, "fonte": "Ben\u00edcio", "conteudo": "Para: 05/03 - As siglas dos estados \u2013 p. 199 \u2013 ex. 2 Aten\u00e7\u00e3o! Dia 05/03 n\u00e3o falte! Teremos uma atividade avaliativa. Estudar - ATIVIDADE AVALIATIVA M\u00f3dulo 1 \u2013 O lugar onde vivemos \u2013 Recordando os munic\u00edpios p. 163; A zona rural do munic\u00edpio p. 165 a 170; O munic\u00edpio e seus vizinhos p. 171 e 174. M\u00f3dulo 2 \u2013 O mapa do Brasil \u2013 A cartografia p. 176; Um munic\u00edpio muito importante: a capital p. 177; Estados e capitais p. 178 a 180; Bras\u00edlia, a capital do Brasil p. 182. M\u00f3dulo 3 \u2013 As siglas dos estados \u2013 Para que servem as siglas p. 194. Estudar a tabela de siglas, estados e capitais."}, {"tipo": "prova", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-03-10", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 206, "fonte": "Ben\u00edcio", "conteudo": "Atividade avaliativa 10-03 Quest\u00f5es descritivas e de m\u00faltipla escolha Detetives do passado- p.108 e 109 Explorar documentos- p. 112 e 113 Hist\u00f3ria e cronologia- p. 114 e 115 As primeiras comunidades humanas- p. 122 Os primeiros humanos- p. 123 A vida na Pr\u00e9-Hist\u00f3ria- p.128 e 129"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 207, "fonte": "Ben\u00edcio", "conteudo": "ATIVIDADES AVALIATIVAS: Entre os dias 09 e 13/03, os alunos far\u00e3o o trabalho de ingl\u00eas, procurem n\u00e3o faltar, n\u00e3o \u00e9 necess\u00e1rio estudo pr\u00e9vio. ATIVIDADE AVALIATIVA 1 - Estudar a UNIT 0 - pages - Student\u2019s book: 6, 7, 8 e 9 - Workbook: 4, 5, 6, 7 Datas: 4A - 18/03; 4B - 17/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 206, "fonte": "Heitor", "conteudo": "ATIVIDADES AVALIATIVAS: Entre os dias 09 e 13/03, os alunos far\u00e3o o trabalho de ingl\u00eas, procurem n\u00e3o faltar, n\u00e3o \u00e9 necess\u00e1rio estudo pr\u00e9vio. ATIVIDADE AVALIATIVA 1 - Estudar a UNIT 0 - pages - Student\u2019s book: 6, 7, 8 e 9 - Workbook: 4, 5, 6, 7 Datas: 4A - 18/03; 4B - 17/03"}, {"tipo": "prova", "disciplina": "Ci\u00eancias", "grupo": null, "prazo": "2026-03-16", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 173, "fonte": "Ben\u00edcio", "conteudo": "Para: 16/03 Atividade Avaliativa de Ci\u00eancias! Estudar: M\u00f3dulo 1: Orienta\u00e7\u00e3o e localiza\u00e7\u00e3o, pp. 124, 125, 126, 127 M\u00f3dulo 2: Orientar-se pelo Sol, pp. 137; 142 e 143. M\u00f3dulo 3: O \u00edm\u00e3, o magnetismo e a b\u00fassola, pp. 149, 150, 153, 155, 156 e 157"}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-17", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 183, "fonte": "Ben\u00edcio", "conteudo": "Atividade avaliativa de interpreta\u00e7\u00e3o de texto - 17-03 Texto jornal\u00edstico: p\u00e1ginas 53 a 59; Revis\u00e3o dispon\u00edvel no Classroom."}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 177, "fonte": "Ben\u00edcio", "conteudo": ">>ATEN\u00c7\u00c3O \u00c0S DATAS DAS ATIVIDADES AVALIATIVAS<< 1 - ATIVIDADE AVALIATIVA 1 (vocabulary/grammar) - leitura e escrita Estudar a UNIT 0 (Welcome) - Student\u2019s book: pages 6, 7, 8 e 9 - Workbook: pages 4, 5, 6, 7 DATA: 18/03 2 - Atividade Avaliativa 2 \u2013 Listening and Vocabulary - Skills: Listening, Reading and Writing - referente \u00e0s units 0 (Welcome) and 1 (In the yard). CONTE\u00daDO: unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 DATA: 26/03 3 - Atividade Avaliativa 3 - Language practice, listening, reading - English Video Quiz - Atividade realizada em Chromebooks em forma de quiz, para avaliar listening, reading e compreens\u00e3o. V\u00eddeo/interpreta\u00e7\u00e3o - Conte\u00fado: unit 1 (In the yard) - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook. DATA: 02/04"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 174, "fonte": "Ben\u00edcio", "conteudo": "ATIVIDADE AVALIATIVA 1 (vocabulary/grammar) - leitura e escrita Estudar a UNIT 0 (Welcome) - Student\u2019s book: pages 6, 7, 8 e 9 - Workbook: pages 4, 5, 6, 7 DATA: 18/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-18", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 174, "fonte": "Heitor", "conteudo": ">>ATEN\u00c7\u00c3O \u00c0S DATAS DAS ATIVIDADES AVALIATIVAS<< 1 - ATIVIDADE AVALIATIVA 1 (vocabulary/grammar) - leitura e escrita Conte\u00fado: Student\u2019s book: pages 6, 7, 8 e 9 - Workbook: pages 4, 5, 6, 7 DATA: 18/03 2 - Atividade Avaliativa 2 \u2013 Listening and Vocabulary - Skills: Listening, Reading and Writing Conte\u00fado unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 DATA: 26/03 3 - Atividade Avaliativa 3 - Language practice, listening, reading - English Video Quiz - Atividade realizada em Chromebooks em forma de quiz, para avaliar listening, reading e compreens\u00e3o. V\u00eddeo/interpreta\u00e7\u00e3o - Conte\u00fado: Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Os alunos responder\u00e3o \u00e0s perguntas sobre um v\u00eddeo, em um Google form - essencial ter anotado no planner/book o e-mail e senha do aluno, para acessar o Chromebook. DATA: 02/04"}, {"tipo": "prova", "disciplina": "Geografia", "grupo": null, "prazo": "2026-03-19", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 176, "fonte": "Ben\u00edcio", "conteudo": "Tarefa de casa \u2013 Corre\u00e7\u00e3o da atividade avaliativa (os alunos receber\u00e3o uma folha onde dever\u00e3o realizar a corre\u00e7\u00e3o dos exerc\u00edcios que erraram na prova). Para: 19-03"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 158, "fonte": "Ben\u00edcio", "conteudo": "Para: 23/03 N\u00e3o falte, trabalho avaliativo pr\u00e1tico em sala."}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-03-23", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 170, "fonte": "Ben\u00edcio", "conteudo": "Aten\u00e7\u00e3o: No dia 23/03, n\u00e3o falte! Teremos uma Atividade Avaliativa de Estudo da L\u00edngua e Ortografia. Estudar: As classes de palavras: substantivo, artigo e adjetivo: p\u00e1ginas 18 a 23 / 42 / 44 e 67; Concord\u00e2ncia nominal: p\u00e1ginas 69 e 70; Ortografia G ou J: p\u00e1gina 71. Ortografia do \u201cS\u201d: apostila de ortografia. Aten\u00e7\u00e3o! No Classroom, temos v\u00e1rias revis\u00f5es e jogos que os ajudar\u00e3o nos estudos."}, {"tipo": "prova", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-03-24", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 152, "fonte": "Ben\u00edcio", "conteudo": "N\u00e3o falte, dia 24-03 trabalho avaliativo"}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-03-25", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 154, "fonte": "Ben\u00edcio", "conteudo": "Para: 25/03 Atividade Avaliativa de Matem\u00e1tica, n\u00e3o falte! Estudar: \u2022 Construir e analisar gr\u00e1ficos, p\u00e1gs. 9 a 16. \u2022 Sistema de numera\u00e7\u00e3o decimal, p\u00e1gs. 36 a 42. \u2022 Situa\u00e7\u00f5es-problema envolvendo adi\u00e7\u00e3o e subtra\u00e7\u00e3o \u2022 Algoritmo de adi\u00e7\u00e3o, subtra\u00e7\u00e3o e multiplica\u00e7\u00e3o."}, {"tipo": "prova", "disciplina": "Geografia", "grupo": null, "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 155, "fonte": "Ben\u00edcio", "conteudo": "N\u00e3o falte, trabalho avaliativo ( 26-03)"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 147, "fonte": "Ben\u00edcio", "conteudo": "Lembrete - nesta semana temos atividade avaliativa! Estudar units 0 (Welcome) and 1 (In the yard). CONTE\u00daDO: unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 4A: 26/03 e 4B: 27/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-03-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 147, "fonte": "Heitor", "conteudo": "Lembrete - nesta semana temos atividade avaliativa! Estudar units 0 (Welcome) and 1 (In the yard). CONTE\u00daDO: unit 1 - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 4A: 26/03 e 4B: 27/03"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 123, "fonte": "Ben\u00edcio", "conteudo": "Estudar para a atividade avaliativa desta semana. Conte\u00fado: Unit 1 (In the yard) - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Dia: 02/04"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-02", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 123, "fonte": "Heitor", "conteudo": "Estudar para a atividade avaliativa desta semana. Conte\u00fado: Unit 1 (In the yard) - Student\u2019s Book: pages 16, 17, 18 - Workbook: page 12 Dia: 02/04"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G1", "grupo": "G1", "prazo": "2026-04-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 112, "fonte": "Ben\u00edcio", "conteudo": "PROVA TRIMESTRAL - DIA 09/04 - CONTE\u00daDO: Unit 0 - Welcome - reading, writing and listening Personal information and information about a friend (name, age, favorite color, sport, animal); months of the year, birthday; e-mail pen pal. Student\u2019s Book, pages: 7, 8, 9 / Workbook: 2, 5, 6, 7 Unit 1 - In the yard - reading, writing and listening - Insects (bugs), pets, plants; possessives: My, your, his, her, our, their; demonstratives: that/those (singular/plural), favorite animal or bug. Student\u2019s Book, pages: 16, 17, 18, 19 / Workbook: 12, 13, 14, 15 Unit 2 - At school Name the rooms at school; what students like about school Student\u2019s Book, pages: 26, 27 / Workbook: 20, 21"}, {"tipo": "prova", "disciplina": "Ingl\u00eas \u2014 G2", "grupo": "G2", "prazo": "2026-04-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Heitor"], "linha_origem": 112, "fonte": "Heitor", "conteudo": "PROVA TRIMESTRAL - DIA 09/04 - CONTE\u00daDO: Unit 0 - Welcome - reading, writing and listening Personal information and information about a friend (name, age, favorite color, sport, animal); months of the year, birthday; e-mail pen pal. Student\u2019s Book, pages: 7, 8, 9 / Workbook: 2, 5, 6, 7 Unit 1 - In the yard - reading, writing and listening - Insects (bugs), pets, plants; possessives: My, your, his, her, our, their; demonstratives: that/those (singular/plural), favorite animal or bug. Student\u2019s Book, pages: 16, 17, 18, 19 / Workbook: 12, 13, 14, 15 Unit 2 - At school Name the rooms at school; what students like about school Student\u2019s Book, pages: 26, 27 / Workbook: 20, 21"}, {"tipo": "prova", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-04-09", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 138, "fonte": "Ben\u00edcio", "conteudo": "Estude para o Simulado- Revis\u00e3o no classroom. Para: 09-04 - Roda de leitura: Realize a leitura do seu livro. O aluno dever\u00e1 pensar em uma forma de apresentar a hist\u00f3ria para os colegas. As orienta\u00e7\u00f5es completas para essa atividade est\u00e3o dispon\u00edveis no Google Classroom."}, {"tipo": "prova", "disciplina": "Matem\u00e1tica", "grupo": null, "prazo": "2026-04-13", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 115, "fonte": "Ben\u00edcio", "conteudo": "Para: 13/04 Segue atividade avaliativa de Matem\u00e1tica para assinar e devolver. Obs. Iniciar os estudos para a Avalia\u00e7\u00e3o Tirmestral de Matem\u00e1tica."}];
 const DATA_ALERTAS = [{"tipo": "alerta", "disciplina": "Portugu\u00eas", "grupo": null, "prazo": "2026-05-21", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 37, "fonte": "Ben\u00edcio", "conteudo": "- 4\u00aa Proposta da Roda de Leitura \u2013 Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, voc\u00eas ir\u00e3o escolher o personagem de que mais gostaram (ou acharam mais interessante) da hist\u00f3ria lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a hist\u00f3ria com aten\u00e7\u00e3o; Escolha um personagem marcante; Pense em suas caracter\u00edsticas, gostos e jeito de ser; Monte uma apresenta\u00e7\u00e3o criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e caracter\u00edsticas Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Voc\u00ea pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATEN\u00c7\u00c3O, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUE\u00c7A DE REALIZAR A SUA PESQUISA NA APOSTILA.", "texto": "- 4\u00aa Proposta da Roda de Leitura \u2013 Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, voc\u00eas ir\u00e3o escolher o personagem de que mais gostaram (ou acharam mais interessante) da hist\u00f3ria lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a hist\u00f3ria com aten\u00e7\u00e3o; Escolha um personagem marcante; Pense em suas caracter\u00edsticas, gostos e jeito de ser; Monte uma apresenta\u00e7\u00e3o criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e caracter\u00edsticas Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Voc\u00ea pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATEN\u00c7\u00c3O, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUE\u00c7A DE REALIZAR A SUA PESQUISA NA APOSTILA."}, {"tipo": "alerta", "disciplina": "Hist\u00f3ria", "grupo": null, "prazo": "2026-05-26", "sem_prazo": false, "prazo_tipo": "data_definida", "origens": ["Ben\u00edcio"], "linha_origem": 7, "fonte": "Ben\u00edcio", "conteudo": "Aten\u00e7\u00e3o- Trazer as imagens das especiarias solicitadas no planner para o dia 26-05. As imagens ser\u00e3o utilizadas no trabalho avaliativo que acontecer\u00e1 neste dia. N\u00e3o falte e n\u00e3o esque\u00e7a de trazer as imagens conforme est\u00e1 descrito no bilhete colado no planner. Para: 26-05", "texto": "Aten\u00e7\u00e3o- Trazer as imagens das especiarias solicitadas no planner para o dia 26-05. As imagens ser\u00e3o utilizadas no trabalho avaliativo que acontecer\u00e1 neste dia. N\u00e3o falte e n\u00e3o esque\u00e7a de trazer as imagens conforme est\u00e1 descrito no bilhete colado no planner. Para: 26-05"}];
-const ATUALIZADO   = "19/05/2026 às 16:45";
+const ATUALIZADO = "19/05/2026 às 16:58";
 
-// Cores
-const CORES = {
-    "matemática":  {c:"#2563EB",b:"#EFF6FF"},
-    "português":   {c:"#16A34A",b:"#F0FDF4"},
-    "língua":      {c:"#16A34A",b:"#F0FDF4"},
-    "história":    {c:"#DC2626",b:"#FEF2F2"},
-    "geografia":   {c:"#7C3AED",b:"#F5F3FF"},
-    "ciências":    {c:"#EA580C",b:"#FFF7ED"},
-    "arte":        {c:"#DB2777",b:"#FDF2F8"},
-    "física":      {c:"#059669",b:"#ECFDF5"},
-    "tecnológica": {c:"#4F46E5",b:"#EEF2FF"},
-    "inglês":      {c:"#0891B2",b:"#ECFEFF"},
-    "l.e.m":       {c:"#0891B2",b:"#ECFEFF"},
-    "projeto":     {c:"#B45309",b:"#FFFBEB"},
+const state = {
+  tab: "proximas",
+  view: "lista",
+  filter: "Todos",
+  calDate: new Date()
 };
 
-function getCor(d) {
-    const dl = (d||"").toLowerCase();
-    for (const [k,v] of Object.entries(CORES)) if (dl.includes(k)) return v;
-    return {c:"#6B7280",b:"#F4F4F5"};
+const COLORS = [
+  ["Matemática", "#007AFF", "#eef6ff"],
+  ["Português", "#34C759", "#eefaf2"],
+  ["História", "#FF3B30", "#fff1f0"],
+  ["Geografia", "#AF52DE", "#f8efff"],
+  ["Ciências", "#FF9500", "#fff6e8"],
+  ["Inglês", "#00A6C8", "#eafcff"],
+  ["Projeto", "#8E6A00", "#fff8df"],
+  ["Arte", "#FF2D55", "#fff0f4"],
+  ["Tecnologia", "#5856D6", "#f1f1ff"],
+  ["Física", "#30D158", "#effaf2"],
+];
+
+function esc(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+function norm(s){ return String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase(); }
+function slug(s){ return norm(s).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); }
+function shortName(d){
+  const n = norm(d);
+  let base = d || "Disciplina";
+  if(n.includes("matematica")) base = "Matemática";
+  else if(n.includes("portugues") || n.includes("lingua")) base = "Português";
+  else if(n.includes("historia")) base = "História";
+  else if(n.includes("geografia")) base = "Geografia";
+  else if(n.includes("ciencias")) base = "Ciências";
+  else if(n.includes("ingles") || n.includes("l.e.m")) base = "Inglês";
+  else if(n.includes("projeto")) base = "Projeto de Vida";
+  else if(n.includes("arte")) base = "Arte";
+  else if(n.includes("tecnologica")) base = "Tecnologia";
+  else if(n.includes("fisica")) base = "Ed. Física";
+  const g = (d||"").match(/G[12]/i);
+  return g && !base.includes(g[0].toUpperCase()) ? `${base} — ${g[0].toUpperCase()}` : base;
+}
+function colorFor(d){
+  const n = norm(d);
+  for(const [key,c,b] of COLORS) if(n.includes(norm(key))) return {c,b};
+  return {c:"#6E6E73",b:"#f2f2f3"};
+}
+function parseDate(p){
+  if(!p) return null;
+  const [y,m,d] = String(p).split("-").map(Number);
+  if(!y || !m || !d) return null;
+  return new Date(y, m-1, d);
+}
+function today(){
+  const d = new Date(); d.setHours(0,0,0,0); return d;
+}
+function diffDays(p){
+  const d = parseDate(p);
+  if(!d) return null;
+  return Math.round((d - today()) / 86400000);
+}
+function formatDate(p){
+  const d = parseDate(p);
+  if(!d) return "Próxima aula";
+  const dias = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  return `${dias[d.getDay()]}, ${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
+}
+function statusFor(item){
+  if(item.sem_prazo || !item.prazo) return {label: item.prazo_tipo === "proxima_aula" ? "Próxima aula" : "Sem prazo", color:"#6E6E73"};
+  const d = diffDays(item.prazo);
+  if(d === 0) return {label:"Hoje", color:"var(--red)"};
+  if(d === 1) return {label:"Amanhã", color:"var(--orange)"};
+  if(d < 0) return {label:"Vencido", color:"#8e8e93"};
+  if(d <= 7) return {label:`${d} dias`, color:"var(--green)"};
+  return {label:`${d} dias`, color:"var(--blue)"};
+}
+function anchorFor(item){
+  if(!item.prazo) return `${slug(shortName(item.disciplina))}-sem-prazo`;
+  const ymd = item.prazo.replaceAll("-","");
+  const base = shortName(item.disciplina);
+  let simple = "item";
+  if(norm(base).includes("matematica")) simple = "matematica";
+  else if(norm(base).includes("portugues")) simple = "portugues";
+  else if(norm(base).includes("historia")) simple = "historia";
+  else if(norm(base).includes("ingles")) simple = "ingles";
+  else if(norm(base).includes("projeto")) simple = "proj-vida";
+  else simple = slug(base);
+  return `${simple}-${ymd}`;
+}
+function textOf(item){ return item.tarefa || item.conteudo || item.texto || ""; }
+function isFuture(item){
+  if(item.sem_prazo || !item.prazo) return true;
+  return diffDays(item.prazo) >= 0;
+}
+function isPast(item){
+  return item.prazo && !item.sem_prazo && diffDays(item.prazo) < 0;
+}
+function itemKind(item){ return item.tarefa ? "licao" : "prova"; }
+function passesFilter(item){
+  if(state.filter === "Todos") return true;
+  return shortName(item.disciplina).startsWith(state.filter) || norm(shortName(item.disciplina)).includes(norm(state.filter));
+}
+function sorted(items){
+  return [...items].sort((a,b)=>{
+    const da = a.prazo ? parseDate(a.prazo).getTime() : 9999999999999;
+    const db = b.prazo ? parseDate(b.prazo).getTime() : 9999999999999;
+    return da - db || shortName(a.disciplina).localeCompare(shortName(b.disciplina));
+  });
+}
+function summaryText(t, max=142){
+  t = String(t||"").replace(/\s+/g," ").trim();
+  return t.length > max ? t.slice(0,max).trim() + "..." : t;
 }
 
-function getNome(d) {
-    const dl = (d||"").toLowerCase();
-    if (dl.includes("matemática"))  return "Matemática";
-    if (dl.includes("português") || dl.includes("língua")) return "Português";
-    if (dl.includes("história"))    return "História";
-    if (dl.includes("geografia"))   return "Geografia";
-    if (dl.includes("ciências"))    return "Ciências";
-    if (dl.includes("arte"))        return "Arte";
-    if (dl.includes("física"))      return "Ed. Física";
-    if (dl.includes("tecnológica")) return "Tecnologia";
-    if (dl.includes("inglês") || dl.includes("l.e.m")) return "Inglês";
-    if (dl.includes("projeto"))     return "Proj. Vida";
-    return d.split(" ")[0];
-}
+const licoes = Array.isArray(DATA_LICOES) ? DATA_LICOES : [];
+const provas = Array.isArray(DATA_PROVAS) ? DATA_PROVAS : [];
+const alertas = Array.isArray(DATA_ALERTAS) ? DATA_ALERTAS : [];
 
-function getDiff(prazo) {
-    const parts = prazo.split("-");
-    const d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
-    const h = new Date(); h.setHours(0,0,0,0);
-    return Math.round((d-h)/86400000);
-}
-
-function getUrgLabel(diff) {
-    if (diff === 0) return {l:"🔴 Hoje",    c:"#DC2626"};
-    if (diff === 1) return {l:"🟠 Amanhã",  c:"#D97706"};
-    if (diff <= 3)  return {l:`🟡 ${diff}d`, c:"#D97706"};
-    if (diff <= 7)  return {l:`🟢 ${diff}d`, c:"#16A34A"};
-    return              {l:`🔵 ${diff}d`, c:"#2563EB"};
-}
-
-function getDataStr(prazo) {
-    const parts = prazo.split("-");
-    const d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
-    return ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d.getDay()]+", "+d.toLocaleDateString("pt-BR");
-}
-
-function clean(t) { return (t||"").replace(/^[-•\s]+/,"").replace(/\s+/g," ").trim(); }
-
-function makeId(disc, prazo) {
-    let d = getNome(disc).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"");
-    return d+"-"+prazo.replace(/-/g,"");
-}
-
-// Estado
-let tabAtiva = "proximas";
-let viewAtiva = "lista";
-let filtroAtivo = "Todos";
-let calM = new Date().getMonth(), calY = new Date().getFullYear();
-let alertIdx = 0;
-
-// Init
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("hdr-time").textContent = ATUALIZADO;
-    document.getElementById("footer").textContent = "pallusm.github.io/4a-provas · " + ATUALIZADO;
-
-    const lF = DATA_LICOES.filter(i => getDiff(i.prazo) >= 0);
-    const pF = DATA_PROVAS.filter(i => getDiff(i.prazo) >= 0);
-    const lH = DATA_LICOES.filter(i => getDiff(i.prazo) < 0);
-    const pH = DATA_PROVAS.filter(i => getDiff(i.prazo) < 0);
-
-    document.getElementById("b-prox").textContent = lF.length + pF.length;
-    document.getElementById("b-hist").textContent = lH.length + pH.length;
-
-    renderSummary(lF, pF);
-    renderAlertas();
-    renderFiltros(lF, pF);
-    applyFilter();
-    renderCards("h-lic", lH, false, true);
-    renderCards("h-prov", pH, true, true);
-
-    // Scroll to anchor
-    if (location.hash) {
-        setTimeout(() => {
-            const el = document.getElementById(location.hash.slice(1));
-            if (el) { el.scrollIntoView({behavior:"smooth",block:"center"}); el.style.outline="3px solid #F59E0B"; setTimeout(()=>el.style.outline="",2000); }
-        }, 500);
-    }
-});
-
-function renderSummary(lF, pF) {
-    const all = [...lF, ...pF];
-    const comPrazo = all.filter(i=>!i.sem_prazo);
-    const nH = comPrazo.filter(i=>getDiff(i.prazo)===0).length;
-    const nA = comPrazo.filter(i=>getDiff(i.prazo)===1).length;
-    const nS = comPrazo.filter(i=>getDiff(i.prazo)<=7&&getDiff(i.prazo)>=0).length;
-    document.getElementById("summary").innerHTML = `
-        ${DATA_ALERTAS.length?`<div class="sum-chip"><span class="sdot" style="background:#DC2626"></span>⚠️ <b>${DATA_ALERTAS.length}</b> aviso(s)</div>`:""}
-        <div class="sum-chip"><span class="sdot" style="background:#DC2626"></span>Hoje <b>${nH}</b></div>
-        <div class="sum-chip"><span class="sdot" style="background:#D97706"></span>Amanhã <b>${nA}</b></div>
-        <div class="sum-chip"><span class="sdot" style="background:#2563EB"></span>Semana <b>${nS}</b></div>
-        <div class="sum-chip" style="margin-left:auto;opacity:.6">${lF.length} lições · ${pF.length} provas</div>`;
-}
-
-function renderAlertas() {
-    const sec = document.getElementById("alertas");
-    if (!DATA_ALERTAS.length) { sec.innerHTML = ""; return; }
-    sec.innerHTML = `
-        <div class="sec-header" style="margin-top:4px"><span class="sec-title" style="color:#DC2626">⚠️ Atenção</span><span class="sec-count" style="color:#DC2626">${DATA_ALERTAS.length} aviso(s)</span></div>
-        <div class="alert-carousel"><div class="alert-track" id="atrack">
-            ${DATA_ALERTAS.map(a=>`<div class="alert-card"><div class="alert-box">
-                <div class="alert-label">Aviso importante</div>
-                <div class="alert-disc">${getNome(a.disciplina)}</div>
-                <div class="alert-text">${clean(a.texto)}</div>
-                ${a.prazo?`<div class="alert-date">📅 ${getDataStr(a.prazo)}</div>`:""}
-            </div></div>`).join("")}
-        </div></div>
-        <div class="alert-nav">
-            <div class="alert-dots">${DATA_ALERTAS.map((_,i)=>`<div class="adot${i===0?" on":""}" onclick="goAlert(${i})"></div>`).join("")}</div>
-            <div class="alert-btns">
-                <button class="anav" id="aprev" onclick="goAlert(alertIdx-1)" disabled>‹</button>
-                <button class="anav" id="anext" onclick="goAlert(alertIdx+1)" ${DATA_ALERTAS.length<=1?"disabled":""}>›</button>
-                <button class="aclose" onclick="closeAlerts()">Fechar ✕</button>
-            </div>
-        </div>`;
-}
-
-function goAlert(i) {
-    alertIdx = Math.max(0, Math.min(i, DATA_ALERTAS.length-1));
-    const t = document.getElementById("atrack");
-    if (t) t.style.transform = `translateX(-${alertIdx*100}%)`;
-    document.querySelectorAll(".adot").forEach((d,j)=>d.classList.toggle("on",j===alertIdx));
-    const p = document.getElementById("aprev"), n = document.getElementById("anext");
-    if (p) p.disabled = alertIdx===0;
-    if (n) n.disabled = alertIdx===DATA_ALERTAS.length-1;
-}
-
-function closeAlerts() {
-    const s = document.getElementById("alertas");
-    if (s) { s.style.transition="opacity 0.25s"; s.style.opacity="0"; setTimeout(()=>s.style.display="none",250); }
-}
-
-function renderFiltros(lF, pF) {
-    const all = [...lF,...pF];
-    const discs = [...new Set(all.map(i=>getNome(i.disciplina)))];
-    const c = document.getElementById("filters");
-    c.innerHTML = ["Todos",...discs].map(d => {
-        const on = d===filtroAtivo;
-        const v = d==="Todos" ? null : getCor(d);
-        const style = v
-            ? `border-color:${on?v.c:"#E0E0E0"};color:${on?v.c:"#666"};background:${on?v.b:"white"}`
-            : `border-color:${on?"#1A3A6B":"#E0E0E0"};color:${on?"#1A3A6B":"#666"};background:${on?"#EEF2FF":"white"}`;
-        return `<button class="fchip${on?" on":""}" style="${style}" onclick="setFiltro('${d}')">
-            ${v?`<span class="fdot" style="background:${v.c}"></span>`:""}${d}
-        </button>`;
-    }).join("");
-}
-
-function setFiltro(d) {
-    filtroAtivo = d;
-    const lF = DATA_LICOES.filter(i=>getDiff(i.prazo)>=0);
-    const pF = DATA_PROVAS.filter(i=>getDiff(i.prazo)>=0);
-    renderFiltros(lF, pF);
-    applyFilter();
-}
-
-function applyFilter() {
-    const lF = DATA_LICOES.filter(i=>getDiff(i.prazo)>=0);
-    const pF = DATA_PROVAS.filter(i=>getDiff(i.prazo)>=0);
-    const f = items => filtroAtivo==="Todos" ? items : items.filter(i=>getNome(i.disciplina)===filtroAtivo);
-    const lFil = f(lF), pFil = f(pF);
-    document.getElementById("cnt-lic").textContent = lFil.length+" item(s)";
-    document.getElementById("cnt-prov").textContent = pFil.length+" item(s)";
-    renderCards("cards-lic", lFil, false);
-    renderCards("cards-prov", pFil, true);
-    renderCal("cal-lic", lFil);
-    renderCal("cal-prov", pFil);
-}
-
-function renderCards(id, itens, isProva, isHist=false) {
-    const c = document.getElementById(id); if (!c) return;
-    if (!itens.length) {
-        c.innerHTML = `<div class="empty"><div class="empty-icon">${isHist?"📂":"✅"}</div><p>${isHist?"Sem registros.":"Tudo em dia!"}</p></div>`;
-        return;
-    }
-    c.innerHTML = itens.map(item => {
-        const v = getCor(item.disciplina);
-        const txt = clean(item.tarefa||item.conteudo||"");
-        const diff = item.sem_prazo ? 9999 : getDiff(item.prazo);
-        const urg = item.sem_prazo ? {l:"📌 Sem prazo", c:"#6B7280"} : getUrgLabel(diff);
-        const nome = getNome(item.disciplina);
-        const cardId = makeId(item.disciplina, item.prazo);
-        return `<div class="card${isProva?" prova-card":""}${isHist?" hist":""}" id="${cardId}" style="border-left-color:${v.c}">
-            <div class="card-top">
-                <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-                    <span class="disc-tag" style="background:${v.b};color:${v.c}">${nome}</span>
-                    ${isProva?'<span class="tipo-tag">Avaliação</span>':""}
-                </div>
-                ${!isHist?`<span class="urg-tag" style="color:${urg.c}">${urg.l}</span>`:""}
-            </div>
-            <div class="card-date">${item.sem_prazo ? "Sem prazo definido" : getDataStr(item.prazo)}</div>
-            <div class="card-text">${txt}</div>
-        </div>`;
-    }).join("");
-}
-
-function renderCal(id, itens) {
-    const c = document.getElementById(id); if (!c) return;
-    const pd = {};
-    itens.filter(i=>!i.sem_prazo).forEach(i => { if(!pd[i.prazo]) pd[i.prazo]=[]; pd[i.prazo].push(i); });
-    const M = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-    const D = ["D","S","T","Q","Q","S","S"];
-    const hoje = new Date();
-    const p1 = new Date(calY,calM,1), ini = new Date(p1);
-    ini.setDate(1-p1.getDay());
-    let h = `<div class="cal-header">
-        <button class="cal-nav" onclick="navMes(-1,'${id}')">‹</button>
-        <span class="cal-month">${M[calM]} ${calY}</span>
-        <button class="cal-nav" onclick="navMes(1,'${id}')">›</button>
-    </div><div class="cal-grid">${D.map(d=>`<div class="cal-dow">${d}</div>`).join("")}`;
-    const cur = new Date(ini);
-    for (let w=0;w<6;w++) {
-        for (let d=0;d<7;d++) {
-            const same=cur.getMonth()===calM, today=cur.toDateString()===hoje.toDateString();
-            const key=cur.toISOString().split("T")[0], items=pd[key]||[];
-            let cls="cal-day"+(!same?" empty":"")+(today?" today":"")+(items.length?" clickable":"");
-            const clk=items.length?`onclick="openDrawer('${key}',${JSON.stringify(items).replace(/"/g,'&quot;')})"` :"";
-            const dots=items.slice(0,4).map(i=>`<span class="cdot" style="background:${getCor(i.disciplina).c}"></span>`).join("");
-            h+=`<div class="${cls}" ${clk}>${same?`<div class="cal-num">${cur.getDate()}</div>`:""} ${same&&items.length?`<div class="cal-dots">${dots}</div>`:""}</div>`;
-            cur.setDate(cur.getDate()+1);
-        }
-        if(cur.getMonth()!==calM&&w>=3)break;
-    }
-    c.innerHTML=h+"</div>";
-}
-
-function navMes(dir,id){ calM+=dir; if(calM>11){calM=0;calY++;} if(calM<0){calM=11;calY--;} applyFilter(); }
-
-function openDrawer(key,itens) {
-    const d=new Date(key+"T12:00:00");
-    const dias=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
-    const mes=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][d.getMonth()];
-    document.getElementById("drw-date").textContent=`${dias[d.getDay()]}, ${d.getDate()} de ${mes}`;
-    document.getElementById("drw-content").innerHTML=itens.map(item=>{
-        const v=getCor(item.disciplina),isP=!!item.conteudo;
-        return `<div class="card${isP?" prova-card":""}" style="border-left-color:${v.c};margin-bottom:8px">
-            <div style="display:flex;gap:5px;margin-bottom:6px">
-                <span class="disc-tag" style="background:${v.b};color:${v.c}">${getNome(item.disciplina)}</span>
-                ${isP?'<span class="tipo-tag">Avaliação</span>':""}
-            </div>
-            <div class="card-text">${clean(item.tarefa||item.conteudo||"")}</div>
-        </div>`;
-    }).join("");
-    document.getElementById("overlay").classList.add("open");
-}
-
-function closeDrawer(e) { if(e.target===document.getElementById("overlay")) document.getElementById("overlay").classList.remove("open"); }
-
-function setTab(nome, btn) {
-    tabAtiva = nome;
-    document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
-    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
-    document.getElementById("tab-"+nome).classList.add("active");
-    btn.classList.add("active");
-    const ctrl = document.getElementById("controls");
-    const sum = document.getElementById("summary");
-    if (nome==="stats") {
-        ctrl.style.display="none";
-        sum.style.display="none";
-        renderStats();
-    } else {
-        ctrl.style.display="flex";
-        sum.style.display="flex";
-    }
-}
-
-function setView(v) {
-    viewAtiva=v;
-    document.getElementById("vb-lista").classList.toggle("active",v==="lista");
-    document.getElementById("vb-cal").classList.toggle("active",v==="cal");
-    ["lic","prov"].forEach(a=>{
-        const cg=document.getElementById("cards-"+a), cv=document.getElementById("cal-"+a);
-        if(cg) cg.style.display=v==="lista"?"grid":"none";
-        if(cv) cv.classList.toggle("on",v==="cal");
-    });
-}
-
-function toggleHist(id) {
-    document.getElementById(id).classList.toggle("open");
-    document.getElementById("arr-"+id).classList.toggle("open");
-}
-
-function renderStats() {
-    const licoes = DATA_LICOES, provas = DATA_PROVAS;
-    const lF = licoes.filter(i=>getDiff(i.prazo)>=0);
-    const lFComPrazo = lF.filter(i=>!i.sem_prazo);
-    const porDisc = {};
-    licoes.forEach(i=>{ const n=getNome(i.disciplina); porDisc[n]=(porDisc[n]||0)+1; });
-    const discOrd = Object.entries(porDisc).sort((a,b)=>b[1]-a[1]);
-    const maxDisc = discOrd[0]?.[1]||1;
-    const provPorDisc = {};
-    provas.forEach(i=>{ const n=getNome(i.disciplina); provPorDisc[n]=(provPorDisc[n]||0)+1; });
-    const totalSem = Object.keys((() => { const s={}; licoes.forEach(i=>{ const d=new Date(i.prazo+"T12:00:00"); const w=Math.ceil(((d-new Date(d.getFullYear(),0,1))/86400000+1)/7); s[w]=1; }); return s; })()).length||1;
-    const media = (licoes.length/totalSem).toFixed(1);
-    const maisUrg = lFComPrazo.length ? getNome(lFComPrazo[0].disciplina) : (lF.length ? getNome(lF[0].disciplina) : "—");
-    const medals = ["🥇","🥈","🥉"];
-    const c = document.getElementById("stats-container");
-    c.innerHTML = `
-        <div class="sec-header" style="margin-top:4px"><span class="sec-title">🔢 Resumo do Ano</span></div>
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-num">${licoes.length}</div><div class="stat-label">Lições no ano</div><div class="stat-sub">~${media} por semana</div></div>
-            <div class="stat-card"><div class="stat-num">${provas.length}</div><div class="stat-label">Provas no ano</div><div class="stat-sub">${lF.length} pendente(s)</div></div>
-            <div class="stat-card"><div class="stat-num">${discOrd.length}</div><div class="stat-label">Disciplinas</div><div class="stat-sub">com lição de casa</div></div>
-            <div class="stat-card"><div class="stat-num" style="font-size:16px;padding-top:4px">${maisUrg}</div><div class="stat-label">Próxima entrega</div><div class="stat-sub">${lFComPrazo.length?getDataStr(lFComPrazo[0].prazo):(lF.length?"Sem prazo definido":"—")}</div></div>
+function card(item, type="licao", alert=false){
+  const c = colorFor(item.disciplina);
+  const st = statusFor(item);
+  const txt = textOf(item);
+  const long = txt.length > 360;
+  const id = anchorFor(item);
+  const label = shortName(item.disciplina);
+  return `
+    <article id="${esc(id)}" class="card ${long ? "long" : ""} ${alert ? "alert-card" : ""}" style="--disc:${c.c};--disc-bg:${c.b};--status:${st.color}">
+      <div class="card-head">
+        <div>
+          <div class="subject"><span class="pill">${esc(label)}</span>${type==="prova" ? '<span class="pill" style="--disc:#ff3b30;--disc-bg:#fff1f0">Avaliação</span>' : ""}</div>
         </div>
-        <div class="sec-header"><span class="sec-title">🏆 Ranking de Lições</span></div>
-        <div class="stat-card full">
-            ${discOrd.map(([disc,count],i)=>{
-                const v=getCor(disc), pct=Math.round((count/maxDisc)*100);
-                return `<div class="bar-row">
-                    <div class="bar-label">${medals[i]||""} ${disc}</div>
-                    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${v.c}"></div></div>
-                    <div class="bar-count">${count}</div>
-                </div>`;
-            }).join("")}
-        </div>
-        ${Object.keys(provPorDisc).length?`
-        <div class="sec-header"><span class="sec-title">📝 Provas por Disciplina</span></div>
-        <div class="stat-card full">
-            ${Object.entries(provPorDisc).sort((a,b)=>b[1]-a[1]).map(([disc,count])=>{
-                const v=getCor(disc), max=Math.max(...Object.values(provPorDisc)), pct=Math.round((count/max)*100);
-                return `<div class="bar-row">
-                    <div class="bar-label">${disc}</div>
-                    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${v.c}"></div></div>
-                    <div class="bar-count">${count}</div>
-                </div>`;
-            }).join("")}
-        </div>`:""}`;
+        <div class="status"><span class="dot" style="background:${st.color}"></span>${esc(st.label)}</div>
+      </div>
+      <div class="date">${esc(formatDate(item.prazo))}</div>
+      <div class="text">${esc(txt)}</div>
+      ${long ? `<button class="more" onclick="toggleMore(this)">Ler mais</button>` : ""}
+    </article>
+  `;
 }
-
-function compartilhar() {
-    const msg="📚 *4°A — Eduardo Gomes*\nLições e provas da turma:\nhttps://pallusm.github.io/4a-provas";
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
+function renderHero(){
+  const lFut = licoes.filter(i=>isFuture(i) && !i.sem_prazo && passesFilter(i));
+  const sem = licoes.filter(i=>isFuture(i) && (i.sem_prazo || !i.prazo) && passesFilter(i));
+  const pFut = provas.filter(i=>isFuture(i) && passesFilter(i));
+  const aFut = alertas.filter(i=>isFuture(i) && passesFilter(i));
+  const total = lFut.length + sem.length + pFut.length;
+  document.getElementById("heroGrid").innerHTML = `
+    <div class="metric primary"><div class="label">Próximas</div><div class="num">${total}</div><div class="hint">itens ativos</div></div>
+    <div class="metric"><div class="label">Lições</div><div class="num">${lFut.length}</div><div class="hint">com data definida</div></div>
+    <div class="metric"><div class="label">Avaliações</div><div class="num">${pFut.length}</div><div class="hint">provas e trabalhos</div></div>
+    <div class="metric"><div class="label">Sem prazo</div><div class="num">${sem.length}</div><div class="hint">próxima aula</div></div>
+  `;
+  document.getElementById("bProx").textContent = total;
+  document.getElementById("bHist").textContent = licoes.filter(isPast).length + provas.filter(isPast).length;
+}
+function renderFilters(){
+  const names = new Set(["Todos"]);
+  [...licoes, ...provas, ...alertas].forEach(i => names.add(shortName(i.disciplina).replace(/ — G[12]/,"")));
+  document.getElementById("filters").innerHTML = [...names].map(n=>{
+    const c = colorFor(n);
+    return `<button class="filter-chip ${state.filter===n?"active":""}" onclick="setFilter('${esc(n)}')"><span class="dot" style="background:${c.c}"></span>${esc(n)}</button>`;
+  }).join("");
+}
+function renderAlerts(){
+  const list = sorted(alertas.filter(i=>isFuture(i) && passesFilter(i)));
+  const wrap = document.getElementById("alertsWrap");
+  if(!list.length){ wrap.innerHTML = ""; return; }
+  wrap.innerHTML = `
+    <div class="section"><h2>Atenção</h2><span class="count">${list.length} aviso(s)</span></div>
+    <div class="cards">
+      ${list.slice(0,3).map(a=>{
+        const target = anchorFor(a);
+        const c = colorFor(a.disciplina);
+        return `<article class="card alert-card" style="--disc:${c.c};--disc-bg:${c.b}">
+          <div class="card-head"><div class="subject"><span class="pill">${esc(shortName(a.disciplina))}</span></div><div class="status" style="--status:${statusFor(a).color}"><span class="dot" style="background:${statusFor(a).color}"></span>${esc(statusFor(a).label)}</div></div>
+          <div class="date">${esc(formatDate(a.prazo))}</div>
+          <div class="alert-summary">${esc(summaryText(textOf(a), 185))}</div>
+          <div class="hint-link">Veja os detalhes em Provas & Avaliações</div>
+        </article>`;
+      }).join("")}
+    </div>
+  `;
+}
+function renderLists(){
+  const lDated = sorted(licoes.filter(i=>isFuture(i) && i.prazo && !i.sem_prazo && passesFilter(i)));
+  const lSem = sorted(licoes.filter(i=>isFuture(i) && (!i.prazo || i.sem_prazo) && passesFilter(i)));
+  const pFut = sorted(provas.filter(i=>isFuture(i) && passesFilter(i)));
+  document.getElementById("cntLicoes").textContent = `${lDated.length} item(ns)`;
+  document.getElementById("cntSemPrazo").textContent = `${lSem.length} item(ns)`;
+  document.getElementById("cntProvas").textContent = `${pFut.length} item(ns)`;
+  document.getElementById("licoesWrap").innerHTML = lDated.length ? lDated.map(i=>card(i,"licao")).join("") : `<div class="empty">Nenhuma lição com prazo definido.</div>`;
+  document.getElementById("semPrazoWrap").innerHTML = lSem.length ? lSem.map(i=>card(i,"licao")).join("") : `<div class="empty">Nenhuma lição sem prazo no momento.</div>`;
+  document.getElementById("provasWrap").innerHTML = pFut.length ? pFut.map(i=>card(i,"prova")).join("") : `<div class="empty">Nenhuma avaliação futura.</div>`;
+}
+function renderHistory(){
+  const hl = sorted(licoes.filter(i=>isPast(i) && passesFilter(i))).reverse();
+  const hp = sorted(provas.filter(i=>isPast(i) && passesFilter(i))).reverse();
+  document.getElementById("cntHistL").textContent = `${hl.length} item(ns)`;
+  document.getElementById("cntHistP").textContent = `${hp.length} item(ns)`;
+  document.getElementById("histLicoes").innerHTML = hl.length ? hl.map(i=>card(i,"licao")).join("") : `<div class="empty">Sem lições anteriores.</div>`;
+  document.getElementById("histProvas").innerHTML = hp.length ? hp.map(i=>card(i,"prova")).join("") : `<div class="empty">Sem avaliações anteriores.</div>`;
+}
+function renderStats(){
+  const all = [...licoes, ...provas].filter(passesFilter);
+  const by = {};
+  all.forEach(i=>{ const n = shortName(i.disciplina).replace(/ — G[12]/,""); by[n] = (by[n]||0)+1; });
+  const rows = Object.entries(by).sort((a,b)=>b[1]-a[1]);
+  document.getElementById("statsGrid").innerHTML = `
+    <div class="stat-card"><div class="stat-title">Resumo</div>
+      <div class="stat-row"><span>Lições</span><b>${licoes.filter(passesFilter).length}</b></div>
+      <div class="stat-row"><span>Avaliações</span><b>${provas.filter(passesFilter).length}</b></div>
+      <div class="stat-row"><span>Alertas</span><b>${alertas.filter(passesFilter).length}</b></div>
+    </div>
+    <div class="stat-card"><div class="stat-title">Por matéria</div>
+      ${rows.length ? rows.map(([k,v])=>`<div class="stat-row"><span>${esc(k)}</span><b>${v}</b></div>`).join("") : `<div class="stat-row"><span>Nenhum dado</span><b>0</b></div>`}
+    </div>
+    <div class="stat-card"><div class="stat-title">Atualização</div>
+      <div class="stat-row"><span>Última coleta</span><b>${esc(ATUALIZADO)}</b></div>
+      <div class="stat-row"><span>Fonte</span><b>Portal escolar</b></div>
+    </div>
+  `;
+}
+function renderCalendar(){
+  const grid = document.getElementById("calendarGrid");
+  const title = document.getElementById("calTitle");
+  const d = new Date(state.calDate.getFullYear(), state.calDate.getMonth(), 1);
+  const month = d.getMonth(), year = d.getFullYear();
+  title.textContent = d.toLocaleDateString("pt-BR",{month:"long", year:"numeric"});
+  const firstDay = d.getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const todayDate = today();
+  const events = [...licoes.map(i=>({...i,_kind:"licao"})), ...provas.map(i=>({...i,_kind:"prova"})), ...alertas.map(i=>({...i,_kind:"alerta"}))]
+    .filter(i=>i.prazo && passesFilter(i));
+  let html = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].map(x=>`<div class="dow">${x}</div>`).join("");
+  for(let i=0;i<firstDay;i++) html += `<div class="day muted"></div>`;
+  for(let day=1; day<=daysInMonth; day++){
+    const cur = new Date(year,month,day);
+    const iso = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+    const ev = events.filter(e=>e.prazo===iso);
+    const isToday = cur.getTime() === todayDate.getTime();
+    html += `<div class="day ${isToday?"today":""}" onclick="openDay('${iso}')">
+      <div class="day-num">${day}</div>
+      <div class="day-events">${ev.slice(0,8).map(e=>`<span class="event-dot" style="background:${e._kind==="prova"?"var(--red)":e._kind==="alerta"?"var(--orange)":colorFor(e.disciplina).c}"></span>`).join("")}</div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+function openDay(iso){
+  const items = [...licoes.map(i=>({...i,_kind:"licao"})), ...provas.map(i=>({...i,_kind:"prova"})), ...alertas.map(i=>({...i,_kind:"alerta"}))]
+    .filter(i=>i.prazo===iso && passesFilter(i));
+  const content = document.getElementById("drawerContent");
+  content.innerHTML = `<div class="section" style="margin-top:0"><h2>${esc(formatDate(iso))}</h2><span class="count">${items.length} item(ns)</span></div>` + 
+    (items.length ? `<div class="cards">${items.map(i=>card(i, i._kind==="prova" || i._kind==="alerta" ? "prova" : "licao", i._kind==="alerta")).join("")}</div>` : `<div class="empty">Nada neste dia.</div>`);
+  document.getElementById("drawer").classList.add("open");
+}
+function closeDrawer(e){ if(e.target.id==="drawer") document.getElementById("drawer").classList.remove("open"); }
+function toggleMore(btn){
+  const c = btn.closest(".card");
+  c.classList.toggle("expanded");
+  btn.textContent = c.classList.contains("expanded") ? "Mostrar menos" : "Ler mais";
+}
+function setFilter(f){
+  state.filter = f;
+  render();
+}
+function setTab(t){
+  state.tab = t;
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active", b.dataset.tab===t));
+  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active", p.id===`tab-${t}`));
+}
+function setView(v){
+  state.view = v;
+  document.querySelectorAll(".view-btn").forEach(b=>b.classList.toggle("active", b.dataset.view===v));
+  document.querySelectorAll(".view").forEach(p=>p.classList.toggle("active", p.id===`view-${v}`));
+  if(v==="calendario") renderCalendar();
+}
+function shareSite(){
+  const url = "https://pallusm.github.io/4a-provas/";
+  const msg = `4ºA — Agenda Escolar\n${url}`;
+  if(navigator.share) navigator.share({title:"4ºA — Agenda Escolar", text:msg, url});
+  else navigator.clipboard?.writeText(msg).then(()=>alert("Link copiado!"));
+}
+function render(){
+  renderFilters();
+  renderHero();
+  renderAlerts();
+  renderLists();
+  renderHistory();
+  renderStats();
+  renderCalendar();
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+document.querySelectorAll(".view-btn").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+document.querySelector(".calPrev").addEventListener("click",()=>{state.calDate.setMonth(state.calDate.getMonth()-1); renderCalendar();});
+document.querySelector(".calNext").addEventListener("click",()=>{state.calDate.setMonth(state.calDate.getMonth()+1); renderCalendar();});
+document.getElementById("updated").textContent = `Atualizado em ${ATUALIZADO}`;
+document.getElementById("footerDate").textContent = ATUALIZADO;
+render();
+if(location.hash){
+  setTimeout(()=>{
+    const el = document.getElementById(location.hash.slice(1));
+    if(el){ el.scrollIntoView({behavior:"smooth", block:"center"}); el.style.boxShadow = "0 0 0 4px rgba(0,122,255,.18), var(--shadow)"; }
+  }, 600);
 }
 </script>
 </body>
