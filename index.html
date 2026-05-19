@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1A3A6B">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>4°A — Eduardo Gomes</title>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "1c203a60-4ab3-4ee6-8c14-a307ad62fb7b",
+          notifyButton: { enable: false },
+        });
+      });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --school:  #1A3A6B;
+            --bg:      #FAFAFA;
+            --surface: #FFFFFF;
+            --border:  #E4E4E7;
+            --text:    #09090B;
+            --muted:   #71717A;
+            --subtle:  #F4F4F5;
+            --accent:  #F59E0B;
+            --red:     #EF4444;
+            --red-bg:  #FEF2F2;
+            --red-bd:  #FECACA;
+            --radius:  8px;
+            --touch:   44px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { font-size: 16px; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+        /* Header */
+        header { background: var(--school); padding: 14px 16px 0; padding-top: calc(14px + env(safe-area-inset-top)); position: sticky; top: 0; z-index: 50; }
+        .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        .school-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+        .header-title { font-size: 18px; font-weight: 700; color: white; letter-spacing: -0.02em; }
+        .share-btn { display: flex; align-items: center; gap: 6px; background: #25D366; color: white; border: none; padding: 0 14px; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; height: 36px; white-space: nowrap; flex-shrink: 0; }
+        .share-btn:active { opacity: 0.85; }
+
+        /* Tabs */
+        .tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn { background: none; color: rgba(255,255,255,0.5); border: none; border-bottom: 2px solid transparent; padding: 10px 16px; margin-bottom: -1px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; white-space: nowrap; }
+        .tab-btn.active { color: white; border-bottom-color: var(--accent); }
+        .pill { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 20px; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+        .tab-btn.active .pill { background: var(--accent); color: white; }
+
+        /* Summary */
+        .summary-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 16px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+        .summary-bar::-webkit-scrollbar { display: none; }
+        .sum-chip { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--muted); background: var(--subtle); white-space: nowrap; flex-shrink: 0; }
+        .sum-chip b { color: var(--text); font-weight: 600; }
+        .sum-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+        /* Controls */
+        .controls { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 16px; display: flex; gap: 8px; align-items: center; }
+        .view-toggle { display: flex; background: var(--subtle); border-radius: var(--radius); padding: 2px; gap: 1px; flex-shrink: 0; }
+        .view-btn { background: none; border: none; padding: 5px 12px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--muted); height: 30px; transition: all 0.15s; }
+        .view-btn.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px var(--border); }
+
+        /* Filters — SEMPRE VISÍVEIS */
+        .filters-wrap { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+        .filters-wrap::-webkit-scrollbar { display: none; }
+        .f-chip { display: inline-flex; align-items: center; gap: 4px; padding: 0 12px; border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); white-space: nowrap; flex-shrink: 0; height: 30px; transition: border-color 0.15s, color 0.15s, background 0.15s; -webkit-appearance: none; }
+        .f-chip .cdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; opacity: 0.4; transition: opacity 0.15s; }
+        .f-chip.on .cdot { opacity: 1; }
+        .f-chip.on { font-weight: 700; }
+
+        /* Content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .container { max-width: 640px; margin: 0 auto; padding: 16px; padding-bottom: calc(32px + env(safe-area-inset-bottom)); }
+
+        /* Section label */
+        .sec-label { display: flex; align-items: center; justify-content: space-between; margin: 20px 0 8px; }
+        .sec-label:first-child { margin-top: 4px; }
+        .sec-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+        .sec-count { font-size: 11px; font-weight: 500; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+        /* Alert carousel */
+        .alert-carousel { overflow: hidden; border-radius: var(--radius); }
+        .alert-track { display: flex; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .alert-card { flex: 0 0 100%; background: var(--red-bg); border: 1px solid var(--red-bd); border-radius: var(--radius); padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+        .alert-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+        .alert-body { flex: 1; min-width: 0; }
+        .alert-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); margin-bottom: 2px; }
+        .alert-disc { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+        .alert-txt { font-size: 13px; color: #52525B; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .alert-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--red); margin-top: 5px; }
+        .alert-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+        .alert-dots { display: flex; gap: 4px; align-items: center; }
+        .a-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red-bd); cursor: pointer; transition: all 0.2s; }
+        .a-dot.on { width: 16px; border-radius: 3px; background: var(--red); }
+        .alert-ctrls { display: flex; gap: 4px; align-items: center; }
+        .a-nav { background: none; border: 1px solid var(--red-bd); color: var(--red); width: 28px; height: 28px; border-radius: var(--radius); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .a-nav:disabled { opacity: 0.3; cursor: default; }
+        .a-close { background: none; border: 1px solid var(--red-bd); color: var(--red); padding: 0 10px; height: 28px; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+        /* Cards */
+        .cards-grid { display: grid; gap: 6px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; border-left: 3px solid var(--disc-color, var(--border)); }
+        @media (hover: hover) { .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); } }
+        .card.prova { background: linear-gradient(to right, #FFF5F5, var(--surface)); }
+        .card.hist { opacity: 0.6; }
+        .card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+        .card-left { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+        .disc-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+        .tipo-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: var(--red-bg); color: var(--red); }
+        .urg-tag { font-size: 11px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+        .card-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+        .card-text { font-size: 13px; line-height: 1.65; color: #3F3F46; }
+
+        /* History */
+        .hist-toggle { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; margin-top: 20px; transition: background 0.15s; -webkit-appearance: none; }
+        .hist-toggle:active { background: var(--subtle); }
+        .hist-arrow { font-size: 12px; transition: transform 0.2s; }
+        .hist-arrow.open { transform: rotate(180deg); }
+        .hist-body { display: none; margin-top: 6px; }
+        .hist-body.open { display: block; }
+
+        /* Calendar */
+        .cal-view { display: none; }
+        .cal-view.on { display: block; }
+        .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .cal-nav { background: var(--surface); border: 1px solid var(--border); width: var(--touch); height: var(--touch); border-radius: var(--radius); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+        .cal-nav:active { background: var(--subtle); }
+        .cal-month { font-size: 15px; font-weight: 700; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+        .cal-dow { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); padding: 3px 0 8px; text-transform: uppercase; }
+        .cal-day { aspect-ratio: 1; min-height: 44px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .cal-day.empty { background: none; border-color: transparent; }
+        .cal-day.today { border-color: var(--school); border-width: 2px; }
+        .cal-day.clickable { cursor: pointer; }
+        .cal-day.clickable:active { background: var(--subtle); }
+        .cal-num { font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1; }
+        .cal-day.today .cal-num { color: var(--school); font-weight: 700; }
+        .cal-dots { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; }
+        .cal-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+        /* Drawer */
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
+        .overlay.open { display: flex; }
+        .drawer { background: var(--surface); border-radius: 12px 12px 0 0; padding: 12px 16px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); width: 100%; max-width: 640px; max-height: 85vh; overflow-y: auto; animation: slideUp 0.25s cubic-bezier(0.32,0.72,0,1); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .drawer-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
+        .drawer-date { font-size: 12px; font-weight: 700; color: var(--school); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+        .stat-card.full { grid-column: 1/-1; }
+        .stat-num { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+        .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+        .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+        .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .bar-label { font-size: 12px; font-weight: 600; color: var(--text); width: 80px; flex-shrink: 0; text-align: right; }
+        .bar-track { flex: 1; height: 8px; background: var(--subtle); border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+        .bar-count { font-size: 11px; font-weight: 700; color: var(--muted); font-family: 'JetBrains Mono', monospace; width: 24px; text-align: right; flex-shrink: 0; }
+
+        .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 12px; }
+        .week-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .week-bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; min-height: 60px; }
+        .week-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 2px; transition: height 0.5s ease; }
+        .week-label { font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+        .week-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
+
+        .medal { font-size: 18px; margin-right: 4px; }
+
+        /* Search */
+        .search-wrap { position: relative; flex: 1; min-width: 140px; }
+        .search-input {
+            width: 100%; height: 30px; padding: 0 10px 0 30px;
+            border: 1.5px solid var(--border); border-radius: var(--radius);
+            font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text);
+            background: var(--surface); outline: none; transition: border-color 0.15s;
+        }
+        .search-input:focus { border-color: var(--school); }
+        .search-icon { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 13px; pointer-events: none; }
+
+        /* Period filter */
+        .period-wrap { display: flex; gap: 2px; background: var(--subtle); border-radius: var(--radius); padding: 2px; flex-shrink: 0; }
+        .period-btn { background: none; border: none; padding: 4px 10px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--muted); height: 26px; white-space: nowrap; transition: all 0.15s; }
+        .period-btn.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+        /* Heatmap */
+        .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 10px; }
+        .heatmap-cell { aspect-ratio: 1; border-radius: 3px; cursor: default; transition: opacity 0.15s; }
+        .heatmap-cell:hover { opacity: 0.8; }
+        .heatmap-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 4px; }
+        .heatmap-day { font-size: 9px; font-weight: 700; color: var(--muted); text-align: center; text-transform: uppercase; }
+
+        /* Empty */
+        .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+        .empty-icon { font-size: 36px; margin-bottom: 10px; }
+        .empty p { font-size: 14px; }
+
+        /* Footer */
+        footer { text-align: center; padding: 24px 20px; font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+        @media (max-width: 400px) { .cal-day { min-height: 40px; } .header-title { font-size: 16px; } }
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <div>
+            <div class="school-label">Colégio Eduardo Gomes · Fund. Manhã</div>
+            <div class="header-title">4°A — Agenda Escolar</div>
+        </div>
+        <button class="share-btn" onclick="compartilhar()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3 0-.6 0-.9.1l-2.1-1.5c.1-.3.1-.7.1-1s0-.7-.1-1l2.1-1.5c.3.1.6.1.9.1 1.5 0 2.8-1.3 2.8-2.8S19 4 17.5 4 14.7 5.3 14.7 6.8c0 .3 0 .7.1 1l-2.1 1.5c-.5-.4-1.2-.7-1.9-.7s-1.4.3-1.9.7L6.8 7.8c.1-.3.1-.7.1-1C6.9 5.3 5.6 4 4.1 4S1.3 5.3 1.3 6.8 2.6 9.6 4.1 9.6c.3 0 .6 0 .9-.1l2.1 1.5c-.1.3-.1.7-.1 1s0 .7.1 1L4.9 14.5c-.3-.1-.6-.1-.9-.1-1.5 0-2.8 1.3-2.8 2.8S3.5 20 5 20s2.8-1.3 2.8-2.8c0-.3 0-.7-.1-1l2.1-1.5c.5.4 1.2.7 1.9.7s1.4-.3 1.9-.7l2.1 1.5c-.1.3-.1.7-.1 1 0 1.5 1.3 2.8 2.8 2.8s2.8-1.3 2.8-2.8-1.2-2.8-2.7-2.8z"/></svg>
+            Compartilhar
+        </button>
+    </div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="trocarAba('proximas',this)">📅 Próximas <span class="pill" id="pill-prox">0</span></button>
+        <button class="tab-btn" onclick="trocarAba('historico',this)">📚 Histórico <span class="pill" id="pill-hist">0</span></button>
+        <button class="tab-btn" onclick="trocarAba('stats',this)">📊 Estatísticas</button>
+    </div>
+</header>
+
+<div class="summary-bar" id="summary-bar"></div>
+
+<div class="controls">
+    <div class="view-toggle">
+        <button class="view-btn active" id="btn-lista" onclick="trocarView('lista')">Lista</button>
+        <button class="view-btn" id="btn-cal" onclick="trocarView('cal')">Calendário</button>
+    </div>
+    <div class="period-wrap">
+        <button class="period-btn active" id="per-todos" onclick="setPeriodo('todos')">Todos</button>
+        <button class="period-btn" id="per-semana" onclick="setPeriodo('semana')">Semana</button>
+        <button class="period-btn" id="per-mes" onclick="setPeriodo('mes')">Mês</button>
+    </div>
+    <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" type="text" placeholder="Buscar lição..." id="search-input" oninput="applyFiltro()">
+    </div>
+    <div class="filters-wrap" id="filtros"></div>
+</div>
+
+<div id="tab-proximas" class="tab-content active">
+    <div class="container">
+        <div id="alertas-sec"></div>
+        <div class="sec-label"><span class="sec-title">📋 Lições de Casa</span><span class="sec-count" id="cnt-lic">—</span></div>
+        <div class="cards-grid" id="cards-lic"></div>
+        <div class="cal-view" id="cal-lic"></div>
+        <div class="sec-label" style="margin-top:20px"><span class="sec-title">📝 Provas & Avaliações</span><span class="sec-count" id="cnt-prov">—</span></div>
+        <div class="cards-grid" id="cards-prov"></div>
+        <div class="cal-view" id="cal-prov"></div>
+    </div>
+</div>
+
+<div id="tab-historico" class="tab-content">
+    <div class="container">
+        <button class="hist-toggle" onclick="toggleH('hl')"><span>📚 Lições anteriores</span><span class="hist-arrow" id="arr-hl">▼</span></button>
+        <div class="hist-body" id="hl"><div class="cards-grid" id="h-lic"></div></div>
+        <button class="hist-toggle" onclick="toggleH('hp')"><span>📝 Provas anteriores</span><span class="hist-arrow" id="arr-hp">▼</span></button>
+        <div class="hist-body" id="hp"><div class="cards-grid" id="h-prov"></div></div>
+    </div>
+</div>
+
+<div id="tab-stats" class="tab-content">
+    <div class="container" id="stats-container"></div>
+</div>
+
+<footer id="ftxt">pallusm.github.io/4a-provas</footer>
+
+<div class="overlay" id="overlay" onclick="closeDrawer(event)">
+    <div class="drawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-date" id="drw-date"></div>
+        <div id="drw-content"></div>
+    </div>
+</div>
+
+<script>
+const DATA_LICOES  = [{"disciplina": "Matem\u00e1tica", "tarefa": "Para: 18/05 Realizar os exerc\u00edcios 1, 4 e 5, p\u00e1ginas 46 a 49, linhas paralelas e perpendiculares.", "prazo": "2026-05-18"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Ler a hist\u00f3ria: \u201cTrancado entre m\u00famias\u201d - p\u00e1ginas 85 a 89 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 19/05 Realizar os exerc\u00edcios 1 e 2, p\u00e1gina 58, multiplica\u00e7\u00e3o e divis\u00e3o por 10, 100 e 1.000.", "prazo": "2026-05-19"}, {"disciplina": "Hist\u00f3ria", "tarefa": "Tarefa de casa - p. 169- ex. 1 Para: 19-05", "prazo": "2026-05-19"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 29/01 Conforme explicado em aula, finalizar o desenho da capa do caderno de Matem\u00e1tica. Temas: Pa\u00eds dos n\u00fameros. O que fazer? Criar um desenho com elementos da Matem\u00e1tica, imaginando como seria o seu pa\u00eds dos n\u00fameros. Aten\u00e7\u00e3o! N\u00e3o utilize canetinha, como combinado em aula.", "prazo": "2026-01-29"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 04/02 Realizar os exerc\u00edcios da p\u00e1gina 17, an\u00e1lise de gr\u00e1fico.", "prazo": "2026-02-04"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1ginas 28 e 29 - ex. 1-a, b, c. Para: 04-02", "prazo": "2026-02-04"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1ginas 29 e 30 - ex. 2-a,b Para: 05-02", "prazo": "2026-02-05"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1gina 33 - ex. 6 Para: 06-02", "prazo": "2026-02-06"}, {"disciplina": "Projeto de Vida", "tarefa": "Conforme explicado em sala, na pr\u00f3xima aula, faremos uma entrevista com as Orientadoras Andrea e Carol. Na folha monobloco fornecida pela professora, coloque o seu nome, ano, t\u00edtulo \u201cEntrevista com a O.E\u201d. Elabore duas perguntas a serem realizadas no dia da entrevista com as orientadoras. Para ajudar, pense em tudo que engloba o ambiente escolar como: regras de conviv\u00eancia, nas amizades constru\u00eddas, hora do lanche, hora da entrada e sa\u00edda, biblioteca, esportes e sala de aula. Para: 09/02", "prazo": "2026-02-09"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo da l\u00edngua - p\u00e1gina 30 - ex. 3. Para: 10-02", "prazo": "2026-02-10"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 10/02 Realizar a folha avulsa com exerc\u00edcios da tabuada.", "prazo": "2026-02-10"}, {"disciplina": "Hist\u00f3ria", "tarefa": "p. 119 a 121 (ex. 1 ao 4). Para: 10-02", "prazo": "2026-02-10"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1gina 31 e 32 - ex. 4 e 5 Para: 12-02", "prazo": "2026-02-12"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 12/02 Realizar os exerc\u00edcios sobre leitura e interpreta\u00e7\u00e3o de gr\u00e1fico, p\u00e1gina 18.", "prazo": "2026-02-12"}, {"disciplina": "Geografia", "tarefa": "A zona rural do munic\u00edpio - p. 172 e 173- ex. 1, 2 e 3. Para: 12-02", "prazo": "2026-02-12"}, {"disciplina": "Ci\u00eancias", "tarefa": "Para: 13/02 Observar com mais aten\u00e7\u00e3o os pontos de refer\u00eancia da sua casa at\u00e9 a escola e o nascer do Sol.", "prazo": "2026-02-13"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa \u2013 As capitais \u2013 p. 188 a 191 \u2013 ex. 2. Para: 19-02", "prazo": "2026-02-19"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1gina 49 - ex. 1 Para: 20-02", "prazo": "2026-02-20"}, {"disciplina": "Ci\u00eancias", "tarefa": "Para: 20/02 Realizar os exerc\u00edcios 1, 3, 4, 5 e 6, p\u00e1ginas 133 a 135, sobre localiza\u00e7\u00e3o e orienta\u00e7\u00e3o.", "prazo": "2026-02-20"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 23/02 Finalizar o exerc\u00edcios 5, p\u00e1gina 24, c\u00e1lculo mental de adi\u00e7\u00e3o.", "prazo": "2026-02-23"}, {"disciplina": "Hist\u00f3ria", "tarefa": "Primeiras comunidades humanas \u2013 p. 141 e 142 - ex. 1 Para: 24-02", "prazo": "2026-02-24"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1gina 50 - exs. 2 letra A e ex. 3 Para: 25-02", "prazo": "2026-02-25"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Para: 26/02 - Estudo da l\u00edngua - p\u00e1gina 51 - exs. 4 e 5", "prazo": "2026-02-26"}, {"disciplina": "Ci\u00eancias", "tarefa": "Para: 27/02 Realizar os exerc\u00edcios 1, 2 e 3, p\u00e1ginas 145 e 146, sobre o rel\u00f3gio de sol.", "prazo": "2026-02-27"}, {"disciplina": "Hist\u00f3ria", "tarefa": "Preparar a leitura para a pr\u00f3xima aula- p. 144 e 145 Para: 03-03", "prazo": "2026-03-03"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "2) Estudo do texto - p\u00e1ginas 79 e 80 - exs. 3 e 4 Para: 04-03", "prazo": "2026-03-04"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Para: 06/03 - Iniciaremos a apostila de Ortografia. Os alunos dever\u00e3o colorir a capa com capricho e realizar a atividade 1. Esse momento de colorir \u00e9 muito importante, pois contribui para o desenvolvimento da coordena\u00e7\u00e3o motora fina, do controle do tra\u00e7ado e da organiza\u00e7\u00e3o no espa\u00e7o da folha. Al\u00e9m disso, pe\u00e7o que a apostila seja mantida limpa e bem cuidada, pois ser\u00e1 utilizada ao longo de todo o ano.", "prazo": "2026-03-06"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 10/03 Realizar os algoritmos em folha avulsa.", "prazo": "2026-03-10"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "1) Apostila de Ortografia - Atividade 3 Para: 13-03", "prazo": "2026-03-13"}, {"disciplina": "Ci\u00eancias", "tarefa": "Para: 13/03 Realizar os exerc\u00edcios sobre magnetismo, p\u00e1gias 160 a 164.", "prazo": "2026-03-13"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 19/03 Entrega da pesquisa sobre a vida e obra de Lygia Clark. Orienta\u00e7\u00f5es: Em sala, a professora explicou como utilizar as ferramentas de busca e os termos necess\u00e1rios para a pesquisa. Al\u00e9m disso, orientou que o trabalho deve ser escrito com caneta azul (escura) ou preta e sem rasuras.", "prazo": "2026-03-19"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Apostila de Ortografia- tarefa 4. Para: 23-03", "prazo": "2026-03-23"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 23/03 Estudar as tabuadas (2, 3, 4 e 5)", "prazo": "2026-03-23"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "P\u00e1ginas 102 e 103 - exs. 1 e 2 Para: 26-03", "prazo": "2026-03-26"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo da l\u00edngua - p\u00e1gina 103 - ex. 03 Para: 31-03", "prazo": "2026-03-31"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 06/04 Realizar os algoritmos de multiplica\u00e7\u00e3o no caderno. Arquivo no Classroom.", "prazo": "2026-04-06"}, {"disciplina": "Hist\u00f3ria", "tarefa": "Realizar as p\u00e1ginas 158 a 160. Para: 07-04 ( realizamos em sala)", "prazo": "2026-04-07"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1ginas 32 e 33 - exs. 1,2,3 Para: 17-04", "prazo": "2026-04-17"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "1) Apostila de Ortografia - tarefa 6 2) Estudo da l\u00edngua - p\u00e1gina 34 - exs. 4 e 5 Para: 23-04", "prazo": "2026-04-23"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 28/04 Realizar os exerc\u00edcios 2 e 3, p\u00e1gina 19, apostila 2, sobre n\u00fameros naturais.", "prazo": "2026-04-28"}, {"disciplina": "Hist\u00f3ria", "tarefa": "Tarefa de casa- Leitura- Um morro com muita hist\u00f3ria para contar- p. 123 e 124. Para: 28-04", "prazo": "2026-04-28"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "1) Apostila de Ortografia - Tarefa 7 2) Estudo do texto - p\u00e1ginas 58 e 59 - exs. 1 e 2 Para: 30-04", "prazo": "2026-04-30"}, {"disciplina": "Ci\u00eancias", "tarefa": "Para: 30/04 1) Realizar os exerc\u00edcios do \"Em casa\", p\u00e1ginas 129 e 130. 2) Assistir ao v\u00eddeo do Manual do Mundo: Como guardar o cheiro das plantas (Classroom).", "prazo": "2026-04-30"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "(Para: 04-05) Rever a hist\u00f3ria \u201cNarizinho Arrebitado\u201d, disponibilizada no Google Classroom, e realizar a atividade referente \u00e0 hist\u00f3ria em folha avulsa.", "prazo": "2026-05-04"}, {"disciplina": "Projeto de Vida", "tarefa": "Exerc\u00edcio 2 \u2013 P\u00e1gina 18 do nosso livro. Para: 04/05", "prazo": "2026-05-04"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 05/05 Realizar os exerc\u00edcios 2 e 3, p\u00e1gina 29, subtra\u00e7\u00e3o por compensa\u00e7\u00e3o.", "prazo": "2026-05-05"}, {"disciplina": "Hist\u00f3ria", "tarefa": "Como atividade para casa, os alunos dever\u00e3o preparar a leitura das p\u00e1ginas 138 a 143 e elaborar 2 perguntas sobre o texto lido Para: 05-05", "prazo": "2026-05-05"}, {"disciplina": "L\u00edngua Portuguesa", "tarefa": "Estudo do texto - p\u00e1ginas 80 e 81 - exs. 1 e 2 Para: 07-05", "prazo": "2026-05-07"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa \u2013 A bandeira do Brasil \u2013 p. 193 \u2013 ex. 1 p. 194 e 195 2 e colorir a bandeira do Brasil da p\u00e1gina 175 Para: 07-05", "prazo": "2026-05-07"}, {"disciplina": "Ci\u00eancias", "tarefa": "Para: 08/05 Realizar o \"Em casa\", p\u00e1ginas 140 e 141, sobre as subst\u00e2ncias produzidas por plantas.", "prazo": "2026-05-08"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 11/05 Realizar os algoritmos de subtra\u00e7\u00e3o em folha avulsa. Arquivo no Classroom.", "prazo": "2026-05-11"}, {"disciplina": "Matem\u00e1tica", "tarefa": "Para: 12/05 Realizar folha avulsa de sistema de numera\u00e7\u00e3o decimal.", "prazo": "2026-05-12"}, {"disciplina": "Hist\u00f3ria", "tarefa": "Realiza\u00e7\u00e3o das atividades 1 e 2 das p\u00e1ginas 150 e 151, que servir\u00e3o para consolidar o entendimento sobre as primeiras formas de com\u00e9rcio e a busca por metais ou especiarias. Para: 12-05", "prazo": "2026-05-12"}, {"disciplina": "Ci\u00eancias", "tarefa": "Para: 14/05 Realizar os exerc\u00edcios 1, 2, 3 e 4, p\u00e1ginas 152 a 154, fotoss\u00edntese.", "prazo": "2026-05-14"}, {"disciplina": "Geografia", "tarefa": "Tarefa de casa \u2013 Divisa do estado de Par\u00e1 - p. 194 e 195 - ex. 3 e 4 Para: 14-05", "prazo": "2026-05-14"}];
+const DATA_PROVAS  = [{"disciplina": "L\u00edngua Portuguesa", "conteudo": "- 4\u00aa Proposta da Roda de Leitura \u2013 Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, voc\u00eas ir\u00e3o escolher o personagem de que mais gostaram (ou acharam mais interessante) da hist\u00f3ria lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a hist\u00f3ria com aten\u00e7\u00e3o; Escolha um personagem marcante; Pense em suas caracter\u00edsticas, gostos e jeito de ser; Monte uma apresenta\u00e7\u00e3o criativa e caprichada. O que pode ter na ficha: Nome Idade (se houver) Qualidades e caracter\u00edsticas Gostos e hobbies Amigos Frase marcante Curiosidades Vale usar a criatividade! Voc\u00ea pode escolher como apresentar: Canva PowerPoint Cartaz Desenho Ou qualquer ideia criativa que quiser! ATEN\u00c7\u00c3O, SEGUNDA -FEIRA, NAO FALTE. TRABALHO AVALIATIVO. NAO ESQUE\u00c7A DE REALIZAR A SUA PESQUISA NA APOSTILA.", "prazo": "2026-05-21"}, {"disciplina": "Matem\u00e1tica", "conteudo": "Para: 03/03 Realiza\u00e7\u00e3o dos algoritmos em folha avulsa. Lembrete: Dia 04/03 Atividade Avaliativa de C\u00e1lculo, n\u00e3o falte!", "prazo": "2026-03-03"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "1) Estudo do texto - p\u00e1ginas 78 e 79 - exs. 1 e 2 Para: 04-03 2) No dia 06/03, n\u00e3o falte! Teremos atividade avaliativa de Hist\u00f3ria em Quadrinhos. Reveja na apostila (p\u00e1gs. 46 e 47) as principais caracter\u00edsticas do g\u00eanero e os tipos de bal\u00f5es.", "prazo": "2026-03-04"}, {"disciplina": "Matem\u00e1tica", "conteudo": "Para: 04/03 Atividade Avaliativa de Matem\u00e1tica, n\u00e3o falte! Algoritmos de adi\u00e7\u00e3o, subtra\u00e7\u00e3o e multiplica\u00e7\u00e3o.", "prazo": "2026-03-04"}, {"disciplina": "Geografia", "conteudo": "Para: 05/03 - As siglas dos estados \u2013 p. 199 \u2013 ex. 2 Aten\u00e7\u00e3o! Dia 05/03 n\u00e3o falte! Teremos uma atividade avaliativa. Estudar - ATIVIDADE AVALIATIVA M\u00f3dulo 1 \u2013 O lugar onde vivemos \u2013 Recordando os munic\u00edpios p. 163; A zona rural do munic\u00edpio p. 165 a 170; O munic\u00edpio e seus vizinhos p. 171 e 174. M\u00f3dulo 2 \u2013 O mapa do Brasil \u2013 A cartografia p. 176; Um munic\u00edpio muito importante: a capital p. 177; Estados e capitais p. 178 a 180; Bras\u00edlia, a capital do Brasil p. 182. M\u00f3dulo 3 \u2013 As siglas dos estados \u2013 Para que servem as siglas p. 194. Estudar a tabela de siglas, estados e capitais.", "prazo": "2026-03-05"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "Apostila de ortografia- atividade 2. Para: 09-03", "prazo": "2026-03-09"}, {"disciplina": "Hist\u00f3ria", "conteudo": "Atividade avaliativa 10-03 Quest\u00f5es descritivas e de m\u00faltipla escolha Detetives do passado- p.108 e 109 Explorar documentos- p. 112 e 113 Hist\u00f3ria e cronologia- p. 114 e 115 As primeiras comunidades humanas- p. 122 Os primeiros humanos- p. 123 A vida na Pr\u00e9-Hist\u00f3ria- p.128 e 129", "prazo": "2026-03-10"}, {"disciplina": "Ci\u00eancias", "conteudo": "Para: 16/03 Atividade Avaliativa de Ci\u00eancias! Estudar: M\u00f3dulo 1: Orienta\u00e7\u00e3o e localiza\u00e7\u00e3o, pp. 124, 125, 126, 127 M\u00f3dulo 2: Orientar-se pelo Sol, pp. 137; 142 e 143. M\u00f3dulo 3: O \u00edm\u00e3, o magnetismo e a b\u00fassola, pp. 149, 150, 153, 155, 156 e 157", "prazo": "2026-03-16"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "Atividade avaliativa de interpreta\u00e7\u00e3o de texto - 17-03 Texto jornal\u00edstico: p\u00e1ginas 53 a 59; Revis\u00e3o dispon\u00edvel no Classroom.", "prazo": "2026-03-17"}, {"disciplina": "Geografia", "conteudo": "Tarefa de casa \u2013 Corre\u00e7\u00e3o da atividade avaliativa (os alunos receber\u00e3o uma folha onde dever\u00e3o realizar a corre\u00e7\u00e3o dos exerc\u00edcios que erraram na prova). Para: 19-03", "prazo": "2026-03-19"}, {"disciplina": "Matem\u00e1tica", "conteudo": "Para: 23/03 N\u00e3o falte, trabalho avaliativo pr\u00e1tico em sala.", "prazo": "2026-03-23"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "Aten\u00e7\u00e3o: No dia 23/03, n\u00e3o falte! Teremos uma Atividade Avaliativa de Estudo da L\u00edngua e Ortografia. Estudar: As classes de palavras: substantivo, artigo e adjetivo: p\u00e1ginas 18 a 23 / 42 / 44 e 67; Concord\u00e2ncia nominal: p\u00e1ginas 69 e 70; Ortografia G ou J: p\u00e1gina 71. Ortografia do \u201cS\u201d: apostila de ortografia. Aten\u00e7\u00e3o! No Classroom, temos v\u00e1rias revis\u00f5es e jogos que os ajudar\u00e3o nos estudos.", "prazo": "2026-03-23"}, {"disciplina": "Hist\u00f3ria", "conteudo": "N\u00e3o falte, dia 24-03 trabalho avaliativo", "prazo": "2026-03-24"}, {"disciplina": "Matem\u00e1tica", "conteudo": "Para: 25/03 Atividade Avaliativa de Matem\u00e1tica, n\u00e3o falte! Estudar: \u2022 Construir e analisar gr\u00e1ficos, p\u00e1gs. 9 a 16. \u2022 Sistema de numera\u00e7\u00e3o decimal, p\u00e1gs. 36 a 42. \u2022 Situa\u00e7\u00f5es-problema envolvendo adi\u00e7\u00e3o e subtra\u00e7\u00e3o \u2022 Algoritmo de adi\u00e7\u00e3o, subtra\u00e7\u00e3o e multiplica\u00e7\u00e3o.", "prazo": "2026-03-25"}, {"disciplina": "Matem\u00e1tica", "conteudo": "Para: 26/03 Finalizar a pintura das figuras planificadas.", "prazo": "2026-03-26"}, {"disciplina": "Geografia", "conteudo": "N\u00e3o falte, trabalho avaliativo ( 26-03)", "prazo": "2026-03-26"}, {"disciplina": "Matem\u00e1tica", "conteudo": "Para: 27/03 Estudar as tabuadas (5, 6, 7, 8 e 9).", "prazo": "2026-03-27"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "Dia 27-03, iniciaremos a Roda de leitura.", "prazo": "2026-03-27"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "Estude para o Simulado- Revis\u00e3o no classroom. Para: 09-04 - Roda de leitura: Realize a leitura do seu livro. O aluno dever\u00e1 pensar em uma forma de apresentar a hist\u00f3ria para os colegas. As orienta\u00e7\u00f5es completas para essa atividade est\u00e3o dispon\u00edveis no Google Classroom.", "prazo": "2026-04-09"}, {"disciplina": "Matem\u00e1tica", "conteudo": "Para: 13/04 Segue atividade avaliativa de Matem\u00e1tica para assinar e devolver. Obs. Iniciar os estudos para a Avalia\u00e7\u00e3o Tirmestral de Matem\u00e1tica.", "prazo": "2026-04-13"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "1) Estudo da l\u00edngua - p\u00e1ginas 60 e 61 - exs. 4 e 5 - Para: 05-05 2) (pr\u00f3xima semana) Pesquisa p\u00e1gina 54 - Orienta\u00e7\u00f5es dispon\u00edveis no Google Classroom. Neste dia, n\u00e3o falte, pois faremos um trabalho. Para: 11-05 Aten\u00e7\u00e3o: Estou enviando hoje a folha da Narizinho Arrebitado que postei dia 27-04 e esqueci de enviar para os alunos. Ela dever\u00e1 ser entregue dia 11-05, para relembrar a hist\u00f3ria eles podem rever no classroom na data de 17-03", "prazo": "2026-04-27"}, {"disciplina": "L\u00edngua Portuguesa", "conteudo": "Estudo da l\u00edngua - p\u00e1ginas 81 e 82 - exs. 3 e 4 Para: 14-05 N\u00e3o falte, amanh\u00e3 teremos nossa Olimp\u00edada de Literatura.", "prazo": "2026-05-14"}];
+const DATA_ALERTAS = [{"disciplina": "L\u00edngua Portuguesa", "texto": "- 4\u00aa Proposta da Roda de Leitura \u2013 Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, voc\u00eas ir\u00e3o escolher o personagem de que mais gostaram (ou acharam mais interessante) da hist\u00f3ria lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a hist\u00f3ria com aten\u00e7\u00e3o; Escolha um personagem marcante; Pense em suas caracter\u00edsticas, gostos e jeito de ser; Monte uma a", "prazo": "2026-05-21"}];
+const ATUALIZADO   = "18/05/2026 às 22:12";
+
+const CORES = {
+    "matemática":  {c:"#2563EB",b:"#EFF6FF"},
+    "português":   {c:"#16A34A",b:"#F0FDF4"},
+    "língua":      {c:"#16A34A",b:"#F0FDF4"},
+    "história":    {c:"#DC2626",b:"#FEF2F2"},
+    "geografia":   {c:"#7C3AED",b:"#F5F3FF"},
+    "ciências":    {c:"#EA580C",b:"#FFF7ED"},
+    "arte":        {c:"#DB2777",b:"#FDF2F8"},
+    "física":      {c:"#059669",b:"#ECFDF5"},
+    "tecnológica": {c:"#4F46E5",b:"#EEF2FF"},
+    "inglês":      {c:"#0891B2",b:"#ECFEFF"},
+    "l.e.m":       {c:"#0891B2",b:"#ECFEFF"},
+    "projeto":     {c:"#B45309",b:"#FFFBEB"},
+};
+
+function cor(d) {
+    const dl=(d||"").toLowerCase();
+    for(const[k,v] of Object.entries(CORES)) if(dl.includes(k)) return v;
+    return {c:"#71717A",b:"#F4F4F5"};
+}
+
+function nome(d) {
+    const dl=(d||"").toLowerCase();
+    if(dl.includes("matemática"))  return "Matemática";
+    if(dl.includes("português")||dl.includes("língua")) return "Português";
+    if(dl.includes("história"))    return "História";
+    if(dl.includes("geografia"))   return "Geografia";
+    if(dl.includes("ciências"))    return "Ciências";
+    if(dl.includes("arte"))        return "Arte";
+    if(dl.includes("física"))      return "Ed. Física";
+    if(dl.includes("tecnológica")) return "Tecnologia";
+    if(dl.includes("inglês")||dl.includes("l.e.m")) return "Inglês";
+    if(dl.includes("projeto"))     return "Proj. Vida";
+    return d.split(" ")[0];
+}
+
+function diff(p){const d=new Date(p+"T12:00:00"),h=new Date();h.setHours(0,0,0,0);return Math.round((d-h)/86400000);}
+
+function urg(d){
+    if(d===0) return{l:"🔴 Hoje",   c:"#EF4444"};
+    if(d===1) return{l:"🟠 Amanhã", c:"#F97316"};
+    if(d<=3)  return{l:`🟡 ${d}d`,  c:"#EAB308"};
+    if(d<=7)  return{l:`🟢 ${d}d`,  c:"#22C55E"};
+    return        {l:`🔵 ${d}d`,  c:"#3B82F6"};
+}
+
+function dstr(p){const d=new Date(p+"T12:00:00");return["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d.getDay()]+", "+d.toLocaleDateString("pt-BR");}
+
+function clean(t){return(t||"").replace(/^[-•\s]+/,"").replace(/\s+/g," ").trim();}
+
+let aba="proximas", view="lista", filtro="Todos", periodo="todos", calM=new Date().getMonth(), calY=new Date().getFullYear(), aIdx=0;
+
+function setPeriodo(p) {
+    periodo = p;
+    document.querySelectorAll(".period-btn").forEach(b => b.classList.toggle("active", b.id === `per-${p}`));
+    applyFiltro();
+}
+
+function getSearchTerm() {
+    const el = document.getElementById("search-input");
+    return el ? el.value.toLowerCase().trim() : "";
+}
+
+function filtrarPorPeriodo(items) {
+    if (periodo === "todos") return items;
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const fim = new Date(hoje);
+    if (periodo === "semana") fim.setDate(fim.getDate() + 7);
+    if (periodo === "mes")    fim.setDate(fim.getDate() + 30);
+    return items.filter(i => {
+        const d = new Date(i.prazo+"T12:00:00");
+        return d >= hoje && d <= fim;
+    });
+}
+
+function filtrarPorBusca(items) {
+    const q = getSearchTerm();
+    if (!q) return items;
+    return items.filter(i => {
+        const txt = (i.tarefa || i.conteudo || "").toLowerCase();
+        const disc = (i.disciplina || "").toLowerCase();
+        return txt.includes(q) || disc.includes(q);
+    });
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+    document.getElementById("ftxt").textContent=`pallusm.github.io/4a-provas · ${ATUALIZADO}`;
+    const lF=DATA_LICOES.filter(i=>diff(i.prazo)>=0);
+    const pF=DATA_PROVAS.filter(i=>diff(i.prazo)>=0);
+    const lH=DATA_LICOES.filter(i=>diff(i.prazo)<0);
+    const pH=DATA_PROVAS.filter(i=>diff(i.prazo)<0);
+    document.getElementById("pill-prox").textContent=lF.length+pF.length;
+    document.getElementById("pill-hist").textContent=lH.length+pH.length;
+    renderSum(lF,pF);
+    renderAlertas();
+    renderFiltros(lF,pF);
+    applyFiltro();
+    renderCards("h-lic",lH,false,true);
+    renderCards("h-prov",pH,true,true);
+});
+
+function renderSum(lF,pF){
+    const all=[...lF,...pF];
+    const nH=all.filter(i=>diff(i.prazo)===0).length;
+    const nA=all.filter(i=>diff(i.prazo)===1).length;
+    const nS=all.filter(i=>diff(i.prazo)>=0&&diff(i.prazo)<=7).length;
+    document.getElementById("summary-bar").innerHTML=`
+        ${DATA_ALERTAS.length?`<div class="sum-chip"><span class="sum-dot" style="background:#EF4444"></span>⚠️ <b>${DATA_ALERTAS.length}</b> aviso(s)</div>`:""}
+        <div class="sum-chip"><span class="sum-dot" style="background:#EF4444"></span>Hoje <b>${nH}</b></div>
+        <div class="sum-chip"><span class="sum-dot" style="background:#F97316"></span>Amanhã <b>${nA}</b></div>
+        <div class="sum-chip"><span class="sum-dot" style="background:#3B82F6"></span>Semana <b>${nS}</b></div>
+        <div class="sum-chip" style="margin-left:auto;opacity:.6">${lF.length} lições · ${pF.length} provas</div>`;
+}
+
+function renderAlertas(){
+    const s=document.getElementById("alertas-sec");
+    if(!DATA_ALERTAS.length){s.innerHTML="";return;}
+    s.innerHTML=`
+        <div class="sec-label" style="margin-top:4px">
+            <span class="sec-title" style="color:var(--red)">⚠️ Atenção</span>
+            <span class="sec-count" style="color:var(--red)">${DATA_ALERTAS.length} aviso(s)</span>
+        </div>
+        <div class="alert-carousel">
+            <div class="alert-track" id="atrack">
+                ${DATA_ALERTAS.map(a=>`
+                <div class="alert-card">
+                    <div class="alert-icon">🚨</div>
+                    <div class="alert-body">
+                        <div class="alert-lbl">Aviso importante</div>
+                        <div class="alert-disc">${nome(a.disciplina)}</div>
+                        <div class="alert-txt">${clean(a.texto)}</div>
+                        ${a.prazo?`<div class="alert-date">📅 ${dstr(a.prazo)}</div>`:""}
+                    </div>
+                </div>`).join("")}
+            </div>
+        </div>
+        <div class="alert-footer">
+            <div class="alert-dots">${DATA_ALERTAS.map((_,i)=>`<div class="a-dot${i===0?" on":""}" onclick="goAlert(${i})"></div>`).join("")}</div>
+            <div class="alert-ctrls">
+                <button class="a-nav" id="aprev" onclick="goAlert(aIdx-1)" disabled>‹</button>
+                <button class="a-nav" id="anext" onclick="goAlert(aIdx+1)" ${DATA_ALERTAS.length<=1?"disabled":""}>›</button>
+                <button class="a-close" onclick="closeAlerts()">Fechar ✕</button>
+            </div>
+        </div>`;
+}
+
+function goAlert(i){
+    const n=DATA_ALERTAS.length;
+    aIdx=Math.max(0,Math.min(i,n-1));
+    const t=document.getElementById("atrack");
+    if(t) t.style.transform=`translateX(-${aIdx*100}%)`;
+    document.querySelectorAll(".a-dot").forEach((d,j)=>d.classList.toggle("on",j===aIdx));
+    const p=document.getElementById("aprev"),nx=document.getElementById("anext");
+    if(p) p.disabled=aIdx===0;
+    if(nx) nx.disabled=aIdx===n-1;
+}
+
+function closeAlerts(){
+    const s=document.getElementById("alertas-sec");
+    if(s){s.style.transition="opacity 0.25s";s.style.opacity="0";setTimeout(()=>s.style.display="none",250);}
+}
+
+// Filtros — sempre visíveis, só muda o estilo do chip ativo
+function renderFiltros(lF,pF){
+    const all=[...lF,...pF];
+    const discs=[...new Set(all.map(i=>nome(i.disciplina)))];
+    const c=document.getElementById("filtros");
+    c.innerHTML=["Todos",...discs].map(d=>{
+        const isTodos=d==="Todos";
+        const on=d===filtro;
+        const v=isTodos?null:cor(d);
+        const style=v
+            ?`border-color:${on?v.c:"var(--border)"};color:${on?v.c:"var(--muted)"};background:${on?v.b:"var(--surface)"}`
+            :`border-color:${on?"var(--school)":"var(--border)"};color:${on?"var(--school)":"var(--muted)"};background:${on?"#EEF2FF":"var(--surface)"}`;
+        return `<button class="f-chip${on?" on":""}" style="${style}" onclick="setFiltro('${d}')">
+            ${v?`<span class="cdot" style="background:${v.c}"></span>`:""}${d}
+        </button>`;
+    }).join("");
+}
+
+function setFiltro(d){
+    filtro=d;
+    const lF=DATA_LICOES.filter(i=>diff(i.prazo)>=0);
+    const pF=DATA_PROVAS.filter(i=>diff(i.prazo)>=0);
+    // Atualiza chips sem recriar (só o estilo)
+    document.querySelectorAll(".f-chip").forEach(btn=>{
+        const lbl=btn.textContent.trim();
+        const on=lbl===d;
+        btn.classList.toggle("on",on);
+        const v=lbl==="Todos"?null:cor(lbl);
+        if(v){
+            btn.style.borderColor=on?v.c:"var(--border)";
+            btn.style.color=on?v.c:"var(--muted)";
+            btn.style.background=on?v.b:"var(--surface)";
+        } else {
+            btn.style.borderColor=on?"var(--school)":"var(--border)";
+            btn.style.color=on?"var(--school)":"var(--muted)";
+            btn.style.background=on?"#EEF2FF":"var(--surface)";
+        }
+    });
+    applyFiltro();
+}
+
+function applyFiltro(){
+    const lF=DATA_LICOES.filter(i=>diff(i.prazo)>=0);
+    const pF=DATA_PROVAS.filter(i=>diff(i.prazo)>=0);
+    const f=items=>{
+        let r = filtro==="Todos" ? items : items.filter(i=>nome(i.disciplina)===filtro);
+        r = filtrarPorPeriodo(r);
+        r = filtrarPorBusca(r);
+        return r;
+    };
+    const lFiltered=f(lF), pFiltered=f(pF);
+    document.getElementById("cnt-lic").textContent=lFiltered.length+" item(s)";
+    document.getElementById("cnt-prov").textContent=pFiltered.length+" item(s)";
+    renderCards("cards-lic",lFiltered,false);
+    renderCards("cards-prov",pFiltered,true);
+    renderCal("cal-lic",lFiltered);
+    renderCal("cal-prov",pFiltered);
+}
+
+function makeId(disciplina, prazo) {
+    const d = nome(disciplina).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+        .replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"");
+    return `${d}-${prazo.replace(/-/g,"")}`;
+}
+
+// Ao carregar a página, rola até o card se houver hash na URL
+window.addEventListener("load", () => {
+    if (!location.hash) return;
+    const id = location.hash.slice(1);
+
+    // Garante que a aba Próximas está ativa
+    const tabBtn = document.querySelector(".tab-btn");
+    if (tabBtn) trocarAba("proximas", tabBtn);
+
+    // Espera o DOM renderizar os cards
+    setTimeout(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.style.transition = "box-shadow 0.3s";
+        el.style.boxShadow  = "0 0 0 3px #F59E0B";
+        setTimeout(() => el.style.boxShadow = "", 2500);
+    }, 600);
+});
+
+function renderCards(id,itens,isP,isH=false){
+    const c=document.getElementById(id);if(!c)return;
+    if(!itens.length){c.innerHTML=`<div class="empty"><div class="empty-icon">${isH?"📂":"✅"}</div><p>${isH?"Sem registros.":"Tudo em dia!"}</p></div>`;return;}
+    c.innerHTML=itens.map(item=>{
+        const v=cor(item.disciplina),txt=clean(item.tarefa||item.conteudo||""),d=diff(item.prazo),u=urg(d),n=nome(item.disciplina);
+        const cardId = makeId(item.disciplina, item.prazo);
+        return `<div class="card${isP?" prova":""}${isH?" hist":""}" id="${cardId}" style="--disc-color:${v.c}">
+            <div class="card-top">
+                <div class="card-left">
+                    <span class="disc-tag" style="background:${v.b};color:${v.c}">${n}</span>
+                    ${isP?'<span class="tipo-tag">Avaliação</span>':""}
+                </div>
+                ${!isH?`<span class="urg-tag" style="color:${u.c}">${u.l}</span>`:""}
+            </div>
+            <div class="card-date">${dstr(item.prazo)}</div>
+            <div class="card-text">${txt}</div>
+        </div>`;
+    }).join("");
+}
+
+function renderCal(id,itens){
+    const c=document.getElementById(id);if(!c)return;
+    const pd={};itens.forEach(i=>{if(!pd[i.prazo])pd[i.prazo]=[];pd[i.prazo].push(i);});
+    const M=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const D=["D","S","T","Q","Q","S","S"];
+    const hoje=new Date(),p1=new Date(calY,calM,1),ini=new Date(p1);
+    ini.setDate(1-p1.getDay());
+    let h=`<div class="cal-header">
+        <button class="cal-nav" onclick="navMes(-1,'${id}')">‹</button>
+        <span class="cal-month">${M[calM]} ${calY}</span>
+        <button class="cal-nav" onclick="navMes(1,'${id}')">›</button>
+    </div><div class="cal-grid">${D.map(d=>`<div class="cal-dow">${d}</div>`).join("")}`;
+    const cur=new Date(ini);
+    for(let w=0;w<6;w++){
+        for(let d=0;d<7;d++){
+            const same=cur.getMonth()===calM,today=cur.toDateString()===hoje.toDateString();
+            const key=cur.toISOString().split("T")[0],items=pd[key]||[];
+            let cls="cal-day"+(!same?" empty":"")+(today?" today":"")+(items.length?" clickable":"");
+            const clk=items.length?`onclick="openDrawer('${key}',${JSON.stringify(items).replace(/"/g,"&quot;")})"` :"";
+            const dots=items.slice(0,4).map(i=>`<span class="cal-dot" style="background:${cor(i.disciplina).c}"></span>`).join("");
+            h+=`<div class="${cls}" ${clk}>${same?`<div class="cal-num">${cur.getDate()}</div>`:""} ${same&&items.length?`<div class="cal-dots">${dots}</div>`:""}</div>`;
+            cur.setDate(cur.getDate()+1);
+        }
+        if(cur.getMonth()!==calM&&w>=3)break;
+    }
+    c.innerHTML=h+"</div>";
+}
+
+function navMes(dir,id){
+    calM+=dir;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}
+    applyFiltro();
+}
+
+function openDrawer(key,itens){
+    const d=new Date(key+"T12:00:00");
+    const dias=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+    const mes=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][d.getMonth()];
+    document.getElementById("drw-date").textContent=`${dias[d.getDay()]}, ${d.getDate()} de ${mes}`;
+    document.getElementById("drw-content").innerHTML=itens.map(item=>{
+        const v=cor(item.disciplina),isP=!!item.conteudo;
+        return `<div class="card${isP?" prova":""}" style="--disc-color:${v.c};margin-bottom:6px">
+            <div class="card-left" style="margin-bottom:6px">
+                <span class="disc-tag" style="background:${v.b};color:${v.c}">${nome(item.disciplina)}</span>
+                ${isP?'<span class="tipo-tag">Avaliação</span>':""}
+            </div>
+            <div class="card-text">${clean(item.tarefa||item.conteudo||"")}</div>
+        </div>`;
+    }).join("");
+    document.getElementById("overlay").classList.add("open");
+}
+
+function closeDrawer(e){if(e.target===document.getElementById("overlay"))document.getElementById("overlay").classList.remove("open");}
+
+function renderStats() {
+    const todos = [...DATA_LICOES, ...DATA_PROVAS];
+    const licoes = DATA_LICOES;
+    const provas = DATA_PROVAS;
+
+    // Contagem por disciplina (lições)
+    const porDisc = {};
+    licoes.forEach(i => {
+        const n = nome(i.disciplina);
+        porDisc[n] = (porDisc[n] || 0) + 1;
+    });
+    const discOrdenado = Object.entries(porDisc).sort((a,b) => b[1]-a[1]);
+    const maxDisc = discOrdenado[0]?.[1] || 1;
+
+    // Provas por disciplina
+    const provasPorDisc = {};
+    provas.forEach(i => {
+        const n = nome(i.disciplina);
+        provasPorDisc[n] = (provasPorDisc[n] || 0) + 1;
+    });
+
+    // Lições por semana do ano
+    const porSemana = {};
+    licoes.forEach(i => {
+        const d = new Date(i.prazo+"T12:00:00");
+        const sem = getWeekNumber(d);
+        porSemana[sem] = (porSemana[sem] || 0) + 1;
+    });
+    const semanas = Object.entries(porSemana).sort((a,b)=>a[0]-b[0]).slice(-8);
+    const maxSem = Math.max(...semanas.map(s=>s[1]), 1);
+
+    // Média por semana
+    const totalSemanas = Object.keys(porSemana).length || 1;
+    const media = (licoes.length / totalSemanas).toFixed(1);
+
+    // Disciplina mais urgente
+    const futuras = DATA_LICOES.filter(i => diff(i.prazo) >= 0);
+    const maisUrgente = futuras.length ? nome(futuras[0].disciplina) : "—";
+
+    // Medals
+    const medals = ["🥇","🥈","🥉"];
+
+    const c = document.getElementById("stats-container");
+    c.innerHTML = `
+        <!-- Números rápidos -->
+        <div class="sec-label" style="margin-top:4px">
+            <span class="sec-title">🔢 Resumo do Ano</span>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-num">${licoes.length}</div>
+                <div class="stat-label">Lições no ano</div>
+                <div class="stat-sub">~${media} por semana</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">${provas.length}</div>
+                <div class="stat-label">Provas no ano</div>
+                <div class="stat-sub">${futuras.length} pendente(s)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">${discOrdenado.length}</div>
+                <div class="stat-label">Disciplinas ativas</div>
+                <div class="stat-sub">com lição de casa</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" style="font-size:16px;padding-top:4px">${maisUrgente}</div>
+                <div class="stat-label">Próxima entrega</div>
+                <div class="stat-sub">${futuras.length ? dstr(futuras[0].prazo) : "—"}</div>
+            </div>
+        </div>
+
+        <!-- Ranking de lições -->
+        <div class="sec-label">
+            <span class="sec-title">🏆 Ranking de Lições</span>
+            <span class="sec-count">por disciplina</span>
+        </div>
+        <div class="stat-card full">
+            ${discOrdenado.map(([disc, count], i) => {
+                const v = cor(disc);
+                const pct = Math.round((count / maxDisc) * 100);
+                return `
+                <div class="bar-row">
+                    <div class="bar-label">${medals[i] || ""} ${disc}</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:${pct}%;background:${v.c}"></div>
+                    </div>
+                    <div class="bar-count">${count}</div>
+                </div>`;
+            }).join("")}
+        </div>
+
+        <!-- Provas por disciplina -->
+        ${Object.keys(provasPorDisc).length > 0 ? `
+        <div class="sec-label">
+            <span class="sec-title">📝 Provas por Disciplina</span>
+        </div>
+        <div class="stat-card full">
+            ${Object.entries(provasPorDisc).sort((a,b)=>b[1]-a[1]).map(([disc, count]) => {
+                const v = cor(disc);
+                const pct = Math.round((count / Math.max(...Object.values(provasPorDisc))) * 100);
+                return `
+                <div class="bar-row">
+                    <div class="bar-label">${disc}</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:${pct}%;background:${v.c}"></div>
+                    </div>
+                    <div class="bar-count">${count}</div>
+                </div>`;
+            }).join("")}
+        </div>` : ""}
+
+        <!-- Gráfico de calor -->
+        <div class="sec-label">
+            <span class="sec-title">🌡️ Mapa de Calor</span>
+            <span class="sec-count">lições por dia da semana</span>
+        </div>
+        <div class="stat-card full">
+            <div class="heatmap-days">
+                ${["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].map(d=>`<div class="heatmap-day">${d}</div>`).join("")}
+            </div>
+            <div class="heatmap-grid" id="heatmap-grid"></div>
+            <div style="display:flex;gap:6px;align-items:center;margin-top:10px;justify-content:flex-end">
+                <span style="font-size:11px;color:var(--muted)">Menos</span>
+                ${[0,1,2,3,4].map(i=>`<span style="width:12px;height:12px;border-radius:2px;background:${i===0?"var(--subtle)":i===1?"#BFDBFE":i===2?"#60A5FA":i===3?"#2563EB":"#1E3A8A"};display:inline-block"></span>`).join("")}
+                <span style="font-size:11px;color:var(--muted)">Mais</span>
+            </div>
+        </div>
+    `;
+
+    // Renderiza heatmap
+    const porDia = [0,0,0,0,0,0,0];
+    licoes.forEach(i => {
+        const d = new Date(i.prazo+"T12:00:00");
+        porDia[d.getDay()]++;
+    });
+    const maxDia = Math.max(...porDia, 1);
+    const heatGrid = document.getElementById("heatmap-grid");
+    if (heatGrid) {
+        // Gera 7 semanas x 7 dias para simular calendário de atividade
+        const hoje = new Date();
+        const cells = [];
+        for (let semana = 6; semana >= 0; semana--) {
+            for (let dia = 0; dia < 7; dia++) {
+                const d = new Date(hoje);
+                d.setDate(d.getDate() - (semana * 7) - (hoje.getDay() - dia));
+                const key = d.toISOString().split("T")[0];
+                const count = licoes.filter(i => i.prazo === key).length + provas.filter(i => i.prazo === key).length;
+                const intensity = count === 0 ? 0 : count === 1 ? 1 : count === 2 ? 2 : count <= 4 ? 3 : 4;
+                const colors = ["var(--subtle)","#BFDBFE","#60A5FA","#2563EB","#1E3A8A"];
+                const isFuture = d > hoje;
+                cells.push(`<div class="heatmap-cell" style="background:${isFuture?"var(--border)":colors[intensity]}" title="${d.toLocaleDateString('pt-BR')}: ${count} tarefa(s)"></div>`);
+            }
+        }
+        heatGrid.innerHTML = cells.join("");}
+}
+}
+
+function getWeekNumber(d) {
+    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+}
+
+function trocarAba(n,btn){
+    aba=n;filtro="Todos";
+    document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    document.getElementById("tab-"+n).classList.add("active");
+    btn.classList.add("active");
+    // Esconde controls quando está em stats
+    const controls = document.querySelector(".controls");
+    const summaryBar = document.getElementById("summary-bar");
+    if (n === "stats") {
+        controls.style.display = "none";
+        summaryBar.style.display = "none";
+        renderStats();
+    } else {
+        controls.style.display = "flex";
+        summaryBar.style.display = "flex";
+    }
+}
+
+function trocarView(v){
+    view=v;
+    document.getElementById("btn-lista").classList.toggle("active",v==="lista");
+    document.getElementById("btn-cal").classList.toggle("active",v==="cal");
+    ["lic","prov"].forEach(a=>{
+        const cg=document.getElementById("cards-"+a),cv=document.getElementById("cal-"+a);
+        if(cg)cg.style.display=v==="lista"?"grid":"none";
+        if(cv)cv.classList.toggle("on",v==="cal");
+    });
+}
+
+function toggleH(id){
+    document.getElementById(id).classList.toggle("open");
+    document.getElementById("arr-"+id).classList.toggle("open");
+}
+
+function compartilhar(){
+    const msg="📚 *4°A — Eduardo Gomes*\nLições e provas da turma:\nhttps://pallusm.github.io/4a-provas";
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
+}
+</script>
+</body>
+</html>
