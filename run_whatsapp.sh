@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd /Users/pallusmassucci/Desktop/provas-4a-site
+mkdir -p logs
 PYTHON_BIN="python3"
 if [ -x ".venv/bin/python3" ]; then
   PYTHON_BIN=".venv/bin/python3"
