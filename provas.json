@@ -1,9 +1,9 @@
 [
   {
     "tipo": "prova",
-    "disciplina": "Inglês — G1",
-    "grupo": "G1",
-    "prazo": "2026-05-28",
+    "disciplina": "Geografia",
+    "grupo": null,
+    "prazo": "2026-06-11",
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
@@ -11,22 +11,22 @@
     ],
     "linha_origem": 4,
     "fonte": "Benício",
-    "conteudo": "Na próxima semana teremos trabalho avaliativo nos dias 28/05 e 29/05. Não é necessário estudo prévio, porém pedimos que evite faltas nestes dias.",
-    "conteudo_aula": "Aula 1 Objetos de conhecimento: daily routine activities, telling the time Unit 4 Student's Book - page 50 Workbook - 40 Iniciamos a aula com a correção da p. 39 do Workbook, feita no quadro com a contribuição oral dos alunos. Em seguida, usando os flashcards, cada aluno escolheu um card e precisou dizer uma frase de acordo com a figura que pegou e o horário que eu coloquei no relógio projetado na lousa (Ex.: I get up at seven o’clock), todos participaram. Trabalhamos as atividades de listening da p. 50 do student’s book (8 and 9) e a atividade de speaking da mesma página, em duplas ou trios, praticaram o diálogo (10). Finalizamos com as atividades da página 40 do Workbook."
+    "conteudo": "Tarefa de casa – As fronteiras brasileiras – p. 223 e 224 – ex. 1, 2 e 3 Trazer as imagens solicitadas via planner para o trabalho avaliativo, dia 11-06 Para: 11-06.",
+    "conteudo_aula": "Correção da tarefa de casa através da socialização das respostas dos alunos e utilizando a lousa digital para visualização das imagens. A localização do Brasil no continente – As fronteiras brasileiras – (p. 220 a 222) - Apresentação do planisfério e dos continentes do nosso planeta. Observação o mapa politico da América do Sul, continente onde nosso país está localizado. Leitura compartilhada destacando os trechos mais importantes e enfatizando o nome das linhas que separam os países no mapa. Apresentação de vídeo explicativo sobre os continentes: https://www.youtube.com/watch?v=l5_dcoioiB8 Realização das atividades propostas de forma individual com correção coletiva através da socialização das respostas dos alunos e utilizando a lousa digital para visualização do mapa da América do Sul."
   },
   {
     "tipo": "prova",
-    "disciplina": "Inglês — G2",
-    "grupo": "G2",
-    "prazo": "2026-05-28",
+    "disciplina": "Ciências",
+    "grupo": null,
+    "prazo": "2026-06-12",
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 4,
-    "fonte": "Heitor",
-    "conteudo": "Na próxima semana teremos trabalho avaliativo nos dias 28/05 e 29/05. Não é necessário estudo prévio, porém pedimos que evite faltas nestes dias.",
-    "conteudo_aula": "Aula 1 Objetos de conhecimento: daily routine activities, telling the time Unit 4 Student's Book - page 50 Workbook - 40 Iniciamos a aula com a correção da p. 39 do Workbook, feita no quadro com a contribuição oral dos alunos. Em seguida, usando os flashcards, cada aluno escolheu um card e precisou dizer uma frase de acordo com a figura que pegou e o horário que eu coloquei no relógio projetado na lousa (Ex.: I get up at seven o’clock), todos participaram. Trabalhamos as atividades de listening da p. 50 do student’s book (8 and 9) e a atividade de speaking da mesma página, em duplas ou trios, praticaram o diálogo (10). Finalizamos com as atividades da página 40 do Workbook."
+    "linha_origem": 3,
+    "fonte": "Benício",
+    "conteudo": "Para: 12/06 Trabalho avaliativo em aula, não falte!",
+    "conteudo_aula": "1) Organização do album da Copa EG; Entrega das figurinhas de acordo com a quantidade de desafios realizados pelos alunos; Colagem das figurinhas através da realização dos cálculos de multiplicação. 2) Correção da tarefa de casa páginas, 175 e 176, sobre cadeias alimentares. 3) Leitura e realização das atividades, módulo 8: Investigar animais, páginas 156 a 166. Atividades realizadas em duplas."
   }
 ]
