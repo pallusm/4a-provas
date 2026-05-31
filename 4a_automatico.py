@@ -478,13 +478,50 @@ async def fazer_login(page, console):
         campo = page.locator("input:visible").first
 
     await campo.fill(EMAIL)
-    for s in ["button[type='submit']", "button:has-text('Continuar')", "button:has-text('Próximo')"]:
+    for s in [
+        "button:visible:has-text('Entrar')",
+        "button:visible:has-text('Continuar')",
+        "button:visible:has-text('Próximo')",
+        "button[type='submit']:visible",
+    ]:
         if await page.locator(s).count() > 0:
-            await page.locator(s).first.click()
+            await page.locator(s).first.click(force=True)
             break
     else:
         await page.keyboard.press("Enter")
-    await page.wait_for_timeout(3000)
+    await page.wait_for_timeout(1500)
+
+    if await page.locator("input[type='password']:visible").count() == 0:
+        for texto_senha in [
+            "Entrar com senha",
+            "Entrar com minha senha",
+            "Usar senha",
+            "Usar minha senha",
+            "Login com senha",
+            "Senha",
+        ]:
+            clicou_senha = False
+            for locator in [
+                page.get_by_role("button", name=re.compile(texto_senha, re.I)),
+                page.get_by_role("link", name=re.compile(texto_senha, re.I)),
+                page.get_by_text(re.compile(texto_senha, re.I)),
+            ]:
+                try:
+                    if await locator.count() > 0:
+                        await locator.first.click(force=True)
+                        console.print("  [dim]Opção de senha selecionada.[/dim]")
+                        clicou_senha = True
+                        break
+                except Exception:
+                    pass
+            if clicou_senha:
+                break
+        await page.wait_for_timeout(2000)
+
+    if await page.locator("input[type='password']:visible").count() == 0 and MOSTRAR_NAVEGADOR:
+        console.print("[yellow]Clique em 'entrar com senha' no Chromium aberto e pressione Enter aqui.[/yellow]")
+        await asyncio.to_thread(input)
+        await page.wait_for_timeout(1000)
 
     await page.wait_for_selector("input[type='password']", timeout=15000)
     senha_input = page.locator("input[type='password']").first
@@ -494,6 +531,7 @@ async def fazer_login(page, console):
     # Clique robusto no botão azul "Enter"
     clicou = False
     for seletor in [
+        "button:visible:has-text('Continuar')",
         "button:visible:has-text('Enter')",
         "text=Enter",
         "button:visible:has-text('Entrar')",
