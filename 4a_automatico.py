@@ -49,6 +49,7 @@ GITHUB_USER    = "pallusm"
 GITHUB_REPO    = "4a-provas"
 WHATSAPP_GRUPO = "4°A Fund. Manhã - Eduardo Gomes"
 NOTIFICAR_SITE = os.getenv("NOTIFICAR_SITE", "").lower() in ("1", "true", "sim", "yes")
+MOSTRAR_NAVEGADOR = os.getenv("MOSTRAR_NAVEGADOR", "").lower() in ("1", "true", "sim", "yes")
 
 URL_LOGIN = "https://classapp.com.br/auth"
 URL_AULAS = "https://wap.educacionalcloud.com.br/Pedagogico/Aulas"
@@ -516,6 +517,15 @@ async def fazer_login(page, console):
     await page.screenshot(path="debug_login_falhou.png", full_page=True)
 
     if "auth" in page.url:
+        if MOSTRAR_NAVEGADOR:
+            console.print("[yellow]Login automático não avançou. Corrija no Chromium aberto e pressione Enter aqui para continuar.[/yellow]")
+            await asyncio.to_thread(input)
+            await page.wait_for_load_state("networkidle")
+            await page.wait_for_timeout(2000)
+            console.print(f"[dim]URL após login manual: {page.url}[/dim]")
+            if "auth" not in page.url:
+                console.print("  ✅ Login manual OK!\n")
+                return True
         console.print("[red]❌ Login falhou[/red]")
         console.print("[yellow]📸 Print salvo em debug_login_falhou.png[/yellow]")
         return False
@@ -1128,7 +1138,7 @@ async def main():
     hoje = date.today()
 
     async with async_playwright() as pw:
-        navegador = await pw.chromium.launch(headless=True)
+        navegador = await pw.chromium.launch(headless=not MOSTRAR_NAVEGADOR)
         contexto = await navegador.new_context(
             user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36"
         )

@@ -36,9 +36,11 @@ Antes de buscar dados novos da escola, crie um arquivo `.env` local com suas cre
 CLASSAPP_EMAIL=seu-email
 CLASSAPP_SENHA=sua-senha
 NOTIFICAR_SITE=0
+MOSTRAR_NAVEGADOR=0
 ```
 
 Por segurança, `NOTIFICAR_SITE=0` mantém notificações externas desligadas. Use `NOTIFICAR_SITE=1` apenas quando quiser disparar notificação após publicar.
+Use `MOSTRAR_NAVEGADOR=1` quando precisar resolver login manualmente no Chromium.
 
 ## Atualizar site
 
