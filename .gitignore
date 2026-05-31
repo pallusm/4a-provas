@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+logs/
+.env
+wa_session/
+wa_cache.json
+debug_*.png
+debug_processamento.json
+login_teste.log
+*.zip
+*.pkg

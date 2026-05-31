@@ -1,7 +1,32 @@
 [
   {
-    "disciplina": "Língua Portuguesa",
-    "conteudo": "- 4ª Proposta da Roda de Leitura – Para: 21/05 Oi, meus queridos alunos! Chegou a hora de mais um desafio criativo e muito especial! Nesta proposta, vocês irão escolher o personagem de que mais gostaram (ou acharam mais interessante) da história lida e criar uma ficha de personagem criativa, como se estivessem apresentando esse personagem para outras pessoas. Como fazer: Leia a história com atenção; Escolha um personagem marcante; Pense em suas características, gostos e jeito de ser; Monte uma a",
-    "prazo": "2026-05-21"
+    "tipo": "prova",
+    "disciplina": "Inglês — G1",
+    "grupo": "G1",
+    "prazo": "2026-05-28",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 4,
+    "fonte": "Benício",
+    "conteudo": "Na próxima semana teremos trabalho avaliativo nos dias 28/05 e 29/05. Não é necessário estudo prévio, porém pedimos que evite faltas nestes dias.",
+    "conteudo_aula": "Aula 1 Objetos de conhecimento: daily routine activities, telling the time Unit 4 Student's Book - page 50 Workbook - 40 Iniciamos a aula com a correção da p. 39 do Workbook, feita no quadro com a contribuição oral dos alunos. Em seguida, usando os flashcards, cada aluno escolheu um card e precisou dizer uma frase de acordo com a figura que pegou e o horário que eu coloquei no relógio projetado na lousa (Ex.: I get up at seven o’clock), todos participaram. Trabalhamos as atividades de listening da p. 50 do student’s book (8 and 9) e a atividade de speaking da mesma página, em duplas ou trios, praticaram o diálogo (10). Finalizamos com as atividades da página 40 do Workbook."
+  },
+  {
+    "tipo": "prova",
+    "disciplina": "Inglês — G2",
+    "grupo": "G2",
+    "prazo": "2026-05-28",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Heitor"
+    ],
+    "linha_origem": 4,
+    "fonte": "Heitor",
+    "conteudo": "Na próxima semana teremos trabalho avaliativo nos dias 28/05 e 29/05. Não é necessário estudo prévio, porém pedimos que evite faltas nestes dias.",
+    "conteudo_aula": "Aula 1 Objetos de conhecimento: daily routine activities, telling the time Unit 4 Student's Book - page 50 Workbook - 40 Iniciamos a aula com a correção da p. 39 do Workbook, feita no quadro com a contribuição oral dos alunos. Em seguida, usando os flashcards, cada aluno escolheu um card e precisou dizer uma frase de acordo com a figura que pegou e o horário que eu coloquei no relógio projetado na lousa (Ex.: I get up at seven o’clock), todos participaram. Trabalhamos as atividades de listening da p. 50 do student’s book (8 and 9) e a atividade de speaking da mesma página, em duplas ou trios, praticaram o diálogo (10). Finalizamos com as atividades da página 40 do Workbook."
   }
 ]
