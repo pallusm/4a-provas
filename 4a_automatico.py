@@ -48,6 +48,7 @@ FILHOS = [
 GITHUB_USER    = "pallusm"
 GITHUB_REPO    = "4a-provas"
 WHATSAPP_GRUPO = "4°A Fund. Manhã - Eduardo Gomes"
+NOTIFICAR_SITE = os.getenv("NOTIFICAR_SITE", "").lower() in ("1", "true", "sim", "yes")
 
 URL_LOGIN = "https://classapp.com.br/auth"
 URL_AULAS = "https://wap.educacionalcloud.com.br/Pedagogico/Aulas"
@@ -1205,7 +1206,10 @@ async def main():
         if "nothing to commit" not in result.stdout + result.stderr:
             subprocess.run(["git", "-C", str(repo_dir), "push"], check=True)
             console.print("  ✅ Site publicado!")
-            await disparar_notificacao(licoes_fut, provas_fut, alertas_fut, console)
+            if NOTIFICAR_SITE:
+                await disparar_notificacao(licoes_fut, provas_fut, alertas_fut, console)
+            else:
+                console.print("  [dim]Notificação externa desativada. Use NOTIFICAR_SITE=1 para ativar.[/dim]")
         else:
             console.print("  [dim]Sem mudanças no site.[/dim]")
 
