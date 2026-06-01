@@ -1,6 +1,21 @@
 [
   {
     "tipo": "prova",
+    "disciplina": "Português",
+    "grupo": null,
+    "prazo": "2026-06-08",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 1,
+    "fonte": "Benício",
+    "conteudo": "Dia 08-06, não falte atividade avaliativa. Estudar: O direito de reclamar- carta de reclamação - p. 63 a 66; Estudo da língua- sufixos p. 16 a 22; Ortografar Marcas de nasalidade: til, m e n- p. 23, 24 e 25; Palavras com final: L ou U? p.51 e 52.",
+    "conteudo_aula": "O uso da vírgula páginas 101 a 103 - Os dígrafos - páginas 103 e 104 - Produção de texto - proposta da página 107 Nesta aula, continuaremos os estudos sobre pontuação e sua importância para a construção de textos claros e organizados. Os alunos aprofundarão seus conhecimentos sobre os diferentes usos da vírgula, explorando situações em que ela é utilizada para separar elementos em enumerações, destacar o vocativo e isolar o aposto. Para favorecer a compreensão, assistiremos a vídeos ilustrativos, levantaremos hipóteses sobre os contextos em que a vírgula aparece e realizaremos atividades práticas na apostila. Em seguida, faremos um treino dos diagramas GUE e GUI, fortalecendo a leitura e a escrita dessas estruturas ortográficas.Vídeos Vocativo (completo) https://youtu.be/56MLSIAqBOU?si=n_v1UTX2zsVOIn-6 Aposto - somente até 3:08 https://youtu.be/9MpfpKq1xnc?si=53qD7zGa6zcMed2v"
+  },
+  {
+    "tipo": "prova",
     "disciplina": "Geografia",
     "grupo": null,
     "prazo": "2026-06-11",
@@ -9,7 +24,7 @@
     "origens": [
       "Benício"
     ],
-    "linha_origem": 4,
+    "linha_origem": 6,
     "fonte": "Benício",
     "conteudo": "Tarefa de casa – As fronteiras brasileiras – p. 223 e 224 – ex. 1, 2 e 3 Trazer as imagens solicitadas via planner para o trabalho avaliativo, dia 11-06 Para: 11-06.",
     "conteudo_aula": "Correção da tarefa de casa através da socialização das respostas dos alunos e utilizando a lousa digital para visualização das imagens. A localização do Brasil no continente – As fronteiras brasileiras – (p. 220 a 222) - Apresentação do planisfério e dos continentes do nosso planeta. Observação o mapa politico da América do Sul, continente onde nosso país está localizado. Leitura compartilhada destacando os trechos mais importantes e enfatizando o nome das linhas que separam os países no mapa. Apresentação de vídeo explicativo sobre os continentes: https://www.youtube.com/watch?v=l5_dcoioiB8 Realização das atividades propostas de forma individual com correção coletiva através da socialização das respostas dos alunos e utilizando a lousa digital para visualização do mapa da América do Sul."
@@ -24,7 +39,7 @@
     "origens": [
       "Benício"
     ],
-    "linha_origem": 3,
+    "linha_origem": 5,
     "fonte": "Benício",
     "conteudo": "Para: 12/06 Trabalho avaliativo em aula, não falte!",
     "conteudo_aula": "1) Organização do album da Copa EG; Entrega das figurinhas de acordo com a quantidade de desafios realizados pelos alunos; Colagem das figurinhas através da realização dos cálculos de multiplicação. 2) Correção da tarefa de casa páginas, 175 e 176, sobre cadeias alimentares. 3) Leitura e realização das atividades, módulo 8: Investigar animais, páginas 156 a 166. Atividades realizadas em duplas."
