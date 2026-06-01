@@ -37,10 +37,14 @@ CLASSAPP_EMAIL=seu-email
 CLASSAPP_SENHA=sua-senha
 NOTIFICAR_SITE=0
 MOSTRAR_NAVEGADOR=0
+ENVIAR_WHATSAPP=0
+ONESIGNAL_APP_ID=
+ONESIGNAL_API_KEY=
 ```
 
 Por segurança, `NOTIFICAR_SITE=0` mantém notificações externas desligadas. Use `NOTIFICAR_SITE=1` apenas quando quiser disparar notificação após publicar.
 Use `MOSTRAR_NAVEGADOR=1` quando precisar resolver login manualmente no Chromium.
+Use `ENVIAR_WHATSAPP=1` apenas quando quiser permitir envio real pelo agendamento.
 
 ## Atualizar site
 

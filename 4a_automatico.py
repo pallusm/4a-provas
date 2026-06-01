@@ -50,6 +50,9 @@ GITHUB_REPO    = "4a-provas"
 WHATSAPP_GRUPO = "4°A Fund. Manhã - Eduardo Gomes"
 NOTIFICAR_SITE = os.getenv("NOTIFICAR_SITE", "").lower() in ("1", "true", "sim", "yes")
 MOSTRAR_NAVEGADOR = os.getenv("MOSTRAR_NAVEGADOR", "").lower() in ("1", "true", "sim", "yes")
+ENVIAR_WHATSAPP = os.getenv("ENVIAR_WHATSAPP", "").lower() in ("1", "true", "sim", "yes")
+ONESIGNAL_APP_ID = os.getenv("ONESIGNAL_APP_ID", "")
+ONESIGNAL_API_KEY = os.getenv("ONESIGNAL_API_KEY", "")
 
 URL_LOGIN = "https://classapp.com.br/auth"
 URL_AULAS = "https://wap.educacionalcloud.com.br/Pedagogico/Aulas"
@@ -136,9 +139,6 @@ MARCADORES_TAREFA = [
     r"atividade para casa\s*:",
     r"em casa\s*:",
 ]
-
-ONESIGNAL_APP_ID  = "1c203a60-4ab3-4ee6-8c14-a307ad62fb7b"
-ONESIGNAL_API_KEY = "os_v2_app_dqqduyckwnhondauumd22yx3pnrh4zeswxtuco5gatv4vcertwmiu46xydsemvyzufyqft7qyoczg57pucuquyo5d6gnxiccyreirsa"
 
 # ── Utilidades de texto e data ────────────────────────────────────────────────
 
@@ -1113,6 +1113,10 @@ async def disparar_notificacao(licoes_fut, provas_fut, alertas, console):
     """Envia notificação push via OneSignal para todos os assinantes."""
     import urllib.request, urllib.error
 
+    if not ONESIGNAL_APP_ID or not ONESIGNAL_API_KEY:
+        console.print("  [yellow]⚠️ OneSignal sem configuração no .env; notificação ignorada.[/yellow]")
+        return
+
     hoje = date.today()
 
     if alertas:
@@ -1245,7 +1249,10 @@ async def main():
         repo_dir = Path(__file__).parent
 
         (repo_dir / "index.html").write_text(html, encoding="utf-8")
-        subprocess.run(["git", "-C", str(repo_dir), "add", "."], check=True)
+        subprocess.run([
+            "git", "-C", str(repo_dir), "add",
+            "index.html", "licoes.json", "provas.json", "alertas.json", "preview.html"
+        ], check=True)
         result = subprocess.run(
             ["git", "-C", str(repo_dir), "commit", "-m", f"Auto {datetime.now().strftime('%d/%m/%Y %H:%M')}"],
             capture_output=True,
@@ -1265,6 +1272,13 @@ async def main():
     if modo in ("tudo", "whatsapp", "whatsapp_preview"):
         import pyperclip
         console.print("\n[yellow]📱 Preparando mensagem WhatsApp...[/yellow]")
+
+        if modo == "whatsapp" and not ENVIAR_WHATSAPP:
+            console.print("[yellow]Envio real bloqueado. Defina ENVIAR_WHATSAPP=1 no .env para permitir.[/yellow]")
+            return
+        if modo == "tudo" and not ENVIAR_WHATSAPP:
+            console.print("[yellow]Envio real do WhatsApp pulado. Defina ENVIAR_WHATSAPP=1 no .env para permitir.[/yellow]")
+            return
 
         cache_path = Path(__file__).parent / "wa_cache.json"
         def cache_key_item(i: dict, campo: str) -> str:

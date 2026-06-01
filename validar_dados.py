@@ -77,11 +77,8 @@ def main():
             if prazo and prazo < hoje and item.get("disciplina") == "Comunicado":
                 avisos.append(f"Comunicado vencido ainda nos dados: {nome}#{idx}")
 
-    texto_alertas = normalizar(" ".join(
-        f"{a.get('titulo', '')} {a.get('texto', '')} {a.get('conteudo', '')}" for a in alertas
-    ))
-    if "simulado anglo" not in texto_alertas:
-        erros.append("Comunicado do Simulado Anglo ausente em alertas.json")
+    if not any((licoes, provas, alertas)):
+        erros.append("Nenhum dado encontrado para publicação")
 
     preview = BASE / "preview.html"
     if preview.exists():
@@ -94,8 +91,8 @@ def main():
         ]:
             if placeholder in html:
                 erros.append(f"Placeholder ainda presente no preview: {placeholder}")
-        if "2º Simulado Anglo" not in html and "2\u00ba Simulado Anglo" not in html:
-            erros.append("Preview sem o comunicado do Simulado Anglo")
+        if "Agenda do 4ºA" not in html:
+            erros.append("Preview não parece conter o site da agenda")
     else:
         avisos.append("preview.html ainda não foi gerado")
 
