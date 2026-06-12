@@ -1,32 +1,32 @@
 [
   {
     "tipo": "licao",
-    "disciplina": "Matemática",
+    "disciplina": "Português",
     "grupo": null,
-    "prazo": "2026-06-11",
+    "prazo": "2026-06-12",
     "sem_prazo": false,
-    "prazo_tipo": "data_definida",
+    "prazo_tipo": "proxima_aula",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 9,
-    "fonte": "Heitor",
-    "tarefa": "Para: 08/06 Copa EG, dia 08/06, trazer o álbum com as figurinhas coladas. Dia 11/06, entrega dos desafios da 3ª semana. Maiores informações no Classroom.",
-    "conteudo_aula": "1) Continuação dos estudos sobre divisões através da realização de algoritmos no caderno."
+    "linha_origem": 6,
+    "fonte": "Benício",
+    "tarefa": "Os livro serão recolhidos pois retornaremos com as Rodas de Leitura em agosto.",
+    "conteudo_aula": "Apresentação da 5ª Roda de Leitura Daremos continuidade ao trabalho desenvolvido na Roda de Leitura por meio da socialização das entrevistas elaboradas pelos alunos com personagens das obras lidas. Este momento favorecerá a apreciação dos trabalhos produzidos, a ampliação do repertório literário e o compartilhamento de diferentes interpretações, evidenciando a compreensão leitora e o envolvimento dos estudantes com as narrativas exploradas."
   },
   {
     "tipo": "licao",
-    "disciplina": "Português",
+    "disciplina": "Projeto de Vida",
     "grupo": null,
-    "prazo": "2026-06-11",
+    "prazo": "2026-06-15",
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 40,
-    "fonte": "Heitor",
-    "tarefa": "5ª Proposta da Roda de Leitura - Disponível no Google Classroom 5ª Proposta da Roda de Leitura Oi, meus queridos alunos! Chegou a hora de mais uma proposta super criativa e divertida! Nesta atividade, vocês deverão ler o livro com bastante atenção e escolher um personagem interessante da história. Depois, imaginem que esse personagem está participando de uma entrevista! Como fazer: - Leia o livro com atenção; - Escolha um personagem interessante; - Elabore 4 perguntas; - Crie 4 possíveis respostas desse personagem, de acordo com sua personalidade e características da história. Vale usar a criatividade! Você pode escolher como apresentar: - Cartaz - Vídeo - Apresentação no Canva - Ou qualquer ideia criativa que desejar! Na hora da apresentação, capriche na oralidade, na criatividade e na organização! Estou ansiosa para conhecer os personagens escolhidos por vocês! Para: 11-06",
-    "conteudo_aula": "Roda de leitura Apresentação da Roda de Leitura. Os alunos produziram previamente uma ficha ou perfil de um personagem da história trabalhada. Neste momento, valorizaremos a oralidade por meio de apresentações, trocas de ideias e escuta atenta dos colegas. A atividade contribuirá para o desenvolvimento da expressão oral, da interpretação e da socialização."
+    "linha_origem": 18,
+    "fonte": "Benício",
+    "tarefa": "Conforme o explicado em aula, no livrinho Diário de Bordo (livrinho azul), responda continue a frase: Quando crescer, eu quero ser... Para:15/06",
+    "conteudo_aula": "Aula dialogada e prática. Iniciamos a aula com uma roda de conversa sobre o Projeto Rede do bem, organizado pela Orientação Educacional do nosso colégio, os estudantes interessados a representar a Rede do bem deram os nomes à professora. Na próxima aula faremos a votação do representante da sala. No segundo momento, abrimos o módulo 2. Assistimos ao breve vídeo do autor, disponível no site da Iônica https://eduardogomessp.souionica.com.br/viewer/32e3fcb0-6742-11f0-9e35-d14eb30d6ead. Realizamos a leitura individual e coletiva do texto, “O que posso fazer no futuro?” – Página 30 do nosso livro, seguida da explicação da professora."
   }
 ]
