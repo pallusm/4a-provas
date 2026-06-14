@@ -1,96 +1,6 @@
 [
   {
     "tipo": "prova",
-    "disciplina": "Ciências",
-    "grupo": null,
-    "prazo": "2026-06-12",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 33,
-    "fonte": "Benício",
-    "conteudo": "Para: 12/06 Trabalho avaliativo em aula, não falte!",
-    "conteudo_aula": "1) Organização do album da Copa EG; Entrega das figurinhas de acordo com a quantidade de desafios realizados pelos alunos; Colagem das figurinhas através da realização dos cálculos de multiplicação. 2) Correção da tarefa de casa páginas, 175 e 176, sobre cadeias alimentares. 3) Leitura e realização das atividades, módulo 8: Investigar animais, páginas 156 a 166. Atividades realizadas em duplas."
-  },
-  {
-    "tipo": "prova",
-    "disciplina": "Inglês — G1",
-    "grupo": "G1",
-    "prazo": "2026-06-12",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 21,
-    "fonte": "Benício",
-    "conteudo": "Atividade Avaliativa de Listening - Data: 12/06 Estudar: - Unit 3 (School days) - Student's Book: 38, 39, 40 e 41. Workbook: 30, 31, 32, 33. - Unit 4 (My day) - Student's Book: 48, 49 e 50. Workbook: 38, 39 e 40.",
-    "conteudo_aula": "Aula 2 Objetos de conhecimento: daily routine activities, telling the time Unit 4 Student's Book - page 51 Workbook - 41 Nesta aula, praticamos as habilidades reading, writing e speaking. Para isso, conversamos com os alunos sobre hábitos e estilo de vida saudável. Para iniciar, assistimos a um vídeo sobre o tema, onde puderam ver alguns exemplos do que pode ser um estilo de vida saudável para crianças. Em seguida, fizemos as atividades de reading da p. 50 do student’s book, onde leram as perguntas do questionário sobre estilo de vida, acompanhando o áudio, e puderam circular a resposta, de acordo com suas rotinas. Depois, praticaram o modelo de conversa da mesma página em pequenos grupos. Para a prática de writing, realizaram a montagem de um questionário na p. 41 do workbook, e praticaram novamente a conversa com os colegas."
-  },
-  {
-    "tipo": "prova",
-    "disciplina": "Inglês — G1",
-    "grupo": "G1",
-    "prazo": "2026-06-12",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 5,
-    "fonte": "Benício",
-    "conteudo": "Data: 4A 12/06 - Atividade Avaliativa de listening, reading and writing. Estudar: - Unit 3 (School days) - Student's Book: 38, 39, 40 e 41. Workbook: 30, 31, 32, 33. - Unit 4 (My day) - Student's Book: 48, 49 e 50. Workbook: 38, 39 e 40.",
-    "conteudo_aula": "Aula 3 Objetos de conhecimento: Review Time - Telling and asking the time, routines, habits, agree and disagree. Unit 4 - My day Workbook: page 44 Iniciamos a aula com a dinâmica \"Find Someone Who...\", em que os alunos circulavam pela sala fazendo perguntas simples sobre hábitos e rotinas dos colegas, utilizando o vocabulário e as estruturas trabalhadas na unidade. Depois, compartilhamos algumas respostas e relembramos os principais conteúdos estudados. Na sequência, construímos coletivamente um pequeno resumo da Unit 4 na lousa, organizando os tópicos mais importantes. Em seguida, os alunos realizaram individualmente os exercícios da página 45 do WB, enquanto eu auxiliava aqueles que apresentavam dúvidas. Ao final da aula, realizamos a correção coletiva e esclarecemos as dificuldades encontradas."
-  },
-  {
-    "tipo": "prova",
-    "disciplina": "Inglês — G2",
-    "grupo": "G2",
-    "prazo": "2026-06-12",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Heitor"
-    ],
-    "linha_origem": 20,
-    "fonte": "Heitor",
-    "conteudo": "Atividade Avaliativa de Listening - Dia 12/06 Estudar: - Unit 3 (School days) - Student's Book: 38, 39, 40 e 41. Workbook: 30, 31, 32, 33. - Unit 4 (My day) - Student's Book: 48, 49 e 50. Workbook: 38, 39 e 40.",
-    "conteudo_aula": "Aula 1 Objetos de conhecimento: daily routine activities, telling the time Unit 4 Student's Book - page 51 Workbook - 41 Nesta aula, praticamos as habilidades reading, writing e speaking. Para isso, conversamos com os alunos sobre hábitos e estilo de vida saudável. Para iniciar, assistimos a um vídeo sobre o tema, onde puderam ver alguns exemplos do que pode ser um estilo de vida saudável para crianças. Em seguida, fizemos as atividades de reading da p. 50 do student’s book, onde leram as perguntas do questionário sobre estilo de vida, acompanhando o áudio, e puderam circular a resposta, de acordo com suas rotinas. Depois, praticaram o modelo de conversa da mesma página em pequenos grupos. Para a prática de writing, realizaram a montagem de um questionário na p. 41 do workbook, e praticaram novamente a conversa com os colegas."
-  },
-  {
-    "tipo": "prova",
-    "disciplina": "Inglês — G2",
-    "grupo": "G2",
-    "prazo": "2026-06-12",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Heitor"
-    ],
-    "linha_origem": 9,
-    "fonte": "Heitor",
-    "conteudo": "Data: 12/06 - Atividade Avaliativa de listening, reading and writing. Estudar: - Unit 3 (School days) - Student's Book: 38, 39, 40 e 41. Workbook: 30, 31, 32, 33. - Unit 4 (My day) - Student's Book: 48, 49 e 50. Workbook: 38, 39 e 40.",
-    "conteudo_aula": "Aula 2 Objetos de conhecimento: CLIL - What time is around the world? Unit 4 - My day Student’s Book: pages 54 and 55 Workbook: page 44 Para iniciar a aula, realizamos um quiz rápido sobre horários. Os alunos receberam diferentes situações do cotidiano e precisaram identificar ou informar as horas correspondentes em inglês. Em seguida, observamos um mapa-múndi projetado na sala e conversamos brevemente sobre países que eles conheciam e as possíveis diferenças de horário entre eles. Após essa contextualização, exploramos o conteúdo das páginas 54 e 55 do SB, discutindo como os fusos horários influenciam a rotina das pessoas ao redor do mundo. Os alunos participaram das atividades propostas e compartilharam suas observações. Para finalizar, os alunos realizaram as atividades da página 44 do WB e fizemos a correção conjunta."
-  },
-  {
-    "tipo": "prova",
-    "disciplina": "Inglês — G2",
-    "grupo": "G2",
-    "prazo": "2026-06-12",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Heitor"
-    ],
-    "linha_origem": 4,
-    "fonte": "Heitor",
-    "conteudo": "Terminar o ex. da página 44, conforme explicado em sala de aula. Data: 12/06 - Atividade Avaliativa de listening, reading and writing. Estudar: - Unit 3 (School days) - Student's Book: 38, 39, 40 e 41. Workbook: 30, 31, 32, 33. - Unit 4 (My day) - Student's Book: 48, 49 e 50. Workbook: 38, 39 e 40.",
-    "conteudo_aula": "Aula 3 Objetos de conhecimento: Review Time - Telling and asking the time, routines, habits, agree and disagree. Unit 4 - My day Workbook: page 44 Iniciamos a aula com a dinâmica \"Find Someone Who...\", em que os alunos circulavam pela sala fazendo perguntas simples sobre hábitos e rotinas dos colegas, utilizando o vocabulário e as estruturas trabalhadas na unidade. Depois, compartilhamos algumas respostas e relembramos os principais conteúdos estudados. Na sequência, construímos coletivamente um pequeno resumo da Unit 4 na lousa, organizando os tópicos mais importantes. Em seguida, os alunos realizaram individualmente os exercícios da página 45 do WB, enquanto eu auxiliava aqueles que apresentavam dúvidas. Ao final da aula, realizamos a correção coletiva e esclarecemos as dificuldades encontradas."
-  },
-  {
-    "tipo": "prova",
     "disciplina": "Inglês — G1",
     "grupo": "G1",
     "prazo": "2026-06-17",
@@ -103,6 +13,21 @@
     "fonte": "Benício",
     "conteudo": "Na próxima semana, realizaremos uma Atividade Avaliativa de speaking. Data: 4A: 17/06 - O conteúdo é o mesmo da Atividade de listening, Units 3 e 4. Estudar como perguntar e responder as questões praticadas nestas units.",
     "conteudo_aula": "Aula 4 Atividade Avaliativa de Listening."
+  },
+  {
+    "tipo": "prova",
+    "disciplina": "Inglês — G2",
+    "grupo": "G2",
+    "prazo": "2026-06-17",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Heitor"
+    ],
+    "linha_origem": 1,
+    "fonte": "Heitor",
+    "conteudo": "Não se esqueça! Na próxima semana (17/06) teremos nossa avaliação de speaking. Estude o vocabulário das páginas das Units 3 e 4.",
+    "conteudo_aula": "Aplicação da Av. 1 - Listening"
   },
   {
     "tipo": "prova",

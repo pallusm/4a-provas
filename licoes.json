@@ -1,21 +1,6 @@
 [
   {
     "tipo": "licao",
-    "disciplina": "Português",
-    "grupo": null,
-    "prazo": "2026-06-12",
-    "sem_prazo": false,
-    "prazo_tipo": "proxima_aula",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 6,
-    "fonte": "Benício",
-    "tarefa": "Os livro serão recolhidos pois retornaremos com as Rodas de Leitura em agosto.",
-    "conteudo_aula": "Apresentação da 5ª Roda de Leitura Daremos continuidade ao trabalho desenvolvido na Roda de Leitura por meio da socialização das entrevistas elaboradas pelos alunos com personagens das obras lidas. Este momento favorecerá a apreciação dos trabalhos produzidos, a ampliação do repertório literário e o compartilhamento de diferentes interpretações, evidenciando a compreensão leitora e o envolvimento dos estudantes com as narrativas exploradas."
-  },
-  {
-    "tipo": "licao",
     "disciplina": "Projeto de Vida",
     "grupo": null,
     "prazo": "2026-06-15",
