@@ -1,18 +1,1 @@
-[
-  {
-    "tipo": "alerta",
-    "disciplina": "Matemática",
-    "grupo": null,
-    "prazo": null,
-    "sem_prazo": true,
-    "prazo_tipo": "sem_prazo",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 15,
-    "fonte": "Benício",
-    "conteudo": "Lembrete: Amanhã, atividade avaliativa de cálculo, não falte!",
-    "texto": "Lembrete: Amanhã, atividade avaliativa de cálculo, não falte!",
-    "conteudo_aula": "1) Finalização dos esxecícios sobre ângulos, páginas 80 a 82."
-  }
-]
+[]
