@@ -1,6 +1,21 @@
 [
   {
     "tipo": "prova",
+    "disciplina": "Inglês — G1",
+    "grupo": "G1",
+    "prazo": "2026-06-17",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 5,
+    "fonte": "Benício",
+    "conteudo": "Na próxima semana, realizaremos uma Atividade Avaliativa de speaking. Data: 4A: 17/06 - O conteúdo é o mesmo da Atividade de listening, Units 3 e 4. Estudar como perguntar e responder as questões praticadas nestas units.",
+    "conteudo_aula": "Aula 4 Atividade Avaliativa de Listening."
+  },
+  {
+    "tipo": "prova",
     "disciplina": "Inglês — G2",
     "grupo": "G2",
     "prazo": "2026-06-17",
@@ -9,7 +24,7 @@
     "origens": [
       "Heitor"
     ],
-    "linha_origem": 3,
+    "linha_origem": 5,
     "fonte": "Heitor",
     "conteudo": "Não se esqueça! Na próxima semana (17/06) teremos nossa avaliação de speaking. Estude o vocabulário das páginas das Units 3 e 4.",
     "conteudo_aula": "Aplicação da Av. 1 - Listening"
@@ -22,10 +37,10 @@
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 6,
-    "fonte": "Heitor",
+    "linha_origem": 8,
+    "fonte": "Benício",
     "conteudo": "Dia 18-06, não falte atividade avaliativa de Geografia- Estudar ATIVIDADE AVALIATIVA As estrelas da bandeira do Brasil – p. 176 e 182 Observando as divisas – p. 189 Explorando representações – p. 202 a 203 As regiões do Brasil – p. 212 e 213 Tabela de siglas, estados e capitais.",
     "conteudo_aula": "Trabalho avaliativo.- 1ªetapa"
   },
@@ -37,10 +52,10 @@
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 5,
-    "fonte": "Heitor",
+    "linha_origem": 7,
+    "fonte": "Benício",
     "conteudo": "Para: 19-06 1) Entregar a pesquisa sobre os animais da fauna brasileira finalizada e revisada. 2) Atividade Avaliativa, não falte! Estudar: Caderno 2: Módulo 5: A alimentação dos seres vivos, páginas 124, 125, 126, 127, 128 e 129 Módulo 6: Investigar as plantas, páginas 132 a 135 Módulo 7: Fotossíntese, páginas 143 a 147",
     "conteudo_aula": "Trabalho avaliativo de Ciências - Cadeias Alimentares: 1) Pesquisa em grupo sobre animais da fauna brasileira. 2) Confecção da cadeia alimentar com massinha de EVA."
   }

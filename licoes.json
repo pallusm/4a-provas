@@ -1,31 +1,16 @@
 [
   {
     "tipo": "licao",
-    "disciplina": "Projeto de Vida",
-    "grupo": null,
-    "prazo": "2026-06-15",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Heitor"
-    ],
-    "linha_origem": 20,
-    "fonte": "Heitor",
-    "tarefa": "Conforme o explicado em aula, no livrinho Diário de Bordo (livrinho azul), responda continue a frase: Quando crescer, eu quero ser... Para:15/06",
-    "conteudo_aula": "Aula dialogada e prática. Iniciamos a aula com uma roda de conversa sobre o Projeto Rede do bem, organizado pela Orientação Educacional do nosso colégio, os estudantes interessados a representar a Rede do bem deram os nomes à professora. Na próxima aula faremos a votação do representante da sala. No segundo momento, abrimos o módulo 2. Assistimos ao breve vídeo do autor, disponível no site da Iônica https://eduardogomessp.souionica.com.br/viewer/32e3fcb0-6742-11f0-9e35-d14eb30d6ead. Realizamos a leitura individual e coletiva do texto, “O que posso fazer no futuro?” – Página 30 do nosso livro, seguida da explicação da professora."
-  },
-  {
-    "tipo": "licao",
     "disciplina": "Matemática",
     "grupo": null,
     "prazo": "2026-06-16",
     "sem_prazo": false,
     "prazo_tipo": "proxima_aula",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 2,
-    "fonte": "Heitor",
+    "linha_origem": 4,
+    "fonte": "Benício",
     "tarefa": "Atenção: O caderno 2 de Matemática deve continuar vindo para a escola para ser finalizado.",
     "conteudo_aula": "1) Continuação da análise de chances de eventos, páginas 92 a 94: Realização e correção das atividades propostas no caderno Anglo. 2) Explicação oral dos conceitos sobre sequências repetitivas e recursivas, páginas 98 e 99 3) Realização dos exercícios das páginas 100 a 106."
   },
@@ -37,11 +22,26 @@
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 1,
-    "fonte": "Heitor",
+    "linha_origem": 3,
+    "fonte": "Benício",
     "tarefa": "Estudo do texto - página 31 - ex. 1 Para: 16-06",
     "conteudo_aula": "Texto dramático - páginas 7 a 15 Iniciaremos o estudo do gênero dramático por meio da leitura compartilhada do texto inicial do módulo. Os alunos identificarão suas principais características, como diálogos, personagens, rubricas e indicações de cena, compreendendo a relação entre texto e encenação. Em seguida, realizarão atividades de interpretação para desenvolver a compreensão leitora."
+  },
+  {
+    "tipo": "licao",
+    "disciplina": "Matemática",
+    "grupo": null,
+    "prazo": "2026-06-17",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 2,
+    "fonte": "Benício",
+    "tarefa": "Para: 17/06 1) Realizar os exercícios 1A e 2, páginas 109 e 110, sobre regularidades em sequência.",
+    "conteudo_aula": "1) Continuação dos estudos sobre regularidades em sequência, páginas 104 a 106: Breve retomada oral dos dois tipos de sequência (repetitiva e recursiva); Finalização dos exercícios iniciados na aula anterior."
   }
 ]
