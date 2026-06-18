@@ -1,47 +1,32 @@
 [
   {
     "tipo": "licao",
-    "disciplina": "Matemática",
+    "disciplina": "Português",
     "grupo": null,
-    "prazo": "2026-06-16",
+    "prazo": "2026-06-18",
     "sem_prazo": false,
-    "prazo_tipo": "proxima_aula",
+    "prazo_tipo": "data_definida",
     "origens": [
-      "Benício"
+      "Heitor"
     ],
     "linha_origem": 6,
-    "fonte": "Benício",
-    "tarefa": "Atenção: O caderno 2 de Matemática deve continuar vindo para a escola para ser finalizado.",
-    "conteudo_aula": "1) Continuação da análise de chances de eventos, páginas 92 a 94: Realização e correção das atividades propostas no caderno Anglo. 2) Explicação oral dos conceitos sobre sequências repetitivas e recursivas, páginas 98 e 99 3) Realização dos exercícios das páginas 100 a 106."
+    "fonte": "Heitor",
+    "tarefa": "Estudo do texto - página 31 - ex. 2 Para: 18-06",
+    "conteudo_aula": "Correção da tarefa de casa. Texto dramático - páginas 16 a 22 Dando continuidade ao estudo do gênero dramático, os alunos compararão suas características com as do texto narrativo ficcional. Por meio de atividades práticas, serão incentivados a reconhecer semelhanças e diferenças entre os gêneros, ampliando sua capacidade de análise e compreensão textual."
   },
   {
     "tipo": "licao",
     "disciplina": "Português",
     "grupo": null,
-    "prazo": "2026-06-16",
+    "prazo": "2026-06-19",
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Benício"
+      "Heitor"
     ],
-    "linha_origem": 5,
-    "fonte": "Benício",
-    "tarefa": "Estudo do texto - página 31 - ex. 1 Para: 16-06",
-    "conteudo_aula": "Texto dramático - páginas 7 a 15 Iniciaremos o estudo do gênero dramático por meio da leitura compartilhada do texto inicial do módulo. Os alunos identificarão suas principais características, como diálogos, personagens, rubricas e indicações de cena, compreendendo a relação entre texto e encenação. Em seguida, realizarão atividades de interpretação para desenvolver a compreensão leitora."
-  },
-  {
-    "tipo": "licao",
-    "disciplina": "Matemática",
-    "grupo": null,
-    "prazo": "2026-06-17",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 4,
-    "fonte": "Benício",
-    "tarefa": "Para: 17/06 1) Realizar os exercícios 1A e 2, páginas 109 e 110, sobre regularidades em sequência.",
-    "conteudo_aula": "1) Continuação dos estudos sobre regularidades em sequência, páginas 104 a 106: Breve retomada oral dos dois tipos de sequência (repetitiva e recursiva); Finalização dos exercícios iniciados na aula anterior."
+    "linha_origem": 2,
+    "fonte": "Heitor",
+    "tarefa": "Apostila de ortografia (9) Para: 19-06",
+    "conteudo_aula": "Correção da tarefa de casa. Finalização dos registros iniciados na aula anterior sobre as características dos textos dramáticos."
   }
 ]
