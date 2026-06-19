@@ -3,29 +3,14 @@
     "tipo": "licao",
     "disciplina": "Português",
     "grupo": null,
-    "prazo": "2026-06-18",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Heitor"
-    ],
-    "linha_origem": 6,
-    "fonte": "Heitor",
-    "tarefa": "Estudo do texto - página 31 - ex. 2 Para: 18-06",
-    "conteudo_aula": "Correção da tarefa de casa. Texto dramático - páginas 16 a 22 Dando continuidade ao estudo do gênero dramático, os alunos compararão suas características com as do texto narrativo ficcional. Por meio de atividades práticas, serão incentivados a reconhecer semelhanças e diferenças entre os gêneros, ampliando sua capacidade de análise e compreensão textual."
-  },
-  {
-    "tipo": "licao",
-    "disciplina": "Português",
-    "grupo": null,
     "prazo": "2026-06-19",
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 2,
-    "fonte": "Heitor",
+    "linha_origem": 6,
+    "fonte": "Benício",
     "tarefa": "Apostila de ortografia (9) Para: 19-06",
     "conteudo_aula": "Correção da tarefa de casa. Finalização dos registros iniciados na aula anterior sobre as características dos textos dramáticos."
   }

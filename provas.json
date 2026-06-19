@@ -1,46 +1,16 @@
 [
   {
     "tipo": "prova",
-    "disciplina": "Geografia",
-    "grupo": null,
-    "prazo": "2026-06-18",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Heitor"
-    ],
-    "linha_origem": 17,
-    "fonte": "Heitor",
-    "conteudo": "Dia 18-06, não falte atividade avaliativa de Geografia- Estudar ATIVIDADE AVALIATIVA As estrelas da bandeira do Brasil – p. 176 e 182 Observando as divisas – p. 189 Explorando representações – p. 202 a 203 As regiões do Brasil – p. 212 e 213 Tabela de siglas, estados e capitais.",
-    "conteudo_aula": "Trabalho avaliativo.- 1ªetapa"
-  },
-  {
-    "tipo": "prova",
-    "disciplina": "Matemática",
-    "grupo": null,
-    "prazo": "2026-06-18",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Heitor"
-    ],
-    "linha_origem": 7,
-    "fonte": "Heitor",
-    "conteudo": "Para: 18/06 Revisão os exercícios E, F e G, página 105. Lembrete: Dia 19/06, Atividade Avaliativa de Ciências.",
-    "conteudo_aula": "1) Correções comentada e na lousa dos exercícios de regularidades em sequência, páginas 100 a 106. 2) Explicação sobre os conceitos de múltiplos e divisores através da realização de divisões."
-  },
-  {
-    "tipo": "prova",
     "disciplina": "Ciências",
     "grupo": null,
     "prazo": "2026-06-19",
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 16,
-    "fonte": "Heitor",
+    "linha_origem": 21,
+    "fonte": "Benício",
     "conteudo": "Para: 19-06 1) Entregar a pesquisa sobre os animais da fauna brasileira finalizada e revisada. 2) Atividade Avaliativa, não falte! Estudar: Caderno 2: Módulo 5: A alimentação dos seres vivos, páginas 124, 125, 126, 127, 128 e 129 Módulo 6: Investigar as plantas, páginas 132 a 135 Módulo 7: Fotossíntese, páginas 143 a 147",
     "conteudo_aula": "Trabalho avaliativo de Ciências - Cadeias Alimentares: 1) Pesquisa em grupo sobre animais da fauna brasileira. 2) Confecção da cadeia alimentar com massinha de EVA."
   },
@@ -52,11 +22,26 @@
     "sem_prazo": false,
     "prazo_tipo": "data_definida",
     "origens": [
-      "Heitor"
+      "Benício"
     ],
-    "linha_origem": 1,
-    "fonte": "Heitor",
+    "linha_origem": 4,
+    "fonte": "Benício",
     "conteudo": "Dia 25-06 não falte trabalho avaliativo.",
     "conteudo_aula": "Atividade avaliativa."
+  },
+  {
+    "tipo": "prova",
+    "disciplina": "Inglês — G1",
+    "grupo": "G1",
+    "prazo": "2026-06-25",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 9,
+    "fonte": "Benício",
+    "conteudo": "Avaliação de Reading (English Quiz) - Data: 25/06: Na próxima semana teremos a nossa última atividade avaliativa, realizada em um Google forms. É de extrema importância que o aluno tenha anotado em seu planner o login e a senha para uso dos Chromebooks, evitando problemas para a realização da Atividade. Estudar: Units 3, 4 and 5 Student's Book: 38, 39, 40, 41, 48, 49, 50, 60, 61, 62 Workbook: 30, 31, 32, 33, 38, 39, 40, 48, 49, 50",
+    "conteudo_aula": "Atividade Avaliativa de Speaking"
   }
 ]
