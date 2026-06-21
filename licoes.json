@@ -1,17 +1,1 @@
-[
-  {
-    "tipo": "licao",
-    "disciplina": "Português",
-    "grupo": null,
-    "prazo": "2026-06-19",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 6,
-    "fonte": "Benício",
-    "tarefa": "Apostila de ortografia (9) Para: 19-06",
-    "conteudo_aula": "Correção da tarefa de casa. Finalização dos registros iniciados na aula anterior sobre as características dos textos dramáticos."
-  }
-]
+[]

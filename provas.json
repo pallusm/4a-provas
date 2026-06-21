@@ -1,21 +1,6 @@
 [
   {
     "tipo": "prova",
-    "disciplina": "Ciências",
-    "grupo": null,
-    "prazo": "2026-06-19",
-    "sem_prazo": false,
-    "prazo_tipo": "data_definida",
-    "origens": [
-      "Benício"
-    ],
-    "linha_origem": 21,
-    "fonte": "Benício",
-    "conteudo": "Para: 19-06 1) Entregar a pesquisa sobre os animais da fauna brasileira finalizada e revisada. 2) Atividade Avaliativa, não falte! Estudar: Caderno 2: Módulo 5: A alimentação dos seres vivos, páginas 124, 125, 126, 127, 128 e 129 Módulo 6: Investigar as plantas, páginas 132 a 135 Módulo 7: Fotossíntese, páginas 143 a 147",
-    "conteudo_aula": "Trabalho avaliativo de Ciências - Cadeias Alimentares: 1) Pesquisa em grupo sobre animais da fauna brasileira. 2) Confecção da cadeia alimentar com massinha de EVA."
-  },
-  {
-    "tipo": "prova",
     "disciplina": "Geografia",
     "grupo": null,
     "prazo": "2026-06-25",
