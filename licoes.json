@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "tipo": "licao",
+    "disciplina": "Português",
+    "grupo": null,
+    "prazo": "2026-08-17",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 1,
+    "fonte": "Benício",
+    "tarefa": "Estudo da língua - página 32 - exs. 3 e 4 Para: 23-06 Ler o livro: “Conectados, mas com Cuidado” nas férias. Trazer o livro novamente para a aula no dia: 17-08",
+    "conteudo_aula": "Texto dramático / Ortografia / Produção textual - páginas 22 a 26 Nesta semana, daremos continuidade aos estudos sobre o gênero textual dramático, aprofundando a compreensão de suas características por meio da comparação com o texto narrativo ficcional. Os alunos também realizarão atividades de ortografia para fortalecer a escrita correta das palavras. Em seguida, serão organizados em grupos para uma produção textual colaborativa, criando a continuação da história de \"Viravez, o Cortês\", estimulando a criatividade, a escrita e o trabalho em equipe."
+  }
+]
