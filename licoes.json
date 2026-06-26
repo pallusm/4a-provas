@@ -1,6 +1,36 @@
 [
   {
     "tipo": "licao",
+    "disciplina": "História",
+    "grupo": null,
+    "prazo": "2026-06-30",
+    "sem_prazo": false,
+    "prazo_tipo": "proxima_aula",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 13,
+    "fonte": "Benício",
+    "tarefa": "Países e povos africanos após o século XV. P.110 a 113 (Orientações e registo disponibilizados no Google Classroom). Realizada em sala",
+    "conteudo_aula": "Início da apostila 3 Módulo 7 - A África antes e depois dos portugueses Páginas do Livro: p. 107, 108, 109, 115, 116 a 119 e Registro da p. 120 Recursos Digitais: Vídeo de apoio (https://youtu.be/puoHJd9aZ-g) e Classroom Conteúdos: Alguns povos africanos dos séculos XV e XVI. O comércio dos portugueses na África. Análise dos conceitos \"escravo\" e \"escravizado\" (com base no texto de Laurentino Gomes). Exibição de vídeo ilustrativo e levantamento de hipóteses sobre como era o Brasil antes da chegada dos portugueses. Leitura compartilhada e dialogada sobre as características dos povos e reinos africanos que contataram com os portugueses, bem como a dinâmica do comércio na época. Leitura e debate do texto do jornalista Laurentino Gomes sobre a diferença entre os termos \"escravo\" e \"escravizado\". Observação e interpretação de imagem para compreender a relação estabelecida entre portugueses para promover a troca de ideias e o trabalho colaborativo."
+  },
+  {
+    "tipo": "licao",
+    "disciplina": "Projeto de Vida",
+    "grupo": null,
+    "prazo": "2026-08-04",
+    "sem_prazo": false,
+    "prazo_tipo": "data_definida",
+    "origens": [
+      "Benício"
+    ],
+    "linha_origem": 18,
+    "fonte": "Benício",
+    "tarefa": "Segue os Jogos em Família: Definindo Combinados e Autonomia em Jogo da OPEE para você e sua família passar um momento rico de aprendizado e conexão de forma leve e envolvente durante o período em férias. Conforme o explicado, na página 10 do Nosso diário de bordo, (livrinho azul), escreva como foi a experiência vivenciada em família com os jogos da OPEE. Traga no primeiro dia do retorno das férias. Para:04/08",
+    "conteudo_aula": "Aula dialogada e prática. Iniciamos a aula com uma roda de conversa sobre a democracia e respeito. A professora divulgou o resultado na votação do amigo do bem e explicou que o treinamento do acontecerá após o nosso retorno das férias. No segundo momento, retomamos a leitura do texto “O que posso fazer no futuro?” e realizamos o exercício 1 – páginas 31e 32 do nosso livro. Finalizamos a aula com a explicação da tarefa de casa. – Jogos em Família."
+  },
+  {
+    "tipo": "licao",
     "disciplina": "Português",
     "grupo": null,
     "prazo": "2026-08-17",
@@ -9,7 +39,7 @@
     "origens": [
       "Benício"
     ],
-    "linha_origem": 1,
+    "linha_origem": 16,
     "fonte": "Benício",
     "tarefa": "Estudo da língua - página 32 - exs. 3 e 4 Para: 23-06 Ler o livro: “Conectados, mas com Cuidado” nas férias. Trazer o livro novamente para a aula no dia: 17-08",
     "conteudo_aula": "Texto dramático / Ortografia / Produção textual - páginas 22 a 26 Nesta semana, daremos continuidade aos estudos sobre o gênero textual dramático, aprofundando a compreensão de suas características por meio da comparação com o texto narrativo ficcional. Os alunos também realizarão atividades de ortografia para fortalecer a escrita correta das palavras. Em seguida, serão organizados em grupos para uma produção textual colaborativa, criando a continuação da história de \"Viravez, o Cortês\", estimulando a criatividade, a escrita e o trabalho em equipe."
